@@ -1,8 +1,9 @@
-
 #pragma once
 
 #include <d2d1_3.h>
 #include <cmath>
+
+#define hr(code) {HRESULT hresult = code; if(FAILED(hresult)) return hresult;}
 
 typedef float Float;
 constexpr Float TICK_TIME = 1;
@@ -74,7 +75,7 @@ class TransformationMatrix {
 public:
 
 	TransformationMatrix() {}
-	TransformationMatrix(const D2D1::Matrix3x2F m): inner(m) {}
+	TransformationMatrix(const D2D1::Matrix3x2F m) : inner(m) {}
 
 	const D2D1::Matrix3x2F& getInner() {
 		return inner;
@@ -96,6 +97,5 @@ public:
 		return *this;
 	};
 };
-
 
 

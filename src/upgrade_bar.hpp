@@ -8,8 +8,8 @@
 const int UPGRADES_PER_BAR = 10;
 
 struct UpgradeBar {
-	std::string name;
-	Vector2D position;
+	const WCHAR* name;
+	D2D1_RECT_F rect;
 	double cost;
 	double cost_multiplier;
 	int level;
