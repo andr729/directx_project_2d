@@ -17,8 +17,7 @@ set (CMAKE_WIN32_EXECUTABLE "True")
 set (CMAKE_CXX_FLAGS 
 	"/Wall /std:c++20 /DUNICODE /TP /Zc:__cplusplus /EHs /MT")
 
-set (SOURCE_FILES
-    ...)
+set (SOURCE_FILES main.hpp main.cpp base.hpp game_state.hpp global_state.hpp physics.hpp physics.cpp "upgrade_bar.hpp" shop_scene.hpp "button.hpp"  )
 
 add_executable (app ${SOURCE_FILES})
 target_link_libraries(app ${DIRECT2D})
