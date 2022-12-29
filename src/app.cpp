@@ -18,7 +18,7 @@ using D2D1::Matrix3x2F;
 // using std::array;
 
 
-CircleEntity c1({0, 0}, {10, 10}, 10);
+CircleEntity c1({0, 0}, {10, 20}, 20);
 CircleEntity c2({100, 100}, {-10, 2}, 20);
 
 
@@ -122,6 +122,10 @@ HRESULT onPaint(HWND hwnd) {
 
 	c1.draw(d2d_render_target);
 	c2.draw(d2d_render_target);
+
+	if (c1.collides(c2)) {
+		c1.collide(c2, 0);
+	}
 
 	if (d2d_render_target->EndDraw() == D2DERR_RECREATE_TARGET) {
 		destroyRenderTarget();

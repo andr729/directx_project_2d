@@ -29,6 +29,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 		switch (wParam) {
 		case frame_timer_id:
 			// ...
+			tick();
 			InvalidateRect(hwnd, nullptr, true);
 			return 0;
 		}

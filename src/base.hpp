@@ -6,7 +6,7 @@
 #define hr(code) {HRESULT hresult = code; if(FAILED(hresult)) return hresult;}
 
 typedef float Float;
-constexpr Float TICK_TIME = 1;
+constexpr Float TICK_TIME = 0.1;
 
 struct Vector2D {
 	Float x, y;
