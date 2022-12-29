@@ -92,6 +92,7 @@ struct CircleEntity: public Entity {
 		Entity(position, velocity, EntityType::Circle), radius(radius) {}
 	
 	bool collides(const Entity& oth) const final;
+	bool isInside(const Vector2D& pos) const final;
 };
 
 struct RectangeEntity: public Entity {
@@ -101,4 +102,5 @@ struct RectangeEntity: public Entity {
 		Entity(position, velocity, EntityType::Rectangle), dx(dx), dy(dy) {}
 
 	bool collides(const Entity& oth) const;
+	bool isInside(const Vector2D& pos) const;
 };
