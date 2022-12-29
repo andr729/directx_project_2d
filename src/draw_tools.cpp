@@ -44,4 +44,8 @@ namespace DT {
 			brush
 		);
 	}
+
+	void EllipseDrawable::draw(ID2D1RenderTarget* rt, Vector2D pos, Vector2D dimensions) {
+		rt->DrawEllipse({{pos.x, pos.y}, dimensions.x, dimensions.y}, black_brush);
+	}
 }

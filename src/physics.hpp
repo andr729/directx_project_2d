@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include "base.hpp"
+#include "draw_tools.hpp"
 
 // We have it to be able to quickly determine entity type
 enum class EntityType {
@@ -21,6 +22,7 @@ public:
 	Vector2D velocity = {0, 0};
 	Float mass = 1;
 	bool immoveable = false;
+	DT::Drawable* drawable = nullptr;
 
 	constexpr EntityType getType() const { return type; }
 
@@ -40,6 +42,8 @@ public:
 
 	// axis is from ent1 to ent2
 	static void collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float elasticity);
+
+	virtual void draw(ID2D1RenderTarget* rt) = 0;
 };
 
 struct CircleEntity: public Entity {
@@ -50,6 +54,11 @@ struct CircleEntity: public Entity {
 	bool collides(const Entity& oth) const final;
 	bool collide(Entity& oth, Float elasticity) final;
 	bool isInside(const Vector2D& pos) const final;
+
+	void draw(ID2D1RenderTarget* rt) override {
+		if (drawable)
+			drawable->draw(rt, position, {radius, radius});
+	}
 };
 
 struct RectangleEntity: public Entity {

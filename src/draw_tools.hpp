@@ -1,5 +1,6 @@
 #include <d2d1_3.h>
 #include <dwrite_3.h>
+#include "base.hpp"
 
 
 // DrawTools
@@ -14,4 +15,15 @@ namespace DT {
 	void changeBrushColor(D2D1_COLOR_F color);
 
 	void drawText(ID2D1HwndRenderTarget* render_target, const WCHAR* text, D2D1_RECT_F rect, ID2D1Brush* brush);
+
+	struct Drawable {
+		virtual void draw(ID2D1RenderTarget* rt, Vector2D pos, Vector2D dimensions) = 0;
+		virtual ~Drawable() = default;
+	};
+	
+	struct EllipseDrawable: public Drawable {
+		void draw(ID2D1RenderTarget* rt, Vector2D pos, Vector2D dimensions) final;
+		virtual ~EllipseDrawable() = default;
+	};
+
 }

@@ -7,6 +7,7 @@
 #include <wincodec.h>
 #include "app.hpp"
 #include "base.hpp"
+#include "physics.hpp"
 
 // using D2D1::BitmapProperties;
 // using D2D1::PixelFormat;
@@ -15,6 +16,10 @@
 using D2D1::Matrix3x2F;
 // using std::sin;
 // using std::array;
+
+
+CircleEntity c1({0, 0}, {10, 10}, 10);
+CircleEntity c2({100, 100}, {-10, 2}, 20);
 
 
 HRESULT LoadBitmapFromFile(
@@ -33,9 +38,15 @@ namespace {
 	D2D1_COLOR_F color(0.5f, 0.5f, 0.5f, 1.f);
 }
 
-void tick() {}
+void tick() {
+	c1.simulateTick();
+	c2.simulateTick();
+}
 
 HRESULT init(HWND hwnd) {
+
+	c1.drawable = new DT::EllipseDrawable();
+	c2.drawable = new DT::EllipseDrawable();
 	
 	auto hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &d2d_factory);
 	// THROW_IF_FAILED(hr, "D2D1CreateFactoryfailed");
@@ -63,7 +74,6 @@ HRESULT recreateRenderTarget(HWND hwnd) {
 	HRESULT hr;
 	RECT rc;
 	GetClientRect(hwnd, &rc);
-
 	// window_size_x = static_cast<FLOAT>(rc.right - rc.left);
 	// window_size_y = static_cast<FLOAT>(rc.bottom - rc.top);
 
@@ -82,6 +92,9 @@ HRESULT recreateRenderTarget(HWND hwnd) {
 	if (d2d_render_target == nullptr) {
 		exit(1);
 	}
+
+	DT::recreateTools(d2d_render_target);
+
 	return 0;
 }
 
@@ -107,6 +120,8 @@ HRESULT onPaint(HWND hwnd) {
 	d2d_render_target->BeginDraw();
 	d2d_render_target->Clear(color);
 
+	c1.draw(d2d_render_target);
+	c2.draw(d2d_render_target);
 
 	if (d2d_render_target->EndDraw() == D2DERR_RECREATE_TARGET) {
 		destroyRenderTarget();
