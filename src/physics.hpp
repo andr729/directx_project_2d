@@ -84,7 +84,7 @@ public:
 	virtual bool collides(const Entity& oth) const = 0;
 	virtual bool collide(Entity& oth, Float elasticity) = 0;
 	virtual bool isInside(const Vector2D& pos) const = 0;
-};
+}; 
 
 struct CircleEntity: public Entity {
 	Float radius = 0;
