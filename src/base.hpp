@@ -1,7 +1,8 @@
-
 #pragma once
 
 #include <d2d1_3.h>
+
+#define hr(code) {HRESULT hresult = code; if(FAILED(hresult)) return hresult;}
 
 typedef float Float;
 struct Vector2D {
@@ -16,7 +17,7 @@ class TransformationMatrix {
 public:
 
 	TransformationMatrix() {}
-	TransformationMatrix(const D2D1::Matrix3x2F m): inner(m) {}
+	TransformationMatrix(const D2D1::Matrix3x2F m) : inner(m) {}
 
 	const D2D1::Matrix3x2F& getInner() {
 		return inner;
@@ -40,6 +41,5 @@ public:
 		return *this;
 	};
 };
-
 
 
