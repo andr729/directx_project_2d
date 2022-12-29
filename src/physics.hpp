@@ -9,11 +9,12 @@ struct Vector2D {
 	Float x, y;
 
 	[[no_discard]]
-	constexpr Vector2D operator+(const Vector2D& oth) {
+	constexpr Vector2D operator+(const Vector2D& oth) const {
 		return {x + oth.x, y + oth.y};
 	}
+
 	[[no_discard]]
-	constexpr Vector2D operator-(const Vector2D& oth) {
+	constexpr Vector2D operator-(const Vector2D& oth) const {
 		return {x - oth.x, y - oth.y};
 	}
 	constexpr void operator+=(const Vector2D& oth) {
@@ -26,11 +27,11 @@ struct Vector2D {
 	}
 
 	[[no_discard]]
-	constexpr Vector2D operator*(const Float v) {
+	constexpr Vector2D operator*(const Float v) const {
 		return {x * v, y * v};
 	}
 	[[no_discard]]
-	constexpr Vector2D operator/(const Float v) {
+	constexpr Vector2D operator/(const Float v) const {
 		return {x / v, y / v};
 	}
 	constexpr void operator*=(const Float v) {
@@ -39,12 +40,12 @@ struct Vector2D {
 	}
 
 	[[no_discard]]
-	constexpr Float abs2() {
+	constexpr Float abs2() const {
 		return x * x + y * y;
 	}
 
 	[[no_discard]]
-	Float abs() {
+	Float abs() const {
 		return std::sqrt(abs2());
 	}
 };
@@ -56,16 +57,20 @@ enum class EntityType {
 
 struct Entity {
 protected:
-	Vector2D position = {0, 0};
-	Vector2D velocity = {0, 0};
 	EntityType type;
-
 	Entity(Vector2D position, Vector2D velocity, EntityType type):
 		position(position),
 		velocity(velocity),
 		type(type) {}
 
 public:
+	Vector2D position = {0, 0};
+	Vector2D velocity = {0, 0};
+	Float mass = 1;
+	bool immoveable = false;
+
+	constexpr EntityType getType() const { return type; }
+
 	void simulateTick() {
 		position += velocity * TICK_TIME;	
 	}
@@ -76,22 +81,18 @@ public:
 		velocity += delta_v;
 	}
 
-	virtual bool collides(const Entity& oth) = 0;
-	virtual bool isInside(const Vector2D& pos) = 0;
+	virtual bool collides(const Entity& oth) const = 0;
+	virtual bool collide(Entity& oth, Float elasticity) = 0;
+	virtual bool isInside(const Vector2D& pos) const = 0;
 };
 
 struct CircleEntity: public Entity {
-private:
 	Float radius = 0;
-public:
 	CircleEntity(Vector2D position, Vector2D velocity, Float radius):
 		Entity(position, velocity, EntityType::Circle), radius(radius) {}
 	
-	virtual bool collides(const Entity& oth) {
-		if (oth.type == EntityType::Circle) {
-			
-		}
-	};
+	bool collides(const Entity& oth) const final;
+	bool isInside(const Vector2D& pos) const final;
 };
 
 struct RectangeEntity: public Entity {
@@ -99,4 +100,7 @@ struct RectangeEntity: public Entity {
 	Float dy = 0;
 	RectangeEntity(Vector2D position, Vector2D velocity, Float dx, Float dy):
 		Entity(position, velocity, EntityType::Rectangle), dx(dx), dy(dy) {}
+
+	bool collides(const Entity& oth) const;
+	bool isInside(const Vector2D& pos) const;
 };
