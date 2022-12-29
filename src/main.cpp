@@ -1,4 +1,4 @@
-#include "main.h"
+#include "main.hpp"
 
 constexpr UINT frame_timer_id = 1;
 
