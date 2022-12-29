@@ -42,6 +42,11 @@ struct Vector2D {
 	}
 
 	[[no_discard]]
+	Vector2D operator-() {
+		return {-x, -y};
+	}
+
+	[[no_discard]]
 	constexpr Float abs2() const {
 		return x * x + y * y;
 	}
@@ -50,7 +55,19 @@ struct Vector2D {
 	Float abs() const {
 		return std::sqrt(abs2());
 	}
+
+	Vector2D normUnit() const {
+		return *this / abs();
+	}
 };
+
+Float dot(Vector2D v1, Vector2D v2) {
+	return v1.x * v2.x + v1.y * v2.y;
+}
+
+Vector2D projection(Vector2D base, Vector2D onto) {
+	return onto.normUnit() * dot(base, onto.normUnit());
+}
 
 class TransformationMatrix {
 	D2D1::Matrix3x2F inner;

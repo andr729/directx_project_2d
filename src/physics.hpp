@@ -3,7 +3,7 @@
 #include <cmath>
 #include "base.hpp"
 
-// We have it to be able to quickly deterine entity type
+// We have it to be able to quickly determine entity type
 enum class EntityType {
 	Circle, Rectangle
 };
@@ -37,6 +37,9 @@ public:
 	virtual bool collides(const Entity& oth) const = 0;
 	virtual bool collide(Entity& oth, Float elasticity) = 0;
 	virtual bool isInside(const Vector2D& pos) const = 0;
+
+	// axis is from ent1 to ent2
+	static void collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float elasticity);
 };
 
 struct CircleEntity: public Entity {
@@ -45,15 +48,17 @@ struct CircleEntity: public Entity {
 		Entity(position, velocity, EntityType::Circle), radius(radius) {}
 	
 	bool collides(const Entity& oth) const final;
+	bool collide(Entity& oth, Float elasticity) final;
 	bool isInside(const Vector2D& pos) const final;
 };
 
-struct RectangeEntity: public Entity {
+struct RectangleEntity: public Entity {
 	Float dx = 0;
 	Float dy = 0;
-	RectangeEntity(Vector2D position, Vector2D velocity, Float dx, Float dy):
+	RectangleEntity(Vector2D position, Vector2D velocity, Float dx, Float dy):
 		Entity(position, velocity, EntityType::Rectangle), dx(dx), dy(dy) {}
 
 	bool collides(const Entity& oth) const;
+	bool collide(Entity& oth, Float elasticity) final;
 	bool isInside(const Vector2D& pos) const;
 };
