@@ -56,6 +56,7 @@ HRESULT init(HWND hwnd) {
 	// THROW_IF_FAILED(hr, "Creating WIC factory failed");
 
 	recreateRenderTarget(hwnd);
+	return 0;
 }
 
 HRESULT recreateRenderTarget(HWND hwnd) {
@@ -81,7 +82,7 @@ HRESULT recreateRenderTarget(HWND hwnd) {
 	if (d2d_render_target == nullptr) {
 		exit(1);
 	}
-
+	return 0;
 }
 
 HRESULT destroyRenderTarget() {
@@ -89,11 +90,13 @@ HRESULT destroyRenderTarget() {
 		d2d_render_target->Release();
 		d2d_render_target = nullptr;
 	}
+	return 0;
 }
 
 HRESULT destroy() {
 	if (d2d_render_target) d2d_render_target->Release();
 	if (d2d_factory) d2d_factory->Release();
+	return 0;
 }
 
 
@@ -109,6 +112,7 @@ HRESULT onPaint(HWND hwnd) {
 		destroyRenderTarget();
 		onPaint(hwnd);
 	}
+	return 0;
 }
 
 
