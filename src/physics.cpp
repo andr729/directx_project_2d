@@ -4,11 +4,16 @@ void Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float e
 		// split velocities into component parallel and perpendicular components:
 		Vector2D v1_c = projection(ent1.velocity, axis);
 		Vector2D v2_c = projection(ent2.velocity, -axis);
+
+		// @todo:
+		ent1.position -= v1_c * 0.1; 
+		ent1.position -= v2_c * 0.1;
+
 		ent1.velocity -= v1_c;
 		ent2.velocity -= v2_c;
 
 		// change reference frame to center of momentum
-		Vector2D v_cm = v1_c * ent1.mass + v2_c * ent2.mass;
+		Vector2D v_cm = (v1_c * ent1.mass + v2_c * ent2.mass) / (ent1.mass + ent2.mass);
 		v1_c -= v_cm;
 		v2_c -= v_cm;
 

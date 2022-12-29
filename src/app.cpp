@@ -18,8 +18,8 @@ using D2D1::Matrix3x2F;
 // using std::array;
 
 
-CircleEntity c1({0, 0}, {10, 20}, 20);
-CircleEntity c2({100, 100}, {-10, 2}, 20);
+CircleEntity c1({300, 300}, {10, 0}, 20);
+CircleEntity c2({500, 300}, {-10, 0}, 20);
 
 
 HRESULT LoadBitmapFromFile(
@@ -47,6 +47,7 @@ HRESULT init(HWND hwnd) {
 
 	c1.drawable = new DT::EllipseDrawable();
 	c2.drawable = new DT::EllipseDrawable();
+	c1.mass = 2;
 	
 	auto hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &d2d_factory);
 	// THROW_IF_FAILED(hr, "D2D1CreateFactoryfailed");
@@ -124,7 +125,7 @@ HRESULT onPaint(HWND hwnd) {
 	c2.draw(d2d_render_target);
 
 	if (c1.collides(c2)) {
-		c1.collide(c2, 0);
+		c1.collide(c2, 0.5);
 	}
 
 	if (d2d_render_target->EndDraw() == D2DERR_RECREATE_TARGET) {
