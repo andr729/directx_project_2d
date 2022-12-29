@@ -1,54 +1,7 @@
 #pragma once
 
 #include <cmath>
-
-constexpr Float TICK_TIME = 1;
-
-typedef float Float;
-struct Vector2D {
-	Float x, y;
-
-	[[no_discard]]
-	constexpr Vector2D operator+(const Vector2D& oth) const {
-		return {x + oth.x, y + oth.y};
-	}
-
-	[[no_discard]]
-	constexpr Vector2D operator-(const Vector2D& oth) const {
-		return {x - oth.x, y - oth.y};
-	}
-	constexpr void operator+=(const Vector2D& oth) {
-		x += oth.x;
-		y += oth.y;
-	}
-	constexpr void operator-=(const Vector2D& oth) {
-		x -= oth.x;
-		y -= oth.y;
-	}
-
-	[[no_discard]]
-	constexpr Vector2D operator*(const Float v) const {
-		return {x * v, y * v};
-	}
-	[[no_discard]]
-	constexpr Vector2D operator/(const Float v) const {
-		return {x / v, y / v};
-	}
-	constexpr void operator*=(const Float v) {
-		x *= v;
-		y *= v;
-	}
-
-	[[no_discard]]
-	constexpr Float abs2() const {
-		return x * x + y * y;
-	}
-
-	[[no_discard]]
-	Float abs() const {
-		return std::sqrt(abs2());
-	}
-};
+#include "base.hpp"
 
 // We have it to be able to quickly deterine entity type
 enum class EntityType {
