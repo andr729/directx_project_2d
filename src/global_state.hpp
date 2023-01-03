@@ -5,7 +5,7 @@
 
 struct GlobalState {
 	ID2D1Factory7* factory = nullptr;
-	ID2D1HwndRenderTarget* d2d_render_target = nullptr;
+	ID2D1HwndRenderTarget* render_target = nullptr;
 	int tick = 0;
 
 	// d2d1 stuff, and our stuff

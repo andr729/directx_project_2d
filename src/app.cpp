@@ -44,6 +44,11 @@ void tick() {
 
 	c1.simulateTick();
 	c2.simulateTick();
+
+	if (c1.collides(c2)) {
+		c1.collide(c2, 0.5);
+	}
+
 }
 
 HRESULT init(HWND hwnd) {
@@ -126,10 +131,6 @@ HRESULT onPaint(HWND hwnd) {
 
 	c1.draw(render_target);
 	c2.draw(render_target);
-
-	if (c1.collides(c2)) {
-		c1.collide(c2, 0.5);
-	}
 
 	if (render_target->EndDraw() == D2DERR_RECREATE_TARGET) {
 		destroyRenderTarget();
