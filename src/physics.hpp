@@ -37,7 +37,7 @@ public:
 	}
 
 	virtual bool collides(const Entity& oth) const = 0;
-	virtual bool collide(Entity& oth, Float elasticity) = 0;
+	virtual void collide(Entity& oth, Float elasticity) = 0;
 	virtual bool isInside(const Vector2D& pos) const = 0;
 
 	// axis is from ent1 to ent2
@@ -52,7 +52,7 @@ struct CircleEntity: public Entity {
 		Entity(position, velocity, EntityType::Circle), radius(radius) {}
 	
 	bool collides(const Entity& oth) const final;
-	bool collide(Entity& oth, Float elasticity) final;
+	void collide(Entity& oth, Float elasticity) final;
 	bool isInside(const Vector2D& pos) const final;
 
 	void draw(ID2D1RenderTarget* rt) override {
@@ -68,6 +68,6 @@ struct RectangleEntity: public Entity {
 		Entity(position, velocity, EntityType::Rectangle), dx(dx), dy(dy) {}
 
 	bool collides(const Entity& oth) const;
-	bool collide(Entity& oth, Float elasticity) final;
+	void collide(Entity& oth, Float elasticity) final;
 	bool isInside(const Vector2D& pos) const;
 };

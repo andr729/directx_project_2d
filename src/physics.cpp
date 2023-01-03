@@ -59,7 +59,7 @@ bool CircleEntity::collides(const Entity& oth) const {
 	}
 };
 
-bool CircleEntity::collide(Entity& oth, Float elasticity) {
+void CircleEntity::collide(Entity& oth, Float elasticity) {
 	if (oth.getType() == EntityType::Circle) {
 		collideAlongAxis(*this, oth, oth.position - position, elasticity);
 	}
@@ -90,7 +90,7 @@ bool RectangleEntity::collides(const Entity& oth) const {
 	}
 };
 
-bool RectangleEntity::collide(Entity& oth, Float elasticity) {
+void RectangleEntity::collide(Entity& oth, Float elasticity) {
 	if (oth.getType() == EntityType::Circle) {
 		oth.collide(*this, elasticity);
 	}
