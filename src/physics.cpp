@@ -64,7 +64,10 @@ bool CircleEntity::collide(Entity& oth, Float elasticity) {
 		collideAlongAxis(*this, oth, oth.position - position, elasticity);
 	}
 	else {
-		throw "Aaaa";
+		const RectangleEntity& rect = static_cast<const RectangleEntity&>(oth);
+
+		// Approximate the collision type:
+		// Float dist_top = std::abs();
 	}
 }
 
@@ -86,6 +89,15 @@ bool RectangleEntity::collides(const Entity& oth) const {
 		return true;
 	}
 };
+
+bool RectangleEntity::collide(Entity& oth, Float elasticity) {
+	if (oth.getType() == EntityType::Circle) {
+		oth.collide(*this, elasticity);
+	}
+	else {
+		throw "Rect Rect collision not yet implemented";
+	}
+}
 
 bool RectangleEntity::isInside(const Vector2D& pos) const {
 	return position.x <= pos.x && position.x + dx >= pos.x &&

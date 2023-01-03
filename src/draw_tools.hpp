@@ -26,4 +26,10 @@ namespace DT {
 		virtual ~EllipseDrawable() = default;
 	};
 
+	struct RectDrawable: public Drawable {
+		void draw(ID2D1RenderTarget* rt, Vector2D pos, Vector2D dimensions) final;
+		virtual ~RectDrawable() = default;
+	};
+
+
 }
