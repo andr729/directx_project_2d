@@ -67,7 +67,12 @@ struct RectangleEntity: public Entity {
 	RectangleEntity(Vector2D position, Vector2D velocity, Float dx, Float dy):
 		Entity(position, velocity, EntityType::Rectangle), dx(dx), dy(dy) {}
 
-	bool collides(const Entity& oth) const;
+	bool collides(const Entity& oth) const final;
 	void collide(Entity& oth, Float elasticity) final;
-	bool isInside(const Vector2D& pos) const;
+	bool isInside(const Vector2D& pos) const final;
+
+	void draw(ID2D1RenderTarget* rt) override {
+		if (drawable)
+			drawable->draw(rt, position, {dx, dy});
+	}
 };
