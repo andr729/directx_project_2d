@@ -43,7 +43,7 @@ public:
 	// axis is from ent1 to ent2
 	static void collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float elasticity);
 
-	virtual void draw(ID2D1RenderTarget* rt) = 0;
+	virtual void draw() = 0;
 };
 
 struct CircleEntity: public Entity {
@@ -55,9 +55,9 @@ struct CircleEntity: public Entity {
 	void collide(Entity& oth, Float elasticity) final;
 	bool isInside(const Vector2D& pos) const final;
 
-	void draw(ID2D1RenderTarget* rt) override {
+	void draw() override {
 		if (drawable)
-			drawable->draw(rt, position, {radius, radius});
+			drawable->draw(position, {radius, radius});
 	}
 };
 
@@ -71,8 +71,8 @@ struct RectangleEntity: public Entity {
 	void collide(Entity& oth, Float elasticity) final;
 	bool isInside(const Vector2D& pos) const final;
 
-	void draw(ID2D1RenderTarget* rt) override {
+	void draw() override {
 		if (drawable)
-			drawable->draw(rt, position, {dx, dy});
+			drawable->draw(position, {dx, dy});
 	}
 };

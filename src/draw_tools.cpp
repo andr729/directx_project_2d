@@ -34,7 +34,7 @@ namespace DT {
 	D2D1_COLOR_F const color_dark_gray = { .r = 0.4f, .g = 0.4f, .b = 0.4f, .a = 1.0f };
 	D2D1_COLOR_F const color_light_gray = { .r = 0.625f, .g = 0.625f, .b = 0.625f, .a = 1.0f };
 
-	// T¹ funckjê ChatGPT napisa³.
+	// Tï¿½ funckjï¿½ ChatGPT napisaï¿½.
 	D2D1_COLOR_F HSVToRGB(float h, float s, float v)
 	{
 		float r, g, b;
@@ -120,11 +120,11 @@ namespace DT {
 		);
 	}
 
-	void EllipseDrawable::draw(ID2D1RenderTarget* rt, Vector2D pos, Vector2D dimensions) {
-		rt->DrawEllipse({{pos.x, pos.y}, dimensions.x, dimensions.y}, black_brush);
+	void EllipseDrawable::draw(Vector2D pos, Vector2D dimensions) {
+		global_state.render_target->DrawEllipse({{pos.x, pos.y}, dimensions.x, dimensions.y}, black_brush);
 	}
 
-	void RectDrawable::draw(ID2D1RenderTarget* rt, Vector2D pos, Vector2D dimensions) {
-		rt->DrawRectangle({pos.x - dimensions.x, pos.y - dimensions.y, pos.x + dimensions.x, pos.y + dimensions.y}, black_brush);
+	void RectDrawable::draw(Vector2D pos, Vector2D dimensions) {
+		global_state.render_target->DrawRectangle({pos.x - dimensions.x, pos.y - dimensions.y, pos.x + dimensions.x, pos.y + dimensions.y}, black_brush);
 	}
 }
