@@ -32,9 +32,9 @@ HRESULT LoadBitmapFromFile(
 	ID2D1Bitmap** ppBitmap);
 
 namespace {
-	ID2D1Factory7* d2d_factory = nullptr;
+	ID2D1Factory7* factory = nullptr;
 	IWICImagingFactory* img_factory;
-	ID2D1HwndRenderTarget* d2d_render_target = nullptr;
+	ID2D1HwndRenderTarget* render_target = nullptr;
 
 	D2D1_COLOR_F color(0.5f, 0.5f, 0.5f, 1.f);
 }
@@ -52,9 +52,9 @@ HRESULT init(HWND hwnd) {
 	c2.drawable = new DT::EllipseDrawable();
 	c1.mass = 2;
 	
-	auto hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &d2d_factory);
+	auto hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &factory);
 	// THROW_IF_FAILED(hr, "D2D1CreateFactoryfailed");
-	if (d2d_factory == nullptr) {
+	if (factory == nullptr) {
 		exit(1);
 	}
 
@@ -81,7 +81,7 @@ HRESULT recreateRenderTarget(HWND hwnd) {
 	// window_size_x = static_cast<FLOAT>(rc.right - rc.left);
 	// window_size_y = static_cast<FLOAT>(rc.bottom - rc.top);
 
-	hr = d2d_factory->CreateHwndRenderTarget(
+	hr = factory->CreateHwndRenderTarget(
 		D2D1::RenderTargetProperties(),
 		D2D1::HwndRenderTargetProperties(hwnd,
 			D2D1::SizeU(
@@ -89,49 +89,49 @@ HRESULT recreateRenderTarget(HWND hwnd) {
 				static_cast<UINT32>(rc.left),
 				static_cast<UINT32>(rc.bottom) -
 				static_cast<UINT32>(rc.top))),
-		&d2d_render_target);
+		&render_target);
 
 	// THROW_IF_FAILED(hr, "CreateHwndRenderTarget failed");
 
-	if (d2d_render_target == nullptr) {
+	if (render_target == nullptr) {
 		exit(1);
 	}
 
-	DT::recreateTools(d2d_render_target);
+	DT::recreateTools(render_target);
 
 	return 0;
 }
 
 HRESULT destroyRenderTarget() {
-	if (d2d_render_target) {
-		d2d_render_target->Release();
-		d2d_render_target = nullptr;
+	if (render_target) {
+		render_target->Release();
+		render_target = nullptr;
 	}
 	return 0;
 }
 
 HRESULT destroy() {
-	if (d2d_render_target) d2d_render_target->Release();
-	if (d2d_factory) d2d_factory->Release();
+	if (render_target) render_target->Release();
+	if (factory) factory->Release();
 	return 0;
 }
 
 
 
 HRESULT onPaint(HWND hwnd) {
-	if (!d2d_render_target) recreateRenderTarget(hwnd);
+	if (!render_target) recreateRenderTarget(hwnd);
 	// TransformationMatrix transform = Matrix3x2F::Identity();
-	d2d_render_target->BeginDraw();
-	d2d_render_target->Clear(color);
+	render_target->BeginDraw();
+	render_target->Clear(color);
 
-	c1.draw(d2d_render_target);
-	c2.draw(d2d_render_target);
+	c1.draw(render_target);
+	c2.draw(render_target);
 
 	if (c1.collides(c2)) {
 		c1.collide(c2, 0.5);
 	}
 
-	if (d2d_render_target->EndDraw() == D2DERR_RECREATE_TARGET) {
+	if (render_target->EndDraw() == D2DERR_RECREATE_TARGET) {
 		destroyRenderTarget();
 		onPaint(hwnd);
 	}

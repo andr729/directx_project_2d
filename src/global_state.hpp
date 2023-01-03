@@ -4,7 +4,7 @@
 #include <d2d1_3.h>
 
 struct GlobalState {
-	ID2D1Factory7* d2d_factory = nullptr;
+	ID2D1Factory7* factory = nullptr;
 	ID2D1HwndRenderTarget* d2d_render_target = nullptr;
 	int tick = 0;
 
