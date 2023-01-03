@@ -3,7 +3,11 @@
 #include "global_state.hpp"
 
 void ShopScene::init() {
+	// TODO: Create bars
 
+	for (auto& bar : bars) {
+		bar.init();
+	}
 }
 
 void ShopScene::update() {
@@ -26,4 +30,7 @@ void ShopScene::update() {
 void ShopScene::draw() {
 	update();
 
+	for (auto& bar : bars) {
+		bar.draw();
+	}
 }

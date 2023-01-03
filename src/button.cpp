@@ -4,7 +4,8 @@
 #include "draw_tools.hpp"
 #include "global_state.hpp"
 
-void Button::draw(ID2D1HwndRenderTarget* render_target) {
+void Button::draw() {
+	ID2D1HwndRenderTarget* render_target = global_state.render_target;
 	ID2D1Brush *font_brush, *bg_brush;
 
 	switch (state) {

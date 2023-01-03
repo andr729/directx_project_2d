@@ -19,5 +19,5 @@ struct Button {
 	Button(const WCHAR* text, D2D1_RECT_F position, D2D1_COLOR_F color, ButtonState state = ButtonState::Unclickable) : 
 		text(text), position(position), color(color), state(state) {}
 
-	void draw(ID2D1HwndRenderTarget*);
+	void draw();
 };
