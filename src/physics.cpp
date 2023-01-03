@@ -4,11 +4,16 @@ void Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float e
 		// split velocities into component parallel and perpendicular components:
 		Vector2D v1_c = projection(ent1.velocity, axis);
 		Vector2D v2_c = projection(ent2.velocity, -axis);
+
+		// @todo:
+		ent1.position -= v1_c * 0.1; 
+		ent1.position -= v2_c * 0.1;
+
 		ent1.velocity -= v1_c;
 		ent2.velocity -= v2_c;
 
 		// change reference frame to center of momentum
-		Vector2D v_cm = v1_c * ent1.mass + v2_c * ent2.mass;
+		Vector2D v_cm = (v1_c * ent1.mass + v2_c * ent2.mass) / (ent1.mass + ent2.mass);
 		v1_c -= v_cm;
 		v2_c -= v_cm;
 
@@ -54,12 +59,15 @@ bool CircleEntity::collides(const Entity& oth) const {
 	}
 };
 
-bool CircleEntity::collide(Entity& oth, Float elasticity) {
+void CircleEntity::collide(Entity& oth, Float elasticity) {
 	if (oth.getType() == EntityType::Circle) {
 		collideAlongAxis(*this, oth, oth.position - position, elasticity);
 	}
 	else {
-		throw "Aaaa";
+		const RectangleEntity& rect = static_cast<const RectangleEntity&>(oth);
+
+		// Approximate the collision type:
+		// Float dist_top = std::abs();
 	}
 }
 
@@ -81,6 +89,15 @@ bool RectangleEntity::collides(const Entity& oth) const {
 		return true;
 	}
 };
+
+void RectangleEntity::collide(Entity& oth, Float elasticity) {
+	if (oth.getType() == EntityType::Circle) {
+		oth.collide(*this, elasticity);
+	}
+	else {
+		throw "Rect Rect collision not yet implemented";
+	}
+}
 
 bool RectangleEntity::isInside(const Vector2D& pos) const {
 	return position.x <= pos.x && position.x + dx >= pos.x &&

@@ -6,7 +6,7 @@
 #define hr(code) {HRESULT hresult = code; if(FAILED(hresult)) return hresult;}
 
 typedef float Float;
-constexpr Float TICK_TIME = 1;
+constexpr Float TICK_TIME = 0.1;
 
 struct Vector2D {
 	Float x, y;
@@ -62,11 +62,11 @@ struct Vector2D {
 	}
 };
 
-Float dot(Vector2D v1, Vector2D v2) {
+inline Float dot(Vector2D v1, Vector2D v2) {
 	return v1.x * v2.x + v1.y * v2.y;
 }
 
-Vector2D projection(Vector2D base, Vector2D onto) {
+inline Vector2D projection(Vector2D base, Vector2D onto) {
 	return onto.normUnit() * dot(base, onto.normUnit());
 }
 
@@ -97,5 +97,13 @@ public:
 		return *this;
 	};
 };
+
+template<typename T>
+void SafeRelease(T **ppT) {
+	if (*ppT) {
+		(*ppT)->Release();
+		*ppT = NULL;
+	}
+}
 
 

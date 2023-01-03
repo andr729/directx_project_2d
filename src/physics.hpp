@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include "base.hpp"
+#include "draw_tools.hpp"
 
 // We have it to be able to quickly determine entity type
 enum class EntityType {
@@ -21,6 +22,7 @@ public:
 	Vector2D velocity = {0, 0};
 	Float mass = 1;
 	bool immoveable = false;
+	DT::Drawable* drawable = nullptr;
 
 	constexpr EntityType getType() const { return type; }
 
@@ -35,11 +37,13 @@ public:
 	}
 
 	virtual bool collides(const Entity& oth) const = 0;
-	virtual bool collide(Entity& oth, Float elasticity) = 0;
+	virtual void collide(Entity& oth, Float elasticity) = 0;
 	virtual bool isInside(const Vector2D& pos) const = 0;
 
 	// axis is from ent1 to ent2
 	static void collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float elasticity);
+
+	virtual void draw(ID2D1RenderTarget* rt) = 0;
 };
 
 struct CircleEntity: public Entity {
@@ -48,8 +52,13 @@ struct CircleEntity: public Entity {
 		Entity(position, velocity, EntityType::Circle), radius(radius) {}
 	
 	bool collides(const Entity& oth) const final;
-	bool collide(Entity& oth, Float elasticity) final;
+	void collide(Entity& oth, Float elasticity) final;
 	bool isInside(const Vector2D& pos) const final;
+
+	void draw(ID2D1RenderTarget* rt) override {
+		if (drawable)
+			drawable->draw(rt, position, {radius, radius});
+	}
 };
 
 struct RectangleEntity: public Entity {
@@ -59,6 +68,6 @@ struct RectangleEntity: public Entity {
 		Entity(position, velocity, EntityType::Rectangle), dx(dx), dy(dy) {}
 
 	bool collides(const Entity& oth) const;
-	bool collide(Entity& oth, Float elasticity) final;
+	void collide(Entity& oth, Float elasticity) final;
 	bool isInside(const Vector2D& pos) const;
 };

@@ -84,4 +84,12 @@ namespace DT {
 			brush
 		);
 	}
+
+	void EllipseDrawable::draw(ID2D1RenderTarget* rt, Vector2D pos, Vector2D dimensions) {
+		rt->DrawEllipse({{pos.x, pos.y}, dimensions.x, dimensions.y}, black_brush);
+	}
+
+	void RectDrawable::draw(ID2D1RenderTarget* rt, Vector2D pos, Vector2D dimensions) {
+		rt->DrawRectangle({pos.x, pos.y, pos.x + dimensions.x, pos.y + dimensions.y}, black_brush);
+	}
 }

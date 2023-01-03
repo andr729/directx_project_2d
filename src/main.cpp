@@ -1,4 +1,5 @@
 #include "main.hpp"
+#include "app.hpp"
 
 constexpr UINT frame_timer_id = 1;
 
@@ -28,6 +29,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 		switch (wParam) {
 		case frame_timer_id:
 			// ...
+			tick();
 			InvalidateRect(hwnd, nullptr, true);
 			return 0;
 		}

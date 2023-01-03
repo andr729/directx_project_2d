@@ -17,4 +17,4 @@ struct GlobalState {
 	// ...
 };
 
-
+extern GlobalState global_state;
