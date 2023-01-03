@@ -40,5 +40,5 @@ void Button::draw(ID2D1HwndRenderTarget* render_target) {
 		.right = position.right,
 		.bottom = (position.top + position.bottom + DT::FONT_STROKE) / 2
 	};
-	DT::drawText(render_target, text, position, font_brush);
+	DT::drawText(text, position, font_brush);
 }

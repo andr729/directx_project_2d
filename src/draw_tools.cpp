@@ -1,6 +1,7 @@
 #include "draw_tools.hpp"
 #include "base.hpp"
 #include "rad_brush.hpp"
+#include "global_state.hpp"
 
 namespace DT {
 	IDWriteFactory* write_factory = nullptr;
@@ -77,7 +78,8 @@ namespace DT {
 		button_text_format->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
 	}
 
-	HRESULT recreateTools(ID2D1HwndRenderTarget* render_target) {
+	HRESULT recreateTools() {
+		ID2D1HwndRenderTarget* render_target = global_state.render_target;
 		hr(render_target->CreateSolidColorBrush(color_black, &black_brush));
 		hr(render_target->CreateSolidColorBrush(color_dark_gray, &dark_gray_brush));
 		hr(render_target->CreateSolidColorBrush(color_light_gray, &light_gray_brush));
@@ -88,7 +90,8 @@ namespace DT {
 		customizable_brush->SetColor(color);
 	}
 
-	void updateRadialBrush(ID2D1HwndRenderTarget* render_target) {
+	void updateRadialBrush() {
+		ID2D1HwndRenderTarget* render_target = global_state.render_target;
 		static int ticks = 0;
 		ticks++;
 
@@ -105,8 +108,8 @@ namespace DT {
 		rad_brush = rad_brush_data.brush;
 	}
 
-	void drawText(ID2D1HwndRenderTarget* render_target, const WCHAR* text, D2D1_RECT_F rect, ID2D1Brush* brush) {
-		render_target->DrawText(
+	void drawText(const WCHAR* text, D2D1_RECT_F rect, ID2D1Brush* brush) {
+		global_state.render_target->DrawText(
 			text,
 			sizeof(text)/sizeof(text[0]),
 			button_text_format,

@@ -16,13 +16,13 @@ namespace DT {
 
 	void destroyTools();
 
-	HRESULT recreateTools(ID2D1HwndRenderTarget* render_target);
+	HRESULT recreateTools();
 
 	void changeBrushColor(D2D1_COLOR_F color);
 
-	void updateRadialBrush(ID2D1HwndRenderTarget* render_target);
+	void updateRadialBrush();
 
-	void drawText(ID2D1HwndRenderTarget* render_target, const WCHAR* text, D2D1_RECT_F rect, ID2D1Brush* brush);
+	void drawText(const WCHAR* text, D2D1_RECT_F rect, ID2D1Brush* brush);
 
 	struct Drawable {
 		virtual void draw(ID2D1RenderTarget* rt, Vector2D pos, Vector2D dimensions) = 0;

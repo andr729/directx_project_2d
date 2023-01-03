@@ -97,7 +97,9 @@ HRESULT recreateRenderTarget(HWND hwnd) {
 		exit(1);
 	}
 
-	DT::recreateTools(render_target);
+	global_state.render_target = render_target;
+
+	DT::recreateTools();
 
 	return 0;
 }
