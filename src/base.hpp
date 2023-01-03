@@ -77,7 +77,7 @@ public:
 	TransformationMatrix() {}
 	TransformationMatrix(const D2D1::Matrix3x2F m) : inner(m) {}
 
-	const D2D1::Matrix3x2F& getInner() {
+	D2D1::Matrix3x2F& getInner() {
 		return inner;
 	}
 
