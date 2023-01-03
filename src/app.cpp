@@ -68,6 +68,7 @@ HRESULT init(HWND hwnd) {
 
 	add_circ({400, 400}, {100, 123}, 10, 0.1);
 	add_circ({500, 500}, {10, -23}, 10, 0.1);
+	add_circ({300, 300}, {120, -23}, 10, 0.1);
 	
 	auto hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &factory);
 	// THROW_IF_FAILED(hr, "D2D1CreateFactoryfailed");
