@@ -21,6 +21,7 @@ using D2D1::Matrix3x2F;
 
 RectangleEntity c1({300, 200}, {2, 0}, 55, 50);
 CircleEntity c2({500, 280}, {-10, -12}, 20);
+CircleEntity c3({200, 300}, {10, -12}, 20);
 
 
 HRESULT LoadBitmapFromFile(
@@ -43,9 +44,13 @@ void tick() {
 
 	c1.simulateTick();
 	c2.simulateTick();
+	c3.simulateTick();
 
 	if (c1.collides(c2)) {
-		c1.collide(c2, 0.5);
+		c1.collide(c2, 0.8);
+	}
+	if (c1.collides(c3)) {
+		c1.collide(c3, 0.8);
 	}
 
 }
@@ -54,6 +59,7 @@ HRESULT init(HWND hwnd) {
 
 	c1.drawable = new DT::RectDrawable();
 	c2.drawable = new DT::EllipseDrawable();
+	c3.drawable = new DT::EllipseDrawable();
 	c1.mass = 2;
 	
 	auto hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &factory);
@@ -128,6 +134,7 @@ HRESULT onPaint(HWND hwnd) {
 
 	c1.draw();
 	c2.draw();
+	c3.draw();
 
 	if (global_state.render_target->EndDraw() == D2DERR_RECREATE_TARGET) {
 		destroyRenderTarget();
