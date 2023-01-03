@@ -5,6 +5,7 @@
 
 struct ShopScene {
 	std::vector<UpgradeBar> bars;
+	void init();
 
 	void update();
 

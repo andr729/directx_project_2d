@@ -8,6 +8,7 @@
 #include "app.hpp"
 #include "base.hpp"
 #include "physics.hpp"
+#include "global_state.hpp"
 
 // using D2D1::BitmapProperties;
 // using D2D1::PixelFormat;
@@ -39,6 +40,8 @@ namespace {
 }
 
 void tick() {
+	global_state.tick++;
+
 	c1.simulateTick();
 	c2.simulateTick();
 }

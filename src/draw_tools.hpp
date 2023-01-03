@@ -20,6 +20,8 @@ namespace DT {
 
 	void changeBrushColor(D2D1_COLOR_F color);
 
+	void updateRadialBrush(ID2D1HwndRenderTarget* render_target);
+
 	void drawText(ID2D1HwndRenderTarget* render_target, const WCHAR* text, D2D1_RECT_F rect, ID2D1Brush* brush);
 
 	struct Drawable {
