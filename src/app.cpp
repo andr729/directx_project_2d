@@ -69,7 +69,14 @@ HRESULT init(HWND hwnd) {
 	add_circ({400, 400}, {100, 123}, 10, 0.1);
 	add_circ({500, 500}, {10, -23}, 10, 0.1);
 	add_circ({300, 300}, {120, -23}, 10, 0.1);
+	add_circ({200, 200}, {20, -123}, 10, 0.1);
+	add_circ({400, 200}, {40, -12}, 10, 0.1);
+	// add_rect({400, 200}, {40, -12}, 5, 10, 0.1);
 	
+	// add_circ({100, 100}, {20, 0}, 60, 300);
+	// add_circ({100, 100}, {30, 0}, 20, 1);
+
+
 	auto hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &factory);
 	// THROW_IF_FAILED(hr, "D2D1CreateFactoryfailed");
 	if (factory == nullptr) {

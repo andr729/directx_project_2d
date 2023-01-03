@@ -6,8 +6,9 @@
 
 void Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float elasticity) {
 		// split velocities into component parallel and perpendicular components:
-		Vector2D v1_c = projection(ent1.velocity, axis);
-		Vector2D v2_c = projection(ent2.velocity, -axis);
+
+		Vector2D v1_c = projectionVector(ent1.velocity, axis);
+		Vector2D v2_c = projectionVector(ent2.velocity, -axis);
 
 		// @todo:
 		ent1.position -= v1_c * TICK_TIME; 
@@ -20,6 +21,10 @@ void Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float e
 		Vector2D v_cm = (v1_c * ent1.mass + v2_c * ent2.mass) / (ent1.mass + ent2.mass);
 		v1_c -= v_cm;
 		v2_c -= v_cm;
+
+		//...
+		// auto v1_c_scalar = projectionScalar(ent1.velocity, axis);
+		// auto v2_c_scalar = projectionScalar(ent2.velocity, -axis);
 
 		// collide:
 		v1_c = -v1_c * elasticity;
