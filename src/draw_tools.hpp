@@ -25,17 +25,17 @@ namespace DT {
 	void drawText(ID2D1HwndRenderTarget* render_target, const WCHAR* text, D2D1_RECT_F rect, ID2D1Brush* brush);
 
 	struct Drawable {
-		virtual void draw(ID2D1RenderTarget* rt, Vector2D pos, Vector2D dimensions) = 0;
+		virtual void draw(Vector2D pos, Vector2D dimensions) = 0;
 		virtual ~Drawable() = default;
 	};
 	
 	struct EllipseDrawable: public Drawable {
-		void draw(ID2D1RenderTarget* rt, Vector2D pos, Vector2D dimensions) final;
+		void draw(Vector2D pos, Vector2D dimensions) final;
 		virtual ~EllipseDrawable() = default;
 	};
 
 	struct RectDrawable: public Drawable {
-		void draw(ID2D1RenderTarget* rt, Vector2D pos, Vector2D dimensions) final;
+		void draw(Vector2D pos, Vector2D dimensions) final;
 		virtual ~RectDrawable() = default;
 	};
 

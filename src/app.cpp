@@ -34,8 +34,7 @@ HRESULT LoadBitmapFromFile(
 namespace {
 	ID2D1Factory7* factory = nullptr;
 	IWICImagingFactory* img_factory;
-	ID2D1HwndRenderTarget* render_target = nullptr;
-
+	
 	D2D1_COLOR_F color(0.5f, 0.5f, 0.5f, 1.f);
 }
 
@@ -94,51 +93,48 @@ HRESULT recreateRenderTarget(HWND hwnd) {
 				static_cast<UINT32>(rc.left),
 				static_cast<UINT32>(rc.bottom) -
 				static_cast<UINT32>(rc.top))),
-		&render_target);
+		&global_state.render_target);
 
 	// THROW_IF_FAILED(hr, "CreateHwndRenderTarget failed");
 
-	if (render_target == nullptr) {
-		exit(1);
+	if (global_state.render_target == nullptr) {
+		throw "TODO";
 	}
 
-	DT::recreateTools(render_target);
+	DT::recreateTools(global_state.render_target);
 
 	return 0;
 }
 
 HRESULT destroyRenderTarget() {
-	if (render_target) {
-		render_target->Release();
-		render_target = nullptr;
+	if (global_state.render_target) {
+		global_state.render_target->Release();
+		global_state.render_target = nullptr;
 	}
 	return 0;
 }
 
 HRESULT destroy() {
-	if (render_target) render_target->Release();
+	if (global_state.render_target) global_state.render_target->Release();
 	if (factory) factory->Release();
 	return 0;
 }
 
-
-
 HRESULT onPaint(HWND hwnd) {
-	if (!render_target) recreateRenderTarget(hwnd);
+	if (!global_state.render_target) recreateRenderTarget(hwnd);
 	// TransformationMatrix transform = Matrix3x2F::Identity();
-	render_target->BeginDraw();
-	render_target->Clear(color);
+	global_state.render_target->BeginDraw();
+	global_state.render_target->Clear(color);
 
-	c1.draw(render_target);
-	c2.draw(render_target);
+	c1.draw();
+	c2.draw();
 
-	if (render_target->EndDraw() == D2DERR_RECREATE_TARGET) {
+	if (global_state.render_target->EndDraw() == D2DERR_RECREATE_TARGET) {
 		destroyRenderTarget();
 		onPaint(hwnd);
 	}
 	return 0;
 }
-
 
 // @TODO: move to draw tools
 HRESULT LoadBitmapFromFile(
