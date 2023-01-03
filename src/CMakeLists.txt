@@ -21,11 +21,7 @@ set (CMAKE_WIN32_EXECUTABLE "True")
 set (CMAKE_CXX_FLAGS 
 	"/Wall /std:c++20 /DUNICODE /TP /Zc:__cplusplus /EHs /MT")
 
-<<<<<<< HEAD
-set (SOURCE_FILES main.hpp main.cpp base.hpp game_state.hpp global_state.hpp physics.hpp physics.cpp upgrade_bar.hpp shop_scene.hpp button.hpp button.cpp draw_tools.hpp draw_tools.cpp rad_brush.cpp rad_brush.hpp)
-=======
-set (SOURCE_FILES main.hpp main.cpp base.hpp game_state.hpp global_state.hpp physics.hpp physics.cpp upgrade_bar.hpp shop_scene.hpp button.hpp button.cpp draw_tools.hpp draw_tools.cpp app.cpp)
->>>>>>> 7ef6eeb206962c2289bb115928406e38982df01d
+set (SOURCE_FILES main.hpp main.cpp base.hpp game_state.hpp global_state.hpp physics.hpp physics.cpp upgrade_bar.hpp shop_scene.hpp button.hpp button.cpp draw_tools.hpp draw_tools.cpp rad_brush.cpp rad_brush.hpp app.cpp)
 
 add_executable (app ${SOURCE_FILES})
 target_link_libraries(app ${DIRECT2D} ${DWRITE})
