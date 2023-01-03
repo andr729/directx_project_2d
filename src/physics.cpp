@@ -1,4 +1,8 @@
 #include "physics.hpp"
+#include <algorithm>
+
+// XD
+#undef min
 
 void Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float elasticity) {
 		// split velocities into component parallel and perpendicular components:
@@ -65,9 +69,44 @@ void CircleEntity::collide(Entity& oth, Float elasticity) {
 	}
 	else {
 		const RectangleEntity& rect = static_cast<const RectangleEntity&>(oth);
-
+	
 		// Approximate the collision type:
-		// Float dist_top = std::abs();
+		Float top = std::abs( position.y - rect.position.y - radius);
+		Float bottom = std::abs( position.y - rect.position.y + rect.dy + radius);
+		Float left = std::abs( position.x - rect.position.x - radius);
+		Float right = std::abs( position.x - rect.position.x + rect.dx + radius);
+
+		Float top_left = std::abs((position - rect.position).abs() - radius);
+		Float top_right = std::abs((position - (rect.position + Vector2D(rect.dx, 0))).abs() - radius);
+		Float bottom_left = std::abs((position - (rect.position + Vector2D(0, rect.dy))).abs() - radius);
+		Float bottom_right = std::abs((position - (rect.position + Vector2D(rect.dx, rect.dy))).abs() - radius);
+
+		Float min_dist = std::min({top, bottom, left, right, top_left, top_right, bottom_left, bottom_right});
+
+		if (top == min_dist) {
+			collideAlongAxis(*this, oth, {0, -1}, elasticity);
+		}
+		else if (bottom == min_dist) {
+			collideAlongAxis(*this, oth, {0, 1}, elasticity);
+		}
+		else if (left == min_dist) {
+			collideAlongAxis(*this, oth, {-1, 0}, elasticity);
+		}
+		else if (right == min_dist) {
+			collideAlongAxis(*this, oth, {1, 0}, elasticity);
+		}
+		else if (top_left == min_dist) {
+			collideAlongAxis(*this, oth, {-1, -1}, elasticity);
+		}
+		else if (top_right == min_dist) {
+			collideAlongAxis(*this, oth, {1, -1}, elasticity);
+		}
+		else if (bottom_left == min_dist) {
+			collideAlongAxis(*this, oth, {-1, 1}, elasticity);
+		}
+		else if (bottom_right == min_dist) {
+			collideAlongAxis(*this, oth, {1, 1}, elasticity);
+		}
 	}
 }
 
