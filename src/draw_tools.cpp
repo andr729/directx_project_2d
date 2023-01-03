@@ -91,12 +91,12 @@ namespace DT {
 	}
 
 	void updateRadialBrush() {
-		ID2D1HwndRenderTarget* render_target = global_state.render_target;
 		static int ticks = 0;
 		if (ticks == global_state.tick) {
 			return;
 		}
 		ticks = global_state.tick;
+		ID2D1HwndRenderTarget* render_target = global_state.render_target;
 
 		for (int i = 0; i < RAD_BRUSH_STOPS; i++) {
 			rad_brush_data.stops_data[i].color = HSVToRGB(std::fmod(ticks * RAD_BRUSH_OFFSET_PER_TICK + i * RAD_BRUSH_DIST, 1.0f), 1, 1);
