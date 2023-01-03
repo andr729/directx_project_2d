@@ -1,4 +1,4 @@
-#include "upgrade_bar.hpp"
+﻿#include "upgrade_bar.hpp"
 #include "global_state.hpp"
 #include "draw_tools.hpp"
 
@@ -27,13 +27,17 @@ void UpgradeBar::draw() {
 	float width = rect.right - rect.left;
 	float height = rect.bottom - rect.top;
 
-	DT::drawText(name, { .left = rect.left, .top = rect.top, .right = rect.left + width * upgrades_start, .bottom = rect.bottom }, DT::black_brush);
+	DT::drawText(name.c_str(), {.left = rect.left, .top = rect.top, .right = rect.left + width * upgrades_start, .bottom = rect.bottom}, DT::black_brush);
 
-	float rect_spacing = (upgrades_end - upgrades_start) * width / (2 * UPGRADES_PER_BAR - 1);
+	float rect_spacing = (upgrades_end - upgrades_start) * width / (2 * max_level - 1);
 	float rects_start = rect.left + width * upgrades_start;
 	DT::changeBrushColor(color);
-	for (int i = 0; i < UPGRADES_PER_BAR; i++) {
+	for (int i = 0; i < max_level; i++) {
 		D2D1_RECT_F current_rect = {
+			.left = rects_start + 2 * i * rect_spacing,
+			.top = rect.top,
+			.right = rects_start + (2 * i + 1) * rect_spacing,
+			.bottom = rect.bottom
 		};
 		render_target->FillRectangle(current_rect, (level > i ? DT::customizable_brush : DT::light_gray_brush));
 		render_target->DrawRectangle(current_rect, DT::black_brush, 5);
@@ -51,10 +55,10 @@ void UpgradeBar::draw() {
 		}, DT::black_brush);
 	
 	std::wstring increment_text = L"(+" + std::to_wstring(global_state.game_state.upgrades[name]) + L")";
-	if (level == UPGRADES_PER_BAR) {
+	if (level == max_level) {
 		increment_text = L"(max)";
 	}
-	DT::drawText(value_text.c_str(),
+	DT::drawText(increment_text.c_str(),
 		{ 
 			.left = rect.left + increment_start * width, 
 			.top = rect.top, 

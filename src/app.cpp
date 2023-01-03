@@ -60,6 +60,13 @@ void tick() {
 }
 
 HRESULT init(HWND hwnd) {
+	global_state.shop_scene.init();
+	global_state.scene = Scene::ShopScene;
+
+	//TODO: Remove.
+	for (auto &bar : global_state.shop_scene.bars) {
+		bar.level = 2;
+	}
 
 	add_rect({500, 100}, {0, 0}, 400, 20, 10000);
 	add_rect({500, 600}, {0, 0}, 400, 20, 10000);
@@ -86,6 +93,9 @@ HRESULT init(HWND hwnd) {
 		IID_PPV_ARGS(&img_factory)
 	);
 	// THROW_IF_FAILED(hr, "Creating WIC factory failed");
+	
+	//TODO: handle HRESULT.
+	DT::initTools();
 
 	recreateRenderTarget(hwnd);
 	return 0;
@@ -139,7 +149,15 @@ HRESULT onPaint(HWND hwnd) {
 	global_state.render_target->BeginDraw();
 	global_state.render_target->Clear(color);
 
-	handler.drawAll();
+	switch (global_state.scene) {
+	case Scene::GameScene:
+		handler.drawAll();
+		break;
+	case Scene::ShopScene:
+		global_state.shop_scene.draw();
+		break;
+	}
+
 
 	if (global_state.render_target->EndDraw() == D2DERR_RECREATE_TARGET) {
 		destroyRenderTarget();

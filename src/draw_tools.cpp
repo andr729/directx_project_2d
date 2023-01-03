@@ -125,7 +125,7 @@ namespace DT {
 	void drawText(const WCHAR* text, D2D1_RECT_F rect, ID2D1Brush* brush, IDWriteTextFormat* format) {
 		global_state.render_target->DrawText(
 			text,
-			sizeof(text)/sizeof(text[0]),
+			std::wcslen(text),
 			format,
 			rect,
 			brush
