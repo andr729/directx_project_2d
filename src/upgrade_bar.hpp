@@ -16,4 +16,6 @@ struct UpgradeBar {
 	double levelup_value;
 	Button button;
 	D2D1_COLOR_F color;
+
+	void draw();
 };

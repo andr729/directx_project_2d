@@ -6,6 +6,7 @@
 namespace DT {
 	IDWriteFactory* write_factory = nullptr;
 	IDWriteTextFormat* button_text_format = nullptr;
+	IDWriteTextFormat* normal_text_format = nullptr;
 
 	ID2D1SolidColorBrush* black_brush = nullptr;
 	ID2D1SolidColorBrush* dark_gray_brush = nullptr;
@@ -71,11 +72,22 @@ namespace DT {
 			DWRITE_FONT_WEIGHT_BOLD,
 			DWRITE_FONT_STYLE_NORMAL,
 			DWRITE_FONT_STRETCH_NORMAL,
-			FONT_STROKE,
+			BUTTON_FONT_STROKE,
 			L"en-us",
 			&button_text_format
 		));
 		button_text_format->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+
+		hr(write_factory->CreateTextFormat(
+			L"Trebuchet MS",
+			nullptr,
+			DWRITE_FONT_WEIGHT_BOLD,
+			DWRITE_FONT_STYLE_NORMAL,
+			DWRITE_FONT_STRETCH_NORMAL,
+			TEXT_FONT_STROKE,
+			L"en-us",
+			&normal_text_format
+		));
 	}
 
 	HRESULT recreateTools() {
@@ -110,11 +122,11 @@ namespace DT {
 		rad_brush = rad_brush_data.brush;
 	}
 
-	void drawText(const WCHAR* text, D2D1_RECT_F rect, ID2D1Brush* brush) {
+	void drawText(const WCHAR* text, D2D1_RECT_F rect, ID2D1Brush* brush, IDWriteTextFormat* format) {
 		global_state.render_target->DrawText(
 			text,
 			sizeof(text)/sizeof(text[0]),
-			button_text_format,
+			format,
 			rect,
 			brush
 		);
