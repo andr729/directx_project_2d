@@ -90,6 +90,6 @@ namespace DT {
 	}
 
 	void RectDrawable::draw(ID2D1RenderTarget* rt, Vector2D pos, Vector2D dimensions) {
-		rt->DrawRectangle({pos.x, pos.y, pos.x + dimensions.x, pos.y + dimensions.y}, black_brush);
+		rt->DrawRectangle({pos.x - dimensions.x, pos.y - dimensions.y, pos.x + dimensions.x, pos.y + dimensions.y}, black_brush);
 	}
 }

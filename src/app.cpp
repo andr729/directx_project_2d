@@ -18,8 +18,8 @@ using D2D1::Matrix3x2F;
 // using std::array;
 
 
-RectangleEntity c1({300, 300}, {10, 0}, 20, 20);
-CircleEntity c2({500, 300}, {-10, 0}, 20);
+RectangleEntity c1({300, 200}, {2, 0}, 55, 50);
+CircleEntity c2({500, 280}, {-10, -12}, 20);
 
 
 HRESULT LoadBitmapFromFile(
@@ -45,8 +45,8 @@ void tick() {
 
 HRESULT init(HWND hwnd) {
 
-	c1.drawable = new DT::EllipseDrawable();
-	c2.drawable = new DT::RectDrawable();
+	c1.drawable = new DT::RectDrawable();
+	c2.drawable = new DT::EllipseDrawable();
 	c1.mass = 2;
 	
 	auto hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &d2d_factory);
