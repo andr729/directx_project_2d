@@ -19,10 +19,25 @@ using D2D1::Matrix3x2F;
 // using std::array;
 
 
-RectangleEntity c1({300, 200}, {2, 0}, 55, 50);
-CircleEntity c2({500, 280}, {-10, -12}, 20);
-CircleEntity c3({200, 300}, {10, -12}, 20);
 
+
+EntityHandler handler;
+DT::RectDrawable rect_drawable;
+DT::EllipseDrawable ellipse_drawable;
+
+void add_rect(Vector2D pos, Vector2D v, Float dx, Float dy, Float mass) {
+	auto rect = new RectangleEntity(pos, v, dx, dy);
+	rect->mass = mass;
+	rect->drawable = &rect_drawable;
+	handler.addEntity(rect);
+}
+
+void add_circ(Vector2D pos, Vector2D v, Float r, Float mass) {
+	auto circ = new CircleEntity(pos, v, r);
+	circ->mass = mass;
+	circ->drawable = &ellipse_drawable;
+	handler.addEntity(circ);
+}
 
 HRESULT LoadBitmapFromFile(
 	ID2D1RenderTarget* pRenderTarget,
@@ -40,27 +55,19 @@ namespace {
 }
 
 void tick() {
-	global_state.tick++;
-
-	c1.simulateTick();
-	c2.simulateTick();
-	c3.simulateTick();
-
-	if (c1.collides(c2)) {
-		c1.collide(c2, 0.8);
-	}
-	if (c1.collides(c3)) {
-		c1.collide(c3, 0.8);
-	}
-
+	handler.simulateTick();
+	handler.collideAll(1);
 }
 
 HRESULT init(HWND hwnd) {
 
-	c1.drawable = new DT::RectDrawable();
-	c2.drawable = new DT::EllipseDrawable();
-	c3.drawable = new DT::EllipseDrawable();
-	c1.mass = 2;
+	add_rect({500, 100}, {0, 0}, 400, 20, 10000);
+	add_rect({500, 600}, {0, 0}, 400, 20, 10000);
+	add_rect({930, 350}, {0, 0}, 20, 280, 10000);
+	add_rect({70, 350}, {0, 0}, 20, 280, 10000);
+
+	add_circ({400, 400}, {100, 123}, 10, 0.1);
+	add_circ({500, 500}, {10, -23}, 10, 0.1);
 	
 	auto hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &factory);
 	// THROW_IF_FAILED(hr, "D2D1CreateFactoryfailed");
@@ -132,9 +139,7 @@ HRESULT onPaint(HWND hwnd) {
 	global_state.render_target->BeginDraw();
 	global_state.render_target->Clear(color);
 
-	c1.draw();
-	c2.draw();
-	c3.draw();
+	handler.drawAll();
 
 	if (global_state.render_target->EndDraw() == D2DERR_RECREATE_TARGET) {
 		destroyRenderTarget();

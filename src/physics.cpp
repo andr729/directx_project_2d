@@ -10,8 +10,8 @@ void Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float e
 		Vector2D v2_c = projection(ent2.velocity, -axis);
 
 		// @todo:
-		ent1.position -= v1_c * 0.1; 
-		ent2.position -= v2_c * 0.1;
+		ent1.position -= v1_c * TICK_TIME; 
+		ent2.position -= v2_c * TICK_TIME;
 
 		ent1.velocity -= v1_c;
 		ent2.velocity -= v2_c;
@@ -32,6 +32,28 @@ void Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float e
 		// update velocities:
 		ent1.velocity += v1_c;
 		ent2.velocity += v2_c;
+}
+
+void EntityHandler::addEntity(Entity* ent) {
+	entities.push_back(ent);
+}
+void EntityHandler::simulateTick() {
+	for (auto e: entities) {
+		e->simulateTick();
+	}
+}
+void EntityHandler::collideAll(Float elasticity) {
+	for (size_t i = 0; i < entities.size(); i++)
+	for (size_t j = i + 1; j < entities.size(); j++) {
+		if (entities[i]->collides(*entities[j])) {
+			entities[i]->collide(*entities[j], elasticity);
+		}
+	}
+}
+void EntityHandler::drawAll() {
+	for (auto e: entities) {
+		e->draw();
+	}
 }
 
 bool CircleEntity::collides(const Entity& oth) const {

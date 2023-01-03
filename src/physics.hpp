@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <vector>
 #include "base.hpp"
 #include "draw_tools.hpp"
 
@@ -44,6 +45,16 @@ public:
 	static void collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float elasticity);
 
 	virtual void draw() = 0;
+};
+
+class EntityHandler {
+private:
+	std::vector<Entity*> entities;
+public:
+	void addEntity(Entity*);
+	void simulateTick();
+	void collideAll(Float elasticity);
+	void drawAll();
 };
 
 struct CircleEntity: public Entity {
