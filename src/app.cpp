@@ -101,7 +101,7 @@ HRESULT recreateRenderTarget(HWND hwnd) {
 		throw "TODO";
 	}
 
-	DT::recreateTools(global_state.render_target);
+	DT::recreateTools();
 
 	return 0;
 }
