@@ -54,8 +54,8 @@ namespace DT {
 
 	HRESULT recreateTools(ID2D1HwndRenderTarget* render_target) {
 		hr(render_target->CreateSolidColorBrush(color_black, &black_brush));
-		hr(render_target->CreateSolidColorBrush(dark_gray_black, &dark_gray_brush));
-		hr(render_target->CreateSolidColorBrush(light_gray_black, &light_gray_brush));
+		hr(render_target->CreateSolidColorBrush(color_dark_gray, &dark_gray_brush));
+		hr(render_target->CreateSolidColorBrush(color_light_gray, &light_gray_brush));
 		hr(render_target->CreateSolidColorBrush(color_black, &customizable_brush));
 	}
 

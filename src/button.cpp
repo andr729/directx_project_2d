@@ -21,12 +21,10 @@ void Button::draw(ID2D1HwndRenderTarget* render_target) {
 		bg_brush = DT::rad_brush;
 	}
 	TransformationMatrix old_transform, new_transform;
-	// TODO: fix this.
 	render_target->GetTransform(&old_transform.getInner());
-	// TODO: fix this.
+	Vector2D mouse_position = global_state.mouse_position;
 	new_transform = old_transform * D2D1::Matrix3x2F::Translation(mouse_position.x, mouse_position.y);
 	render_target->SetTransform(new_transform.getInner());
-	// TODO: fix this mouse_position.
 	D2D1_RECT_F offset_position = { 
 		.left = mouse_position.x - position.left, 
 		.top = mouse_position.y - position.top,

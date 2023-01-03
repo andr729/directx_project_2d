@@ -90,6 +90,7 @@ public:
 		TransformationMatrix out;
 		out.inner = inner;
 		out.inner.SetProduct(out.inner, oth.inner);
+		return out;
 	};
 
 	TransformationMatrix& operator*=(const TransformationMatrix& oth) {
