@@ -10,8 +10,8 @@ void Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float e
 		Vector2D v2_c = projection(ent2.velocity, -axis);
 
 		// @todo:
-		ent1.position -= v1_c * 0.1; 
-		ent2.position -= v2_c * 0.1;
+		ent1.position -= v1_c * TICK_TIME; 
+		ent2.position -= v2_c * TICK_TIME;
 
 		ent1.velocity -= v1_c;
 		ent2.velocity -= v2_c;
@@ -34,9 +34,31 @@ void Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float e
 		ent2.velocity += v2_c;
 }
 
+void EntityHandler::addEntity(Entity* ent) {
+	entities.push_back(ent);
+}
+void EntityHandler::simulateTick() {
+	for (auto e: entities) {
+		e->simulateTick();
+	}
+}
+void EntityHandler::collideAll(Float elasticity) {
+	for (size_t i = 0; i < entities.size(); i++)
+	for (size_t j = i + 1; j < entities.size(); j++) {
+		if (entities[i]->collides(*entities[j])) {
+			entities[i]->collide(*entities[j], elasticity);
+		}
+	}
+}
+void EntityHandler::drawAll() {
+	for (auto e: entities) {
+		e->draw();
+	}
+}
+
 bool CircleEntity::collides(const Entity& oth) const {
 	if (oth.getType() == EntityType::Circle) {
-		auto radius_sum = (radius + static_cast<const CircleEntity&>(oth).radius);
+		auto radius_sum = (radius + dynamic_cast<const CircleEntity&>(oth).radius);
 		return (position - oth.position).abs2() < radius_sum * radius_sum;
 	}
 	else if (oth.getType() == EntityType::Rectangle) {
@@ -49,7 +71,7 @@ bool CircleEntity::collides(const Entity& oth) const {
 			}
 		}
 
-		const RectangleEntity& rect = static_cast<const RectangleEntity&>(oth);
+		const RectangleEntity& rect = dynamic_cast<const RectangleEntity&>(oth);
 		Vector2D rect_borders[4] = {rect.position + Vector2D{rect.dx, rect.dy}, rect.position + Vector2D{rect.dx, -rect.dy},
 		                            rect.position + Vector2D{-rect.dx, rect.dy}, rect.position + Vector2D{-rect.dx, -rect.dy},};
 
@@ -68,7 +90,7 @@ void CircleEntity::collide(Entity& oth, Float elasticity) {
 		collideAlongAxis(*this, oth, oth.position - position, elasticity);
 	}
 	else {
-		const RectangleEntity& rect = static_cast<const RectangleEntity&>(oth);
+		const RectangleEntity& rect = dynamic_cast<const RectangleEntity&>(oth);
 	
 		// Approximate the collision type:
 		Float top = std::abs( position.y - (rect.position.y - rect.dy - radius));
@@ -76,10 +98,11 @@ void CircleEntity::collide(Entity& oth, Float elasticity) {
 		Float left = std::abs( position.x - (rect.position.x - rect.dx - radius));
 		Float right = std::abs( position.x - (rect.position.x + rect.dx + radius));
 
-		Float top_left = std::abs((position - (rect.position + Vector2D(-rect.dx, -rect.dy))).abs() - radius);
-		Float top_right = std::abs((position - (rect.position + Vector2D(rect.dx, -rect.dy))).abs() - radius);
-		Float bottom_left = std::abs((position - (rect.position + Vector2D(-rect.dx, rect.dy))).abs() - radius);
-		Float bottom_right = std::abs((position - (rect.position + Vector2D(rect.dx, rect.dy))).abs() - radius);
+		Float eps = 1;
+		Float top_left = std::abs((position - (rect.position + Vector2D(-rect.dx, -rect.dy))).abs() - radius) + eps;
+		Float top_right = std::abs((position - (rect.position + Vector2D(rect.dx, -rect.dy))).abs() - radius) + eps;
+		Float bottom_left = std::abs((position - (rect.position + Vector2D(-rect.dx, rect.dy))).abs() - radius) + eps;
+		Float bottom_right = std::abs((position - (rect.position + Vector2D(rect.dx, rect.dy))).abs() - radius) + eps;
 
 		Float min_dist = std::min({top, bottom, left, right, top_left, top_right, bottom_left, bottom_right});
 
@@ -93,12 +116,14 @@ void CircleEntity::collide(Entity& oth, Float elasticity) {
 			collideAlongAxis(*this, oth, {1, 0}, elasticity);
 		}
 		else if (right == min_dist) {
+			// exit(123);
 			collideAlongAxis(*this, oth, {-1, 0}, elasticity);
 		}
 		else if (top_left == min_dist) {
 			collideAlongAxis(*this, oth, {1, 1}, elasticity);
 		}
 		else if (top_right == min_dist) {
+			// exit(1233);
 			collideAlongAxis(*this, oth, {-1, 1}, elasticity);
 		}
 		else if (bottom_left == min_dist) {
@@ -111,7 +136,7 @@ void CircleEntity::collide(Entity& oth, Float elasticity) {
 }
 
 bool CircleEntity::isInside(const Vector2D& pos) const {
-	return (pos - position).abs2() < radius*radius;
+	return (pos - position).abs2() <= radius*radius;
 }
 
 bool RectangleEntity::collides(const Entity& oth) const {
@@ -120,7 +145,7 @@ bool RectangleEntity::collides(const Entity& oth) const {
 	}
 	else if (oth.getType() == EntityType::Rectangle) {
 		// @TODO This might be wrong:
-		const RectangleEntity& rect = static_cast<const RectangleEntity&>(oth);
+		const RectangleEntity& rect = dynamic_cast<const RectangleEntity&>(oth);
 
 		if (position.x + dx < oth.position.x) return false;
 		if (oth.position.x + rect.dx < position.x) return false;
