@@ -14,16 +14,14 @@ namespace DT {
 
 	HRESULT initTools();
 
+	void destroyTools();
+
 	HRESULT recreateTools(ID2D1HwndRenderTarget* render_target);
 
 	void changeBrushColor(D2D1_COLOR_F color);
 
 	void drawText(ID2D1HwndRenderTarget* render_target, const WCHAR* text, D2D1_RECT_F rect, ID2D1Brush* brush);
 
-<<<<<<< HEAD
-	void destroyTools();
-}
-=======
 	struct Drawable {
 		virtual void draw(ID2D1RenderTarget* rt, Vector2D pos, Vector2D dimensions) = 0;
 		virtual ~Drawable() = default;
@@ -41,4 +39,3 @@ namespace DT {
 
 
 }
->>>>>>> 7ef6eeb206962c2289bb115928406e38982df01d
