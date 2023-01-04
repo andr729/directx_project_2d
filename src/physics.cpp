@@ -7,36 +7,35 @@
 void Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float elasticity) {
 		// split velocities into component parallel and perpendicular components:
 
-		Vector2D v1_c = projectionVector(ent1.velocity, axis);
-		Vector2D v2_c = projectionVector(ent2.velocity, -axis);
+		// // @todo:
+		// ent1.position -= v1_c * TICK_TIME; 
+		// ent2.position -= v2_c * TICK_TIME;
 
-		// @todo:
-		ent1.position -= v1_c * TICK_TIME; 
-		ent2.position -= v2_c * TICK_TIME;
-
-		ent1.velocity -= v1_c;
-		ent2.velocity -= v2_c;
+		const Float org_v1 = projectionScalar(ent1.velocity, axis);
+		const Float org_v2 = projectionScalar(ent2.velocity, axis);
+		Float v1 = org_v1;
+		Float v2 = org_v2;
+		
+		if (v1 - v2 < 0) {
+			return;
+		}
 
 		// change reference frame to center of momentum
-		Vector2D v_cm = (v1_c * ent1.mass + v2_c * ent2.mass) / (ent1.mass + ent2.mass);
-		v1_c -= v_cm;
-		v2_c -= v_cm;
-
-		//...
-		// auto v1_c_scalar = projectionScalar(ent1.velocity, axis);
-		// auto v2_c_scalar = projectionScalar(ent2.velocity, -axis);
+		Float v_cm = (v1 * ent1.mass + v2 * ent2.mass) / (ent1.mass + ent2.mass);
+		v1 -= v_cm;
+		v2 -= v_cm;
 
 		// collide:
-		v1_c = -v1_c * elasticity;
-		v2_c = -v2_c * elasticity;
+		v1 = -v1 * elasticity;
+		v2 = -v2 * elasticity;
 
 		// return to original reference frame:
-		v1_c += v_cm;
-		v2_c += v_cm;
+		v1 += v_cm;
+		v2 += v_cm;
 
 		// update velocities:
-		ent1.velocity += v1_c;
-		ent2.velocity += v2_c;
+		ent1.velocity += axis.normUnit() * (v1 - org_v1);
+		ent2.velocity += axis.normUnit() * (v2 - org_v2);;
 }
 
 void EntityHandler::addEntity(Entity* ent) {

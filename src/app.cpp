@@ -62,7 +62,7 @@ void tick() {
 
 HRESULT init(HWND hwnd) {
 	global_state.shop_scene.init();
-	global_state.scene = Scene::ShopScene;
+	global_state.scene = Scene::GameScene;
 
 	//TODO: Remove.
 	for (auto &bar : global_state.shop_scene.bars) {
@@ -74,12 +74,18 @@ HRESULT init(HWND hwnd) {
 	add_rect({500, 600}, {0, 0}, 400, 20, 10000);
 	add_rect({930, 350}, {0, 0}, 20, 280, 10000);
 	add_rect({70, 350}, {0, 0}, 20, 280, 10000);
+	
+	add_rect({400, 400}, {0, 0}, 100, 100, 100000);
 
 	add_circ({400, 400}, {100, 123}, 10, 0.1);
 	add_circ({500, 500}, {10, -23}, 10, 0.1);
 	add_circ({300, 300}, {120, -23}, 10, 0.1);
 	add_circ({200, 200}, {20, -123}, 10, 0.1);
 	add_circ({400, 200}, {40, -12}, 10, 0.1);
+	add_circ({100, 100}, {40, -12}, 10, 0.1);
+	add_circ({100, 140}, {40, -22}, 10, 0.1);
+	add_circ({100, 160}, {40, -22}, 10, 0.1);
+	add_circ({100, 180}, {40, -22}, 10, 0.1);
 	// add_rect({400, 200}, {40, -12}, 5, 10, 0.1);
 	
 	// add_circ({100, 100}, {20, 0}, 60, 300);

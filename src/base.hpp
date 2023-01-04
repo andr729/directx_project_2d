@@ -70,9 +70,9 @@ inline Float projectionScalar(Vector2D base, Vector2D onto) {
 	return dot(base, onto.normUnit());
 }
 
-inline Vector2D projectionVector(Vector2D base, Vector2D onto) {
-	return onto.normUnit() * std::abs(projectionScalar(base, onto));
-}
+// inline Vector2D projectionVector(Vector2D base, Vector2D onto) {
+// 	return onto.normUnit() * std::abs(projectionScalar(base, onto));
+// }
 
 class TransformationMatrix {
 	D2D1::Matrix3x2F inner;
