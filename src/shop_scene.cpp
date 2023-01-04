@@ -179,7 +179,7 @@ void ShopScene::draw() {
 void ShopScene::onClick() {
 	update();
 
-	for (auto bar : bars) {
+	for (auto &bar : bars) {
 		Button& button = bar.button;
 		if (button.state == ButtonState::Hovered) {
 			bar.level++;
@@ -187,10 +187,10 @@ void ShopScene::onClick() {
 			global_state.game_state.money -= bar.cost;
 			bar.cost *= bar.cost_multiplier;
 		}
+	}
 
-		if (continue_button.state == ButtonState::Hovered) {
-			// TODO: better handling of scene switching.
-			global_state.scene == Scene::GameScene;
-		}
+	if (continue_button.state == ButtonState::Hovered) {
+		// TODO: better handling of scene switching.
+		global_state.scene = Scene::GameScene;
 	}
 }
