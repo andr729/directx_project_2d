@@ -89,7 +89,7 @@ HRESULT init(HWND hwnd) {
 	// add_circ({100, 180}, {40, -22}, 10, 0.1);
 
 	for (int i = 0; i < 100; i++) {
-		add_circ({400, 400}, {20.f * std::sinf(i), 20.f * std::cosf(i)}, 10, 0.1);
+		add_circ({400, 400}, {40.f * std::sinf(i), 40.f * std::cosf(i)}, 10, 0.1);
 	}
 
 	// add_rect({400, 200}, {40, -12}, 5, 10, 0.1);
