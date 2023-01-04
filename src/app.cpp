@@ -63,7 +63,7 @@ void tick() {
 
 HRESULT init(HWND hwnd) {
 	global_state.shop_scene.init();
-	global_state.scene = Scene::GameScene;
+	global_state.scene = Scene::ShopScene;
 
 	//TODO: Remove.
 	for (auto &bar : global_state.shop_scene.bars) {

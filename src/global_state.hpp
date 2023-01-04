@@ -20,7 +20,6 @@ struct GlobalState {
 	Scene scene;
 	// d2d1 stuff, and our stuff
 
-	Vector2D internal_mouse_position;
 	Vector2D mouse_position;
 	// std::queue<Event> ??
 
