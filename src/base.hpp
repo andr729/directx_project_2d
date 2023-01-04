@@ -8,6 +8,36 @@
 typedef float Float;
 constexpr Float TICK_TIME = 0.1;
 
+
+class TransformationMatrix {
+	D2D1::Matrix3x2F inner;
+public:
+
+	TransformationMatrix() {}
+	TransformationMatrix(const D2D1::Matrix3x2F m) : inner(m) {}
+
+	D2D1::Matrix3x2F& getInner() {
+		return inner;
+	}
+
+	TransformationMatrix& operator=(const TransformationMatrix& oth) {
+		inner = oth.inner;
+		return *this;
+	};
+
+	TransformationMatrix operator*(const TransformationMatrix& oth) {
+		TransformationMatrix out;
+		out.inner = inner;
+		out.inner.SetProduct(out.inner, oth.inner);
+		return out;
+	};
+
+	TransformationMatrix& operator*=(const TransformationMatrix& oth) {
+		inner.SetProduct(inner, oth.inner);
+		return *this;
+	};
+};
+
 struct Vector2D {
 	Float x, y;
 
@@ -42,6 +72,13 @@ struct Vector2D {
 		y *= v;
 	}
 
+	void operator*=(TransformationMatrix& matrix) {
+		Float x2 = matrix.getInner()._11 * x + matrix.getInner()._21 * y + matrix.getInner()._31;
+		Float y2 = matrix.getInner()._12 * x + matrix.getInner()._22 * y + matrix.getInner()._32;
+		x = x2;
+		y = y2;
+	}
+
 	[[no_discard]]
 	Vector2D operator-() {
 		return {-x, -y};
@@ -70,38 +107,8 @@ inline Float projectionScalar(Vector2D base, Vector2D onto) {
 	return dot(base, onto.normUnit());
 }
 
-// inline Vector2D projectionVector(Vector2D base, Vector2D onto) {
-// 	return onto.normUnit() * std::abs(projectionScalar(base, onto));
-// }
 
-class TransformationMatrix {
-	D2D1::Matrix3x2F inner;
-public:
 
-	TransformationMatrix() {}
-	TransformationMatrix(const D2D1::Matrix3x2F m) : inner(m) {}
-
-	D2D1::Matrix3x2F& getInner() {
-		return inner;
-	}
-
-	TransformationMatrix& operator=(const TransformationMatrix& oth) {
-		inner = oth.inner;
-		return *this;
-	};
-
-	TransformationMatrix operator*(const TransformationMatrix& oth) {
-		TransformationMatrix out;
-		out.inner = inner;
-		out.inner.SetProduct(out.inner, oth.inner);
-		return out;
-	};
-
-	TransformationMatrix& operator*=(const TransformationMatrix& oth) {
-		inner.SetProduct(inner, oth.inner);
-		return *this;
-	};
-};
 
 template<typename T>
 void SafeRelease(T **ppT) {
