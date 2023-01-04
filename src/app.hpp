@@ -9,3 +9,4 @@ HRESULT recreateRenderTarget(HWND hwnd);
 HRESULT destroyRenderTarget();
 HRESULT destroy();
 HRESULT onPaint(HWND hwnd);
+void onMouseMove(FLOAT x, FLOAT y);

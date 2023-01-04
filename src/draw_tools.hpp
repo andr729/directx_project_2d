@@ -1,5 +1,6 @@
 #include <d2d1_3.h>
 #include <dwrite_3.h>
+#include <string>
 #include "base.hpp"
 
 // DrawTools
@@ -7,10 +8,15 @@ namespace DT {
 	extern ID2D1SolidColorBrush* black_brush;
 	extern ID2D1SolidColorBrush* dark_gray_brush;
 	extern ID2D1SolidColorBrush* light_gray_brush;
+	extern ID2D1SolidColorBrush* white_brush;
 	extern ID2D1SolidColorBrush* customizable_brush;
 	extern ID2D1RadialGradientBrush* rad_brush;
 
-	const float FONT_STROKE = 150.0f;
+	extern IDWriteTextFormat* button_text_format;
+	extern IDWriteTextFormat* normal_text_format;
+
+	const float BUTTON_FONT_STROKE = 75.0f;
+	const float TEXT_FONT_STROKE = 40.0f;
 
 	HRESULT initTools();
 
@@ -22,7 +28,9 @@ namespace DT {
 
 	void updateRadialBrush();
 
-	void drawText(const WCHAR* text, D2D1_RECT_F rect, ID2D1Brush* brush);
+	std::wstring floatToWstring(float x);
+
+	void drawText(const WCHAR* text, D2D1_RECT_F rect, ID2D1Brush* brush, IDWriteTextFormat* format = normal_text_format);
 
 	struct Drawable {
 		virtual void draw(Vector2D pos, Vector2D dimensions) = 0;

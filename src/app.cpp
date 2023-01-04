@@ -55,11 +55,20 @@ namespace {
 }
 
 void tick() {
+	global_state.tick++;
 	handler.simulateTick();
 	handler.collideAll(1);
 }
 
 HRESULT init(HWND hwnd) {
+	global_state.shop_scene.init();
+	global_state.scene = Scene::ShopScene;
+
+	//TODO: Remove.
+	for (auto &bar : global_state.shop_scene.bars) {
+		bar.level = 2;
+	}
+	global_state.game_state.money = 1e9;
 
 	add_rect({500, 100}, {0, 0}, 400, 20, 10000);
 	add_rect({500, 600}, {0, 0}, 400, 20, 10000);
@@ -94,6 +103,9 @@ HRESULT init(HWND hwnd) {
 		IID_PPV_ARGS(&img_factory)
 	);
 	// THROW_IF_FAILED(hr, "Creating WIC factory failed");
+	
+	//TODO: handle HRESULT.
+	DT::initTools();
 
 	recreateRenderTarget(hwnd);
 	return 0;
@@ -103,8 +115,9 @@ HRESULT recreateRenderTarget(HWND hwnd) {
 	HRESULT hr;
 	RECT rc;
 	GetClientRect(hwnd, &rc);
-	// window_size_x = static_cast<FLOAT>(rc.right - rc.left);
-	// window_size_y = static_cast<FLOAT>(rc.bottom - rc.top);
+	FLOAT window_size_x = static_cast<FLOAT>(rc.right - rc.left);
+	FLOAT window_size_y = static_cast<FLOAT>(rc.bottom - rc.top);
+
 
 	hr = factory->CreateHwndRenderTarget(
 		D2D1::RenderTargetProperties(),
@@ -120,6 +133,19 @@ HRESULT recreateRenderTarget(HWND hwnd) {
 
 	if (global_state.render_target == nullptr) {
 		throw "TODO";
+	}
+
+	if ((window_size_x / window_size_y) > (16.0f / 9.0f)) {
+		FLOAT ratio = window_size_y / 900.f;
+		FLOAT offset = (window_size_x - 1600.f * ratio) / 2;
+		global_state.render_target->SetTransform(TransformationMatrix(
+			Matrix3x2F::Scale(ratio, ratio, { 0, 0 }) * Matrix3x2F::Translation(offset, 0)).getInner());
+	}
+	else if ((window_size_x / window_size_y) < (16.0f / 9.0f)) {
+		FLOAT ratio = window_size_x / 1600.f;
+		FLOAT offset = (window_size_y - 900.f * ratio) / 2;
+		global_state.render_target->SetTransform(TransformationMatrix(
+			Matrix3x2F::Scale(ratio, ratio, { 0, 0 }) * Matrix3x2F::Translation(0, offset)).getInner());
 	}
 
 	DT::recreateTools();
@@ -147,13 +173,25 @@ HRESULT onPaint(HWND hwnd) {
 	global_state.render_target->BeginDraw();
 	global_state.render_target->Clear(color);
 
-	handler.drawAll();
+	switch (global_state.scene) {
+	case Scene::GameScene:
+		handler.drawAll();
+		break;
+	case Scene::ShopScene:
+		global_state.shop_scene.draw();
+		break;
+	}
+
 
 	if (global_state.render_target->EndDraw() == D2DERR_RECREATE_TARGET) {
 		destroyRenderTarget();
 		onPaint(hwnd);
 	}
 	return 0;
+}
+
+void onMouseMove(FLOAT x, FLOAT y) {
+	global_state.onMouseMove(x, y);
 }
 
 // @TODO: move to draw tools

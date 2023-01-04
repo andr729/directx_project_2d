@@ -11,13 +11,13 @@ enum class ButtonState {
 };
 
 struct Button {
-	const WCHAR* text;
+	std::wstring text;
 	D2D1_RECT_F position;
 	D2D1_COLOR_F color;
 	ButtonState state;
 
-	Button(const WCHAR* text, D2D1_RECT_F position, D2D1_COLOR_F color, ButtonState state = ButtonState::Unclickable) : 
+	Button(std::wstring text = L"", D2D1_RECT_F position = {0.f, 0.f, 0.f, 0.f}, D2D1_COLOR_F color = D2D1_COLOR_F(0.0f, 0.0f, 0.0f, 1.0f), ButtonState state = ButtonState::Unclickable) :
 		text(text), position(position), color(color), state(state) {}
 
-	void draw(ID2D1HwndRenderTarget*);
+	void draw();
 };
