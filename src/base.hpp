@@ -79,6 +79,12 @@ struct Vector2D {
 		y = y2;
 	}
 
+	Vector2D operator*(TransformationMatrix& matrix) {
+		Vector2D out = *this;
+		out *= matrix;
+		return out;
+	}
+
 	[[no_discard]]
 	Vector2D operator-() {
 		return {-x, -y};
