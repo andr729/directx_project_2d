@@ -5,6 +5,9 @@
 #undef min
 
 void Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float elasticity) {
+		if (ent1.immoveable and ent2.immoveable) {
+			return;
+		}
 		// split velocities into component parallel and perpendicular components:
 
 		// // @todo:
@@ -21,7 +24,17 @@ void Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float e
 		}
 
 		// change reference frame to center of momentum
-		Float v_cm = (v1 * ent1.mass + v2 * ent2.mass) / (ent1.mass + ent2.mass);
+		Float v_cm;
+		if (ent1.immoveable) {
+			v_cm = v1;
+		}
+		else if (ent2.immoveable) {
+			v_cm = v2;
+		}
+		else {
+			v_cm = (v1 * ent1.mass + v2 * ent2.mass) / (ent1.mass + ent2.mass);
+		}
+
 		v1 -= v_cm;
 		v2 -= v_cm;
 
@@ -34,8 +47,12 @@ void Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float e
 		v2 += v_cm;
 
 		// update velocities:
-		ent1.velocity += axis.normUnit() * (v1 - org_v1);
-		ent2.velocity += axis.normUnit() * (v2 - org_v2);;
+		if (!ent1.immoveable) {
+			ent1.velocity += axis.normUnit() * (v1 - org_v1);
+		}
+		if (!ent2.immoveable) {
+			ent2.velocity += axis.normUnit() * (v2 - org_v2);;
+		}
 }
 
 void EntityHandler::addEntity(Entity* ent) {

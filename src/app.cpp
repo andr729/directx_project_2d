@@ -29,6 +29,7 @@ void add_rect(Vector2D pos, Vector2D v, Float dx, Float dy, Float mass) {
 	auto rect = new RectangleEntity(pos, v, dx, dy);
 	rect->mass = mass;
 	rect->drawable = &rect_drawable;
+	rect->immoveable = true;
 	handler.addEntity(rect);
 }
 
