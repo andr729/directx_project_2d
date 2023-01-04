@@ -5,5 +5,5 @@
 
 struct GameState {
 	double money;
-	std::map<std::wstring, double> upgrades;
+	std::map<std::wstring, float> upgrades;
 };

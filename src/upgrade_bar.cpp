@@ -1,4 +1,5 @@
-﻿#include "upgrade_bar.hpp"
+﻿#include <format>
+#include "upgrade_bar.hpp"
 #include "global_state.hpp"
 #include "draw_tools.hpp"
 
@@ -45,7 +46,7 @@ void UpgradeBar::draw() {
 
 	button.draw();
 
-	std::wstring value_text = std::to_wstring(global_state.game_state.upgrades[name]);
+	std::wstring value_text = DT::floatToWstring(global_state.game_state.upgrades[name]);
 	DT::drawText(value_text.c_str(),
 		{ 
 			.left = rect.left + value_start * width, 
@@ -54,7 +55,7 @@ void UpgradeBar::draw() {
 			.bottom = rect.bottom 
 		}, DT::black_brush);
 	
-	std::wstring increment_text = L"(+" + std::to_wstring(global_state.game_state.upgrades[name]) + L")";
+	std::wstring increment_text = L"(+" + DT::floatToWstring(levelup_value) + L")";
 	if (level == max_level) {
 		increment_text = L"(max)";
 	}

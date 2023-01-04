@@ -3,12 +3,11 @@
 #include "global_state.hpp"
 
 void ShopScene::init() {
-	float bars_start_height = 50;
+	float bars_start_height = 250;
 	float bars_start_width = 50;
-	float bar_width = 1400;
+	float bar_width = 1500;
 	float bar_height = 60;
-	float vertical_gap = 100;
-	float horizontal_gap = 40;
+	float horizontal_gap = 20;
 
 	Vector2D topleft = { bars_start_width, bars_start_height };
 	UpgradeBar bar;
@@ -128,7 +127,7 @@ void ShopScene::init() {
 	bar.levelup_value = 1;
 	bar.cost = 100;
 	bar.cost_multiplier = 2;
-	bar.color = D2D1_COLOR_F(1.f, 0.59f, 0.04f, 0.75f);
+	bar.color = D2D1_COLOR_F(1.f, 0.59f, 0.75f, 1.0f);
 	bars.push_back(bar);
 	for (auto& bar : bars) {
 		bar.init();
@@ -154,6 +153,9 @@ void ShopScene::update() {
 
 void ShopScene::draw() {
 	update();
+
+	ID2D1HwndRenderTarget* render_target = global_state.render_target;
+	render_target->DrawRectangle({ 0,0,1600,900 }, DT::black_brush, 5);
 
 	for (auto& bar : bars) {
 		bar.draw();

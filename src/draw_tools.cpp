@@ -122,12 +122,37 @@ namespace DT {
 		rad_brush = rad_brush_data.brush;
 	}
 
+	std::wstring floatToWstring(float x) {
+		std::wstring f = std::to_wstring(x);
+		bool has_dot = false;
+		for (auto c : f) {
+			if (c == '.') has_dot = true;
+		}
+		if (!has_dot) {
+			return f;
+		}
+		while (f[f.size() - 1] == '0') {
+			f.resize(f.size() - 1);
+		}
+		if (f[f.size() - 1] == '.') {
+			f.resize(f.size() - 1);
+		}
+		return f;
+	}
+
 	void drawText(const WCHAR* text, D2D1_RECT_F rect, ID2D1Brush* brush, IDWriteTextFormat* format) {
+		float font_size = format->GetFontSize();
+		D2D1_RECT_F centered_rect = {
+			.left = rect.left,
+			.top = (rect.top + rect.bottom - font_size) / 2,
+			.right = rect.right,
+			.bottom = (rect.top + rect.bottom + font_size) / 2
+		};
 		global_state.render_target->DrawText(
 			text,
 			std::wcslen(text),
 			format,
-			rect,
+			centered_rect,
 			brush
 		);
 	}

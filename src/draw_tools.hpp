@@ -1,5 +1,6 @@
 #include <d2d1_3.h>
 #include <dwrite_3.h>
+#include <string>
 #include "base.hpp"
 
 // DrawTools
@@ -25,6 +26,8 @@ namespace DT {
 	void changeBrushColor(D2D1_COLOR_F color);
 
 	void updateRadialBrush();
+
+	std::wstring floatToWstring(float x);
 
 	void drawText(const WCHAR* text, D2D1_RECT_F rect, ID2D1Brush* brush, IDWriteTextFormat* format = normal_text_format);
 
