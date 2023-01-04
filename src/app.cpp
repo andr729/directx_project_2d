@@ -55,6 +55,7 @@ namespace {
 }
 
 void tick() {
+	global_state.tick++;
 	handler.simulateTick();
 	handler.collideAll(1);
 }
@@ -67,6 +68,7 @@ HRESULT init(HWND hwnd) {
 	for (auto &bar : global_state.shop_scene.bars) {
 		bar.level = 2;
 	}
+	global_state.game_state.money = 1e9;
 
 	add_rect({500, 100}, {0, 0}, 400, 20, 10000);
 	add_rect({500, 600}, {0, 0}, 400, 20, 10000);
@@ -105,8 +107,9 @@ HRESULT recreateRenderTarget(HWND hwnd) {
 	HRESULT hr;
 	RECT rc;
 	GetClientRect(hwnd, &rc);
-	// window_size_x = static_cast<FLOAT>(rc.right - rc.left);
-	// window_size_y = static_cast<FLOAT>(rc.bottom - rc.top);
+	FLOAT window_size_x = static_cast<FLOAT>(rc.right - rc.left);
+	FLOAT window_size_y = static_cast<FLOAT>(rc.bottom - rc.top);
+
 
 	hr = factory->CreateHwndRenderTarget(
 		D2D1::RenderTargetProperties(),
@@ -122,6 +125,19 @@ HRESULT recreateRenderTarget(HWND hwnd) {
 
 	if (global_state.render_target == nullptr) {
 		throw "TODO";
+	}
+
+	if ((window_size_x / window_size_y) > (16.0f / 9.0f)) {
+		FLOAT ratio = window_size_y / 900.f;
+		FLOAT offset = (window_size_x - 1600.f * ratio) / 2;
+		global_state.render_target->SetTransform(TransformationMatrix(
+			Matrix3x2F::Scale(ratio, ratio, { 0, 0 }) * Matrix3x2F::Translation(offset, 0)).getInner());
+	}
+	else if ((window_size_x / window_size_y) < (16.0f / 9.0f)) {
+		FLOAT ratio = window_size_x / 1600.f;
+		FLOAT offset = (window_size_y - 900.f * ratio) / 2;
+		global_state.render_target->SetTransform(TransformationMatrix(
+			Matrix3x2F::Scale(ratio, ratio, { 0, 0 }) * Matrix3x2F::Translation(0, offset)).getInner());
 	}
 
 	DT::recreateTools();
@@ -164,6 +180,10 @@ HRESULT onPaint(HWND hwnd) {
 		onPaint(hwnd);
 	}
 	return 0;
+}
+
+void onMouseMove(FLOAT x, FLOAT y) {
+	global_state.onMouseMove(x, y);
 }
 
 // @TODO: move to draw tools

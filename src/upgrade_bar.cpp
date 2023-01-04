@@ -6,8 +6,9 @@
 const float upgrades_start = 0.25;
 const float upgrades_end = 0.6;
 const float button_middle = 0.65;
-const float value_start = 0.75;
-const float increment_start = 0.85;
+const float cost_start = 0.675;
+const float value_start = 0.85;
+const float increment_start = 0.92;
 
 
 void UpgradeBar::init() {
@@ -45,6 +46,15 @@ void UpgradeBar::draw() {
 	}
 
 	button.draw();
+
+	std::wstring cost_text = std::to_wstring(int64_t(cost)) + L"$";
+	DT::drawText(cost_text.c_str(),
+		{
+			.left = rect.left + cost_start * width,
+			.top = rect.top,
+			.right = rect.left + width * value_start,
+			.bottom = rect.bottom
+		}, DT::black_brush);
 
 	std::wstring value_text = DT::floatToWstring(global_state.game_state.upgrades[name]);
 	DT::drawText(value_text.c_str(),

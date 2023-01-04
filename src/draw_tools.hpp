@@ -8,14 +8,15 @@ namespace DT {
 	extern ID2D1SolidColorBrush* black_brush;
 	extern ID2D1SolidColorBrush* dark_gray_brush;
 	extern ID2D1SolidColorBrush* light_gray_brush;
+	extern ID2D1SolidColorBrush* white_brush;
 	extern ID2D1SolidColorBrush* customizable_brush;
 	extern ID2D1RadialGradientBrush* rad_brush;
 
 	extern IDWriteTextFormat* button_text_format;
 	extern IDWriteTextFormat* normal_text_format;
 
-	const float BUTTON_FONT_STROKE = 50.0f;
-	const float TEXT_FONT_STROKE = 30.0f;
+	const float BUTTON_FONT_STROKE = 75.0f;
+	const float TEXT_FONT_STROKE = 40.0f;
 
 	HRESULT initTools();
 

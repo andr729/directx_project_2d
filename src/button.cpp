@@ -29,8 +29,8 @@ void Button::draw() {
 		new_transform = old_transform * D2D1::Matrix3x2F::Translation(mouse_position.x, mouse_position.y);
 		render_target->SetTransform(new_transform.getInner());
 		D2D1_RECT_F offset_position = {
-			.left = mouse_position.x - position.left,
-			.top = mouse_position.y - position.top,
+			.left = position.left -mouse_position.x,
+			.top = position.top - mouse_position.y,
 			.right = position.right - mouse_position.x,
 			.bottom = position.bottom - mouse_position.y
 		};

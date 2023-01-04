@@ -17,7 +17,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 		ValidateRect(hwnd, nullptr);
 		return 0;
 	case WM_MOUSEMOVE:
-		// ...
+		onMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
 	case WM_LBUTTONDOWN:
 		// ...

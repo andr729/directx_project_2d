@@ -3,7 +3,7 @@
 #include "global_state.hpp"
 
 void ShopScene::init() {
-	float bars_start_height = 250;
+	float bars_start_height = 225;
 	float bars_start_width = 50;
 	float bar_width = 1500;
 	float bar_height = 60;
@@ -132,6 +132,8 @@ void ShopScene::init() {
 	for (auto& bar : bars) {
 		bar.init();
 	}
+
+	continue_button = Button(L"Continue", { 1125, 75, 1525, 200}, { 1.0f, 1.0f, 1.0f, 1.0f });
 }
 
 void ShopScene::update() {
@@ -149,15 +151,46 @@ void ShopScene::update() {
 		}
 		button.state = state;
 	}
+	Button& button = continue_button;
+	ButtonState state = ButtonState::Clickable;
+	if (mouse_position.x < button.position.right && mouse_position.x > button.position.left &&
+		mouse_position.y < button.position.bottom && mouse_position.y > button.position.top) {
+		state = ButtonState::Hovered;
+	}
+	button.state = state;
 }
 
 void ShopScene::draw() {
 	update();
 
 	ID2D1HwndRenderTarget* render_target = global_state.render_target;
-	render_target->DrawRectangle({ 0,0,1600,900 }, DT::black_brush, 5);
+	render_target->FillRectangle({ 20,20,1580,880 }, DT::light_gray_brush);
+	render_target->DrawRectangle({ 20,20,1580,880 }, DT::black_brush, 5);
 
 	for (auto& bar : bars) {
 		bar.draw();
+	}
+	continue_button.draw();
+
+	DT::drawText(L"Money:", { 75, 75, 400, 75 + DT::TEXT_FONT_STROKE }, DT::black_brush);
+	DT::drawText((std::to_wstring(int64_t(global_state.game_state.money)) + L"$").c_str(), {75,  75 + DT::TEXT_FONT_STROKE, 400, 75 + 2 * DT::TEXT_FONT_STROKE}, DT::black_brush);
+}
+
+void ShopScene::onClick() {
+	update();
+
+	for (auto bar : bars) {
+		Button& button = bar.button;
+		if (button.state == ButtonState::Hovered) {
+			bar.level++;
+			global_state.game_state.upgrades[bar.name] += bar.levelup_value;
+			global_state.game_state.money -= bar.cost;
+			bar.cost *= bar.cost_multiplier;
+		}
+
+		if (continue_button.state == ButtonState::Hovered) {
+			// TODO: better handling of scene switching.
+			global_state.scene == Scene::GameScene;
+		}
 	}
 }
