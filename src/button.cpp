@@ -26,7 +26,7 @@ void Button::draw() {
 		TransformationMatrix old_transform, new_transform;
 		render_target->GetTransform(&old_transform.getInner());
 		Vector2D mouse_position = global_state.mouse_position;
-		new_transform = old_transform * D2D1::Matrix3x2F::Translation(mouse_position.x, mouse_position.y);
+		new_transform = TransformationMatrix(D2D1::Matrix3x2F::Translation(mouse_position.x, mouse_position.y)) * old_transform;
 		render_target->SetTransform(new_transform.getInner());
 		D2D1_RECT_F offset_position = {
 			.left = position.left -mouse_position.x,
