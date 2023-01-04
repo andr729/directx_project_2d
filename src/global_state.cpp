@@ -8,6 +8,7 @@ void GlobalState::onMouseMove(FLOAT x, FLOAT y) {
 	if (render_target) {
 		TransformationMatrix tm;
 		render_target->GetTransform(&tm.getInner());
-		mouse_position = internal_mouse_position * tm;
+		auto itm = tm.inverted();
+		mouse_position = internal_mouse_position * itm;
 	}
 }

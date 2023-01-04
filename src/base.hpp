@@ -35,7 +35,13 @@ public:
 	TransformationMatrix& operator*=(const TransformationMatrix& oth) {
 		inner.SetProduct(inner, oth.inner);
 		return *this;
-	};
+	}
+
+	TransformationMatrix inverted() const {
+		auto out = *this;
+		out.getInner().Invert();
+		return out;
+	}
 };
 
 struct Vector2D {
@@ -73,8 +79,9 @@ struct Vector2D {
 	}
 
 	void operator*=(TransformationMatrix& matrix) {
-		Float x2 = matrix.getInner()._11 * x + matrix.getInner()._21 * y + matrix.getInner()._31;
-		Float y2 = matrix.getInner()._12 * x + matrix.getInner()._22 * y + matrix.getInner()._32;
+		auto& m = matrix.getInner();
+		Float x2 = m.m11 * x + m.m21 * y + m.dx;
+		Float y2 = m.m12 * x + m.m22 * y + m.dy;
 		x = x2;
 		y = y2;
 	}
