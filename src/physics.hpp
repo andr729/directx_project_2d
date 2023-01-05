@@ -42,7 +42,7 @@ public:
 	virtual bool isInside(const Vector2D& pos) const = 0;
 
 	// axis is from ent1 to ent2
-	static void collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float elasticity);
+	static bool collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float elasticity);
 
 	virtual void draw() = 0;
 };

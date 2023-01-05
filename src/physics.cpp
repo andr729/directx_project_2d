@@ -4,9 +4,9 @@
 // XD
 #undef min
 
-void Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float elasticity) {
+bool Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float elasticity) {
 		if (ent1.immoveable and ent2.immoveable) {
-			return;
+			return false;
 		}
 		// split velocities into component parallel and perpendicular components:
 
@@ -20,7 +20,7 @@ void Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float e
 		Float v2 = org_v2;
 		
 		if (v1 - v2 < 0) {
-			return;
+			return false;
 		}
 
 		// change reference frame to center of momentum
@@ -53,6 +53,8 @@ void Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float e
 		if (!ent2.immoveable) {
 			ent2.velocity += axis.normUnit() * (v2 - org_v2);;
 		}
+
+		return true;
 }
 
 void EntityHandler::addEntity(Entity* ent) {
@@ -60,7 +62,13 @@ void EntityHandler::addEntity(Entity* ent) {
 }
 void EntityHandler::simulateTick() {
 	for (auto e: entities) {
-		e->simulateTick();
+		if (e->immoveable) {
+			e->simulateTick();
+		}
+		else {
+			e->simulateTick({0, 20});
+			e->velocity *= 0.99;
+		}
 	}
 }
 void EntityHandler::collideAll(Float elasticity) {
@@ -120,21 +128,33 @@ void CircleEntity::collide(Entity& oth, Float elasticity) {
 		if (position.x >= rect.position.x - rect.dx and position.x <= rect.position.x + rect.dx) {
 			if (position.y < rect.position.y) {
 				// top collision
-				collideAlongAxis(*this, oth, {0, 1}, elasticity);
+				auto aux = collideAlongAxis(*this, oth, {0, 1}, elasticity);
+				if (aux and oth.immoveable) {
+					position.y = oth.position.y - rect.dy - radius;
+				}
 			}
 			else {
 				// bottom collision
-				collideAlongAxis(*this, oth, {0, -1}, elasticity);
+				auto aux = collideAlongAxis(*this, oth, {0, -1}, elasticity);
+				if (aux and oth.immoveable) {
+					position.y = oth.position.y + rect.dy + radius;
+				}
 			}
 		}
 		else if (position.y >= rect.position.y - rect.dy and position.y <= rect.position.y + rect.dy) {
 			if (position.x < rect.position.x) {
 				// left collision
-				collideAlongAxis(*this, oth, {1, 0}, elasticity);
+				auto aux = collideAlongAxis(*this, oth, {1, 0}, elasticity);
+				if (aux and oth.immoveable) {
+					position.x = oth.position.x - rect.dx - radius;
+				}
 			}
 			else {
 				// right collision
-				collideAlongAxis(*this, oth, {-1, 0}, elasticity);
+				auto aux = collideAlongAxis(*this, oth, {-1, 0}, elasticity);
+				if (aux and oth.immoveable) {
+					position.x = oth.position.x + rect.dx + radius;
+				}
 			}
 		}
 		else if (position.x < rect.position.x) {
