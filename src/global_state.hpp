@@ -8,7 +8,7 @@
 enum class Scene {
 	ShopScene,
 	GameScene,
-	Menu
+	Menu,
 };
 
 struct GlobalState {

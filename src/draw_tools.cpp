@@ -114,10 +114,10 @@ namespace DT {
 		customizable_brush->SetColor(color);
 	}
 
-	void updateRadialBrush() {
+	HRESULT updateRadialBrush() {
 		static int ticks = -1;
 		if (ticks == global_state.tick) {
-			return;
+			return S_OK;
 		}
 		ticks = global_state.tick;
 		ID2D1HwndRenderTarget* render_target = global_state.render_target;
@@ -127,10 +127,10 @@ namespace DT {
 			rad_brush_data.stops_data[i].color = HSVToRGB(std::fmod(ticks * RAD_BRUSH_OFFSET_PER_TICK - i * RAD_BRUSH_DIST * RAD_BRUSH_CYCLES, 1.0f), 1, 1);
 		}
 
-		makeRadBrush<RAD_BRUSH_STOPS>(
+		hr(makeRadBrush<RAD_BRUSH_STOPS>(
 			rad_brush_data, render_target,
 			{0, 0}, RAD_BRUSH_RADIUS, RAD_BRUSH_RADIUS
-		);
+		));
 
 		rad_brush = rad_brush_data.brush;
 	}

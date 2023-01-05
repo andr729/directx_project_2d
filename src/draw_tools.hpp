@@ -26,7 +26,7 @@ namespace DT {
 
 	void changeBrushColor(D2D1_COLOR_F color);
 
-	void updateRadialBrush();
+	HRESULT updateRadialBrush();
 
 	std::wstring floatToWstring(float x);
 

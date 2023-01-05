@@ -2,22 +2,29 @@
 #include "draw_tools.hpp"
 #include "global_state.hpp"
 
+// TODO: hr here
+
+D2D1_RECT_F rect(Vector2D top_left, Float dx, Float dy) {
+	return D2D1_RECT_F { 
+		.left = top_left.x,
+		.top = top_left.y, 
+		.right = top_left.x + dx, 
+		.bottom = top_left.y + dy 
+	};
+}
+
 void ShopScene::init() {
-	float bars_start_height = 225;
-	float bars_start_width = 50;
-	float bar_width = 1500;
-	float bar_height = 60;
-	float horizontal_gap = 20;
+	Float bars_start_height = 225;
+	Float bars_start_width = 50;
+	Float bar_width = 1500;
+	Float bar_height = 60;
+	Float horizontal_gap = 20;
 
 	Vector2D topleft = { bars_start_width, bars_start_height };
 	UpgradeBar bar;
 	bar.name = L"Number of circles";
-	bar.rect = { 
-		.left = topleft.x,
-		.top = topleft.y, 
-		.right = topleft.x + bar_width, 
-		.bottom = topleft.y + bar_height 
-	};
+	bar.rect = rect(topleft, bar_width, bar_height);
+	
 	bar.max_level = 10;
 	bar.levelup_value = 1;
 	bar.cost = 100;
@@ -27,12 +34,8 @@ void ShopScene::init() {
 
 	topleft.y += bar_height + horizontal_gap;
 	bar.name = L"Circle speed";
-	bar.rect = {
-		.left = topleft.x,
-		.top = topleft.y,
-		.right = topleft.x + bar_width,
-		.bottom = topleft.y + bar_height
-	};
+	bar.rect = rect(topleft, bar_width, bar_height);
+	
 	bar.max_level = 10;
 	bar.levelup_value = 1;
 	bar.cost = 100;
@@ -42,12 +45,8 @@ void ShopScene::init() {
 
 	topleft.y += bar_height + horizontal_gap;
 	bar.name = L"Explosion radius";
-	bar.rect = {
-		.left = topleft.x,
-		.top = topleft.y,
-		.right = topleft.x + bar_width,
-		.bottom = topleft.y + bar_height
-	};
+	bar.rect = rect(topleft, bar_width, bar_height);
+	
 	bar.max_level = 10;
 	bar.levelup_value = 1;
 	bar.cost = 100;
@@ -57,12 +56,8 @@ void ShopScene::init() {
 
 	topleft.y += bar_height + horizontal_gap;
 	bar.name = L"Explosion duration";
-	bar.rect = {
-		.left = topleft.x,
-		.top = topleft.y,
-		.right = topleft.x + bar_width,
-		.bottom = topleft.y + bar_height
-	};
+	bar.rect = rect(topleft, bar_width, bar_height);
+	
 	bar.max_level = 10;
 	bar.levelup_value = 1;
 	bar.cost = 100;
@@ -72,12 +67,8 @@ void ShopScene::init() {
 
 	topleft.y += bar_height + horizontal_gap;
 	bar.name = L"Number of squares";
-	bar.rect = { 
-		.left = topleft.x,
-		.top = topleft.y, 
-		.right = topleft.x + bar_width, 
-		.bottom = topleft.y + bar_height 
-	};
+	bar.rect = rect(topleft, bar_width, bar_height);
+	
 	bar.max_level = 10;
 	bar.levelup_value = 1;
 	bar.cost = 100;
@@ -87,12 +78,8 @@ void ShopScene::init() {
 
 	topleft.y += bar_height + horizontal_gap;
 	bar.name = L"Square speed";
-	bar.rect = {
-		.left = topleft.x,
-		.top = topleft.y,
-		.right = topleft.x + bar_width,
-		.bottom = topleft.y + bar_height
-	};
+	bar.rect = rect(topleft, bar_width, bar_height);
+	
 	bar.max_level = 10;
 	bar.levelup_value = 1;
 	bar.cost = 100;
@@ -102,12 +89,8 @@ void ShopScene::init() {
 
 	topleft.y += bar_height + horizontal_gap;
 	bar.name = L"Number of bullets";
-	bar.rect = {
-		.left = topleft.x,
-		.top = topleft.y,
-		.right = topleft.x + bar_width,
-		.bottom = topleft.y + bar_height
-	};
+	bar.rect = rect(topleft, bar_width, bar_height);
+	
 	bar.max_level = 5;
 	bar.levelup_value = 1;
 	bar.cost = 100;
@@ -117,12 +100,8 @@ void ShopScene::init() {
 
 	topleft.y += bar_height + horizontal_gap;
 	bar.name = L"Bullet duration";
-	bar.rect = {
-		.left = topleft.x,
-		.top = topleft.y,
-		.right = topleft.x + bar_width,
-		.bottom = topleft.y + bar_height
-	};
+	bar.rect = rect(topleft, bar_width, bar_height);
+	
 	bar.max_level = 10;
 	bar.levelup_value = 1;
 	bar.cost = 100;
