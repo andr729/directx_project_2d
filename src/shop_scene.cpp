@@ -13,6 +13,18 @@ D2D1_RECT_F rect(Vector2D top_left, Float dx, Float dy) {
 	};
 }
 
+UpgradeBar defaultUpgradeBar(std::wstring&& name, D2D1_COLOR_F color, D2D1_RECT_F rect) {
+	UpgradeBar out;
+	out.name = std::move(name);
+	out.rect = rect;
+	out.max_level = 10;
+	out.levelup_value = 1;
+	out.cost = 100;
+	out.cost_multiplier = 2;
+	out.color = color;
+	return out;
+}
+
 void ShopScene::init() {
 	Float bars_start_height = 225;
 	Float bars_start_width = 50;
@@ -20,94 +32,35 @@ void ShopScene::init() {
 	Float bar_height = 60;
 	Float horizontal_gap = 20;
 
-	Vector2D topleft = { bars_start_width, bars_start_height };
+	Vector2D top_left = { bars_start_width, bars_start_height };
 	UpgradeBar bar;
-	bar.name = L"Number of circles";
-	bar.rect = rect(topleft, bar_width, bar_height);
-	
-	bar.max_level = 10;
-	bar.levelup_value = 1;
-	bar.cost = 100;
-	bar.cost_multiplier = 2;
-	bar.color = D2D1_COLOR_F(0.8f, 0.0f, 0.0f, 1.0f);
-	bars.push_back(bar);
 
-	topleft.y += bar_height + horizontal_gap;
-	bar.name = L"Circle speed";
-	bar.rect = rect(topleft, bar_width, bar_height);
-	
-	bar.max_level = 10;
-	bar.levelup_value = 1;
-	bar.cost = 100;
-	bar.cost_multiplier = 2;
-	bar.color = D2D1_COLOR_F(0.98f, 0.58f, 0.04f, 1.0f);
-	bars.push_back(bar);
+	auto addDefaultBar = [&](std::wstring&& name, D2D1_COLOR_F color) {
+		bars.push_back(defaultUpgradeBar(
+			std::move(name), color,
+			rect(top_left, bar_width, bar_height)));
+		top_left.y += bar_height + horizontal_gap;
+	};
 
-	topleft.y += bar_height + horizontal_gap;
-	bar.name = L"Explosion radius";
-	bar.rect = rect(topleft, bar_width, bar_height);
-	
-	bar.max_level = 10;
-	bar.levelup_value = 1;
-	bar.cost = 100;
-	bar.cost_multiplier = 2;
-	bar.color = D2D1_COLOR_F(1.f, 1.f, 0.f, 1.0f);
-	bars.push_back(bar);
+	addDefaultBar(L"Number of circles", D2D1_COLOR_F(0.8f, 0.0f, 0.0f, 1.0f));
+	addDefaultBar(L"Circle speed", D2D1_COLOR_F(0.98f, 0.58f, 0.04f, 1.0f));
+	addDefaultBar(L"Explosion radius", D2D1_COLOR_F(1.f, 1.f, 0.f, 1.0f));
+	addDefaultBar(L"Explosion duration", D2D1_COLOR_F(0.f, 0.8f, 0.f, 1.0f));
+	addDefaultBar(L"Number of squares", D2D1_COLOR_F(0.01f, 0.75f, 0.78f, 1.0f));
+	addDefaultBar(L"Square speed", D2D1_COLOR_F(0.0f, 0.0f, 1.f, 1.0f));
 
-	topleft.y += bar_height + horizontal_gap;
-	bar.name = L"Explosion duration";
-	bar.rect = rect(topleft, bar_width, bar_height);
-	
-	bar.max_level = 10;
-	bar.levelup_value = 1;
-	bar.cost = 100;
-	bar.cost_multiplier = 2;
-	bar.color = D2D1_COLOR_F(0.f, 0.8f, 0.f, 1.0f);
-	bars.push_back(bar);
-
-	topleft.y += bar_height + horizontal_gap;
-	bar.name = L"Number of squares";
-	bar.rect = rect(topleft, bar_width, bar_height);
-	
-	bar.max_level = 10;
-	bar.levelup_value = 1;
-	bar.cost = 100;
-	bar.cost_multiplier = 2;
-	bar.color = D2D1_COLOR_F(0.01f, 0.75f, 0.78f, 1.0f);
-	bars.push_back(bar);
-
-	topleft.y += bar_height + horizontal_gap;
-	bar.name = L"Square speed";
-	bar.rect = rect(topleft, bar_width, bar_height);
-	
-	bar.max_level = 10;
-	bar.levelup_value = 1;
-	bar.cost = 100;
-	bar.cost_multiplier = 2;
-	bar.color = D2D1_COLOR_F(0.0f, 0.0f, 1.f, 1.0f);
-	bars.push_back(bar);
-
-	topleft.y += bar_height + horizontal_gap;
 	bar.name = L"Number of bullets";
-	bar.rect = rect(topleft, bar_width, bar_height);
-	
+	bar.rect = rect(top_left, bar_width, bar_height);	
 	bar.max_level = 5;
 	bar.levelup_value = 1;
 	bar.cost = 100;
 	bar.cost_multiplier = 2;
 	bar.color = D2D1_COLOR_F(0.48f, 0.17f, 0.65f, 1.0f);
 	bars.push_back(bar);
-
-	topleft.y += bar_height + horizontal_gap;
-	bar.name = L"Bullet duration";
-	bar.rect = rect(topleft, bar_width, bar_height);
+	top_left.y += bar_height + horizontal_gap;
 	
-	bar.max_level = 10;
-	bar.levelup_value = 1;
-	bar.cost = 100;
-	bar.cost_multiplier = 2;
-	bar.color = D2D1_COLOR_F(1.f, 0.59f, 0.75f, 1.0f);
-	bars.push_back(bar);
+	addDefaultBar(L"Bullet duration", D2D1_COLOR_F(1.f, 0.59f, 0.75f, 1.0f));
+	
 	for (auto& bar : bars) {
 		bar.init();
 	}

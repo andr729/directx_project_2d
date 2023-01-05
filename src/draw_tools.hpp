@@ -47,5 +47,4 @@ namespace DT {
 		virtual ~RectDrawable() = default;
 	};
 
-
 }
