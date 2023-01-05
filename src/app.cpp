@@ -66,10 +66,7 @@ HRESULT init(HWND hwnd) {
 	global_state.scene = Scene::ShopScene;
 
 	//TODO: Remove.
-	for (auto &bar : global_state.shop_scene.bars) {
-		bar.level = 2;
-	}
-	global_state.game_state.money = 1e9;
+	global_state.game_state.money = 1e4;
 
 	add_rect({500, 100}, {0, 0}, 400, 20, 10000);
 	add_rect({500, 600}, {0, 0}, 400, 20, 10000);
@@ -204,6 +201,12 @@ HRESULT onPaint(HWND hwnd) {
 
 void onMouseMove(FLOAT x, FLOAT y) {
 	global_state.onMouseMove(x, y);
+}
+
+void onClick() {
+	if (global_state.scene == Scene::ShopScene) {
+		global_state.shop_scene.onClick();
+	}
 }
 
 // @TODO: move to draw tools
