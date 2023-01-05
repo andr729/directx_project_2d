@@ -26,14 +26,13 @@ UpgradeBar defaultUpgradeBar(std::wstring&& name, D2D1_COLOR_F color, D2D1_RECT_
 }
 
 void ShopScene::init() {
-	Float bars_start_height = 225;
-	Float bars_start_width = 50;
-	Float bar_width = 1500;
-	Float bar_height = 60;
-	Float horizontal_gap = 20;
+	constexpr Float bars_start_height = 225;
+	constexpr Float bars_start_width = 50;
+	constexpr Float bar_width = 1500;
+	constexpr Float bar_height = 60;
+	constexpr Float horizontal_gap = 20;
 
 	Vector2D top_left = { bars_start_width, bars_start_height };
-	UpgradeBar bar;
 
 	auto addDefaultBar = [&](std::wstring&& name, D2D1_COLOR_F color) {
 		bars.push_back(defaultUpgradeBar(
@@ -49,6 +48,7 @@ void ShopScene::init() {
 	addDefaultBar(L"Number of squares", D2D1_COLOR_F(0.01f, 0.75f, 0.78f, 1.0f));
 	addDefaultBar(L"Square speed", D2D1_COLOR_F(0.0f, 0.0f, 1.f, 1.0f));
 
+	UpgradeBar bar;
 	bar.name = L"Number of bullets";
 	bar.rect = rect(top_left, bar_width, bar_height);	
 	bar.max_level = 5;

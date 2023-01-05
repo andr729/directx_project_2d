@@ -3,13 +3,12 @@
 #include "global_state.hpp"
 #include "draw_tools.hpp"
 
-const float upgrades_start = 0.25;
-const float upgrades_end = 0.6;
-const float button_middle = 0.65;
-const float cost_start = 0.675;
-const float value_start = 0.85;
-const float increment_start = 0.92;
-
+constexpr float upgrades_start = 0.25;
+constexpr float upgrades_end = 0.6;
+constexpr float button_middle = 0.65;
+constexpr float cost_start = 0.675;
+constexpr float value_start = 0.85;
+constexpr float increment_start = 0.92;
 
 void UpgradeBar::init() {
 	float height = rect.bottom - rect.top;

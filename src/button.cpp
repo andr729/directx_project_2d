@@ -44,8 +44,8 @@ void Button::draw() {
 	render_target->DrawRectangle(position, font_brush, 5);
 	
 	if (text == L"+") {
-		const float plus_height_ratio = 0.6;
-		const float plus_width_ratio = 0.15;
+		constexpr float plus_height_ratio = 0.6;
+		constexpr float plus_width_ratio = 0.15;
 		
 		float center_x = (position.left + position.right) / 2;
 		float center_y = (position.top + position.bottom) / 2;
