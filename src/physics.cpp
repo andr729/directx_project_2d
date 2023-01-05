@@ -112,46 +112,50 @@ void CircleEntity::collide(Entity& oth, Float elasticity) {
 	}
 	else {
 		const RectangleEntity& rect = dynamic_cast<const RectangleEntity&>(oth);
-	
-		// Approximate the collision type:
-		Float top = std::abs( position.y - (rect.position.y - rect.dy - radius));
-		Float bottom = std::abs( position.y - (rect.position.y + rect.dy + radius));
-		Float left = std::abs( position.x - (rect.position.x - rect.dx - radius));
-		Float right = std::abs( position.x - (rect.position.x + rect.dx + radius));
+		auto top_left_corner = rect.position + Vector2D(-rect.dx, -rect.dy);
+		auto top_right_corner = rect.position + Vector2D(rect.dx, -rect.dy);
+		auto bottom_left_corner = rect.position + Vector2D(-rect.dx, rect.dy);
+		auto bottom_right_corner = rect.position + Vector2D(rect.dx, rect.dy);
 
-		Float eps = 1;
-		Float top_left = std::abs((position - (rect.position + Vector2D(-rect.dx, -rect.dy))).abs() - radius) + eps;
-		Float top_right = std::abs((position - (rect.position + Vector2D(rect.dx, -rect.dy))).abs() - radius) + eps;
-		Float bottom_left = std::abs((position - (rect.position + Vector2D(-rect.dx, rect.dy))).abs() - radius) + eps;
-		Float bottom_right = std::abs((position - (rect.position + Vector2D(rect.dx, rect.dy))).abs() - radius) + eps;
-
-		Float min_dist = std::min({top, bottom, left, right, top_left, top_right, bottom_left, bottom_right});
-
-		if (top == min_dist) {
-			collideAlongAxis(*this, oth, {0, 1}, elasticity);
+		if (position.x >= rect.position.x - rect.dx and position.x <= rect.position.x + rect.dx) {
+			if (position.y < rect.position.y) {
+				// top collision
+				collideAlongAxis(*this, oth, {0, 1}, elasticity);
+			}
+			else {
+				// bottom collision
+				collideAlongAxis(*this, oth, {0, -1}, elasticity);
+			}
 		}
-		else if (bottom == min_dist) {
-			collideAlongAxis(*this, oth, {0, -1}, elasticity);
+		else if (position.y >= rect.position.y - rect.dy and position.y <= rect.position.y + rect.dy) {
+			if (position.x < rect.position.x) {
+				// left collision
+				collideAlongAxis(*this, oth, {1, 0}, elasticity);
+			}
+			else {
+				// right collision
+				collideAlongAxis(*this, oth, {-1, 0}, elasticity);
+			}
 		}
-		else if (left == min_dist) {
-			collideAlongAxis(*this, oth, {1, 0}, elasticity);
+		else if (position.x < rect.position.x) {
+			if (position.y < rect.position.y) {
+				// top left collision
+				collideAlongAxis(*this, oth, top_left_corner - position, elasticity);
+			}
+			else {
+				// bottom left collision
+				collideAlongAxis(*this, oth, bottom_left_corner - position, elasticity);
+			}
 		}
-		else if (right == min_dist) {
-			// exit(123);
-			collideAlongAxis(*this, oth, {-1, 0}, elasticity);
-		}
-		else if (top_left == min_dist) {
-			collideAlongAxis(*this, oth, {1, 1}, elasticity);
-		}
-		else if (top_right == min_dist) {
-			// exit(1233);
-			collideAlongAxis(*this, oth, {-1, 1}, elasticity);
-		}
-		else if (bottom_left == min_dist) {
-			collideAlongAxis(*this, oth, {1, -1}, elasticity);
-		}
-		else if (bottom_right == min_dist) {
-			collideAlongAxis(*this, oth, {-1, -1}, elasticity);
+		else {
+			if (position.y < rect.position.y) {
+				// top right collision
+				collideAlongAxis(*this, oth, top_right_corner - position, elasticity);
+			}
+			else {
+				// bottom right collision
+				collideAlongAxis(*this, oth, bottom_right_corner - position, elasticity);
+			}
 		}
 	}
 }
