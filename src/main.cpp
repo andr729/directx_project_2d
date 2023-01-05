@@ -22,9 +22,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 	case WM_LBUTTONDOWN:
 		onClick();
 		return 0;
-	case WM_LBUTTONUP:
-		// ...
-		return 0;
 	case WM_TIMER:
 		switch (wParam) {
 		case frame_timer_id:
@@ -47,12 +44,12 @@ void setupDefaultWcex(WNDCLASSEX& wcex, HINSTANCE& instance) {
 	wcex.cbClsExtra = 0;
 	wcex.cbWndExtra = 0;
 	wcex.hInstance = instance;
-	wcex.hIcon = NULL;
+	wcex.hIcon = nullptr;
 	wcex.hCursor = LoadCursor(instance, IDC_ARROW);
 	wcex.hbrBackground = nullptr,
-		wcex.lpszMenuName = NULL;
+		wcex.lpszMenuName = nullptr;
 	wcex.lpszClassName = TEXT("Template Window Class");
-	wcex.hIconSm = NULL;
+	wcex.hIconSm = nullptr;
 }
 
 void setupDefaoultHwnd(HWND& hwnd, WNDCLASSEX& wcex) {
@@ -96,7 +93,7 @@ INT WINAPI wWinMain(_In_ [[maybe_unused]] HINSTANCE instance,
 	ShowWindow(hwnd, cmd_show);
 
 	MSG msg = {};
-	while (BOOL rv = GetMessage(&msg, NULL, 0, 0) != 0) {
+	while (BOOL rv = GetMessage(&msg, nullptr, 0, 0) != 0) {
 		if (rv < 0) {
 			DestroyWindow(hwnd);
 			return 1;

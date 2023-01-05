@@ -3,11 +3,10 @@
 #include <d2d1_3.h>
 #include <cmath>
 
-#define hr(code) {HRESULT hresult = code; if(FAILED(hresult)) return hresult;}
+#define hr(code) {HRESULT hresult = (code); if(FAILED(hresult)) return hresult;}
 
 typedef float Float;
 constexpr Float TICK_TIME = 0.1;
-
 
 class TransformationMatrix {
 	D2D1::Matrix3x2F inner;
@@ -16,9 +15,8 @@ public:
 	TransformationMatrix() {}
 	TransformationMatrix(const D2D1::Matrix3x2F m) : inner(m) {}
 
-	D2D1::Matrix3x2F& getInner() {
-		return inner;
-	}
+	D2D1::Matrix3x2F& getInner() { return inner; }
+	const D2D1::Matrix3x2F& getInner() const { return inner; }
 
 	TransformationMatrix& operator=(const TransformationMatrix& oth) {
 		inner = oth.inner;
@@ -78,7 +76,7 @@ struct Vector2D {
 		y *= v;
 	}
 
-	void operator*=(TransformationMatrix& matrix) {
+	void operator*=(const TransformationMatrix& matrix) {
 		auto& m = matrix.getInner();
 		Float x2 = m.m11 * x + m.m21 * y + m.dx;
 		Float y2 = m.m12 * x + m.m22 * y + m.dy;
@@ -86,14 +84,15 @@ struct Vector2D {
 		y = y2;
 	}
 
-	Vector2D operator*(TransformationMatrix& matrix) {
+	[[no_discard]]
+	Vector2D operator*(const TransformationMatrix& matrix) {
 		Vector2D out = *this;
 		out *= matrix;
 		return out;
 	}
 
 	[[no_discard]]
-	Vector2D operator-() {
+	Vector2D operator-() const {
 		return {-x, -y};
 	}
 
@@ -107,6 +106,7 @@ struct Vector2D {
 		return std::sqrt(abs2());
 	}
 
+	[[no_discard]]
 	Vector2D normUnit() const {
 		return *this / abs();
 	}
@@ -116,19 +116,15 @@ inline Float dot(Vector2D v1, Vector2D v2) {
 	return v1.x * v2.x + v1.y * v2.y;
 }
 
-inline Float projectionScalar(Vector2D base, Vector2D onto) {
+inline Float projectionScalar(Vector2D base, Vector2D onto) { 
 	return dot(base, onto.normUnit());
 }
-
-
-
 
 template<typename T>
 void SafeRelease(T **ppT) {
 	if (*ppT) {
 		(*ppT)->Release();
-		*ppT = NULL;
+		*ppT = nullptr;
 	}
 }
-
 
