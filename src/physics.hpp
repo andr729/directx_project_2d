@@ -19,11 +19,15 @@ protected:
 		type(type) {}
 
 public:
+	
 	Vector2D position = {0, 0};
 	Vector2D velocity = {0, 0};
+	Vector2D force = {0, 0};
 	Float mass = 1;
-	bool immoveable = false;
+	
 	DT::Drawable* drawable = nullptr;
+	bool immoveable = false;
+	bool alive = true;
 
 	constexpr EntityType getType() const { return type; }
 
@@ -49,11 +53,17 @@ public:
 
 class EntityHandler {
 private:
-	std::vector<Entity*> entities;
-public:
-	void addEntity(Entity*);
-	void simulateTick();
+	std::vector<Entity*> objects;
+	std::vector<Entity*> walls;
+	std::vector<Entity*> free_particles;
+	std::vector<Entity*> explosions;
+
 	void collideAll(Float elasticity);
+public:
+	void clear();
+	void addWall(Entity*);
+	void addObject(Entity*);
+	void simulateTick();
 	void drawAll();
 };
 

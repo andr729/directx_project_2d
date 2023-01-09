@@ -57,30 +57,56 @@ bool Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float e
 		return true;
 }
 
-void EntityHandler::addEntity(Entity* ent) {
-	entities.push_back(ent);
+void EntityHandler::clear() {
+	walls.clear();
+	objects.clear();
+	free_particles.clear();
+	explosions.clear();
 }
+
+void EntityHandler::addWall(Entity* ent) {
+	walls.push_back(ent);
+}
+
+void EntityHandler::addObject(Entity* ent) {
+	objects.push_back(ent);
+}
+
 void EntityHandler::simulateTick() {
-	for (auto e: entities) {
-		if (e->immoveable) {
-			e->simulateTick();
-		}
-		else {
-			e->simulateTick({0, 20});
-			e->velocity *= 0.99;
-		}
+	for (auto e: objects) {
+		e->simulateTick();
 	}
+
+	for (auto e: free_particles) {
+		e->simulateTick();
+	}
+
+	collideAll(1);
 }
 void EntityHandler::collideAll(Float elasticity) {
-	for (size_t i = 0; i < entities.size(); i++)
-	for (size_t j = i + 1; j < entities.size(); j++) {
-		if (entities[i]->collides(*entities[j])) {
-			entities[i]->collide(*entities[j], elasticity);
+	for (size_t i = 0; i < walls.size(); i++)
+	for (size_t j = 0; j < objects.size(); j++) {
+		if (walls[i]->collides(*objects[j])) {
+			walls[i]->collide(*objects[j], elasticity);
+		}
+	}
+	
+	for (size_t i = 0; i < objects.size(); i++)
+	for (size_t j = i + 1; j < objects.size(); j++) {
+		if (objects[i]->collides(*objects[j])) {
+			objects[i]->collide(*objects[j], elasticity);
 		}
 	}
 }
+
 void EntityHandler::drawAll() {
-	for (auto e: entities) {
+	for (auto e: walls) {
+		e->draw();
+	}
+	for (auto e: objects) {
+		e->draw();
+	}
+	for (auto e: free_particles) {
 		e->draw();
 	}
 }

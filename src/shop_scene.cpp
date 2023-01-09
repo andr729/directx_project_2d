@@ -124,5 +124,6 @@ void ShopScene::onClick() {
 	if (continue_button.state == ButtonState::Hovered) {
 		// TODO: better handling of scene switching.
 		global_state.scene = Scene::GameScene;
+		global_state.game_scene.newLevel();
 	}
 }

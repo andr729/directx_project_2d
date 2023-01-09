@@ -19,27 +19,6 @@ using D2D1::Matrix3x2F;
 // using std::array;
 
 
-
-
-EntityHandler handler;
-DT::RectDrawable rect_drawable;
-DT::EllipseDrawable ellipse_drawable;
-
-void add_rect(Vector2D pos, Vector2D v, Float dx, Float dy, Float mass) {
-	auto rect = new RectangleEntity(pos, v, dx, dy);
-	rect->mass = mass;
-	rect->drawable = &rect_drawable;
-	rect->immoveable = true;
-	handler.addEntity(rect);
-}
-
-void add_circ(Vector2D pos, Vector2D v, Float r, Float mass) {
-	auto circ = new CircleEntity(pos, v, r);
-	circ->mass = mass;
-	circ->drawable = &ellipse_drawable;
-	handler.addEntity(circ);
-}
-
 HRESULT LoadBitmapFromFile(
 	ID2D1RenderTarget* pRenderTarget,
 	IWICImagingFactory* pIWICFactory,
@@ -57,8 +36,8 @@ namespace {
 
 void tick() {
 	global_state.tick++;
-	handler.simulateTick();
-	handler.collideAll(1);
+
+	global_state.handler.simulateTick();
 }
 
 HRESULT init(HWND hwnd) {
@@ -68,56 +47,26 @@ HRESULT init(HWND hwnd) {
 	//TODO: Remove.
 	global_state.game_state.money = 1e4;
 
-	add_rect({500, 100}, {0, 0}, 400, 20, 10000);
-	add_rect({500, 600}, {0, 0}, 400, 20, 10000);
-	add_rect({930, 350}, {0, 0}, 20, 280, 10000);
-	add_rect({70, 350}, {0, 0}, 20, 280, 10000);
-	
-	add_rect({400, 400}, {0, 0}, 100, 100, 100000);
-
-	// add_circ({400, 400}, {100, 123}, 10, 0.1);
-	// add_circ({500, 500}, {10, -23}, 10, 0.1);
-	// add_circ({300, 300}, {120, -23}, 10, 0.1);
-	// add_circ({200, 200}, {20, -123}, 10, 0.1);
-	// add_circ({400, 200}, {40, -12}, 10, 0.1);
-	// add_circ({100, 100}, {40, -12}, 10, 0.1);
-	// add_circ({100, 140}, {40, -22}, 10, 0.1);
-	// add_circ({100, 160}, {40, -22}, 10, 0.1);
-	// add_circ({100, 180}, {40, -22}, 10, 0.1);
-
-	for (int i = 0; i < 100; i++) {
-		add_circ({400, 400}, {40.f * std::sinf(i), 40.f * std::cosf(i)}, 10, 0.1);
-	}
-
-	// add_rect({400, 200}, {40, -12}, 5, 10, 0.1);
-	
-	// add_circ({100, 100}, {20, 0}, 60, 300);
-	// add_circ({100, 100}, {30, 0}, 20, 1);
-
-
-	auto hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &factory);
-	// THROW_IF_FAILED(hr, "D2D1CreateFactoryfailed");
+	hr(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &factory));
 	if (factory == nullptr) {
-		exit(1);
+		return E_FAIL;
 	}
 
-	hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
-	// THROW_IF_FAILED(hr, "CoInitializeEx failed");
+	hr(CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED));
 
 	// Create WIC factory
-	hr = CoCreateInstance(
+	hr(CoCreateInstance(
 		CLSID_WICImagingFactory,
 		nullptr,
 		CLSCTX_INPROC_SERVER,
 		IID_PPV_ARGS(&img_factory)
-	);
-	// THROW_IF_FAILED(hr, "Creating WIC factory failed");
+	));
 	
 	//TODO: handle HRESULT.
-	DT::initTools();
+	hr(DT::initTools());
 
-	recreateRenderTarget(hwnd);
-	return 0;
+	hr(recreateRenderTarget(hwnd));
+	return S_OK;
 }
 
 HRESULT recreateRenderTarget(HWND hwnd) {
@@ -178,19 +127,18 @@ HRESULT destroy() {
 
 HRESULT onPaint(HWND hwnd) {
 	if (!global_state.render_target) recreateRenderTarget(hwnd);
-	// TransformationMatrix transform = Matrix3x2F::Identity();
+	
 	global_state.render_target->BeginDraw();
 	global_state.render_target->Clear(color);
 
 	switch (global_state.scene) {
 	case Scene::GameScene:
-		handler.drawAll();
+		global_state.game_scene.draw();
 		break;
 	case Scene::ShopScene:
 		global_state.shop_scene.draw();
 		break;
 	}
-
 
 	if (global_state.render_target->EndDraw() == D2DERR_RECREATE_TARGET) {
 		destroyRenderTarget();

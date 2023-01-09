@@ -3,6 +3,8 @@
 #include "base.hpp"
 #include "game_state.hpp"
 #include "shop_scene.hpp"
+#include "game_scene.hpp"
+#include "physics.hpp"
 #include <d2d1_3.h>
 
 enum class Scene {
@@ -14,14 +16,19 @@ enum class Scene {
 struct GlobalState {
 	ID2D1Factory7* factory = nullptr;
 	ID2D1HwndRenderTarget* render_target = nullptr;
-	int tick = 0;
+
+	uint64_t tick = 0;
+	Scene scene;
+
 	GameState game_state;
 	ShopScene shop_scene;
-	Scene scene;
+	GameScene game_scene;
 	// d2d1 stuff, and our stuff
 
 	Vector2D mouse_position;
 	// std::queue<Event> ??
+
+	EntityHandler handler;
 
 	void onMouseMove(FLOAT x, FLOAT y);
 	// ...
