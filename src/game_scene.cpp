@@ -3,25 +3,22 @@
 #include "random.hpp"
 #include <numbers>
 
-DT::RectDrawable rect_drawable;
-DT::EllipseDrawable ellipse_drawable;
-
 void add_wall_rect(Vector2D pos, Float dx, Float dy) {
 	auto rect = new RectangleEntity(pos, {0, 0}, dx, dy);
-	rect->drawable = &rect_drawable;
+	rect->drawable = &DT::rect_drawable;
 	rect->immoveable = true;
 	global_state.handler.addWall(rect);
 }
 
 void add_circ_object(Vector2D pos, Vector2D v, Float size) {
 	auto circ = new CircleEntity(pos, v, size);
-	circ->drawable = &ellipse_drawable;
+	circ->drawable = &DT::ellipse_drawable;
 	global_state.handler.addObject(circ);
 }
 
 void add_explode_object(Vector2D pos, Vector2D v) {
 	auto circ = new CircleEntity(pos, v, 10);
-	circ->drawable = &ellipse_drawable;
+	circ->drawable = &DT::ellipse_drawable;
 	global_state.handler.addExplosion(circ);
 }
 

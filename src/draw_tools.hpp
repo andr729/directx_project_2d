@@ -51,4 +51,7 @@ namespace DT {
 		virtual ~RectDrawable() = default;
 	};
 
+	extern RectDrawable rect_drawable;
+	extern EllipseDrawable ellipse_drawable;
+
 }

@@ -1,6 +1,7 @@
 #include "physics.hpp"
 #include <algorithm>
 #include <cassert>
+#include <numbers>
 
 // XD
 #undef min
@@ -110,12 +111,32 @@ void EntityHandler::simulateTick() {
 
 	this->collideAll(1);
 }
+
+void EntityHandler::explode(Vector2D position) {
+	for (int i = 0; i < 8; i++) {
+		Float angle = 2*std::numbers::pi * i / 8;
+		Vector2D norm_v = {std::sinf(angle), std::cosf(angle)};
+		auto circ = new CircleEntity(position, norm_v * 20, 10);
+		circ->drawable = &DT::ellipse_drawable;
+		addExplosion(circ);
+	}
+}
+
 void EntityHandler::collideAll(Float elasticity) {
 
 	for (size_t i = 0; i < objects.size(); i++)
 	for (size_t j = i + 1; j < objects.size(); j++) {
 		if (objects[i]->collides(*objects[j])) {
 			objects[i]->collide(*objects[j], elasticity);
+		}
+	}
+
+	for (size_t i = 0; i < explosions.size(); i++)
+	for (size_t j = 0; j < objects.size(); j++) {
+		if (explosions[i]->collides(*objects[j])) {
+			explosions[i]->alive = false;
+			objects[j]->alive = false;
+			explode(objects[j]->position);
 		}
 	}
 
@@ -143,6 +164,9 @@ void EntityHandler::drawAll() {
 }
 
 bool CircleEntity::collides(const Entity& oth) const {
+	if (!alive || !oth.alive) {
+		return false;
+	}
 	if (oth.getType() == EntityType::Circle) {
 		auto radius_sum = (radius + dynamic_cast<const CircleEntity&>(oth).radius);
 		return (position - oth.position).abs2() < radius_sum * radius_sum;
@@ -242,6 +266,9 @@ bool CircleEntity::isInside(const Vector2D& pos) const {
 }
 
 bool RectangleEntity::collides(const Entity& oth) const {
+	if (!alive || !oth.alive) {
+		return false;
+	}
 	if (oth.getType() == EntityType::Circle) {
 		return oth.collides(*this);
 	}

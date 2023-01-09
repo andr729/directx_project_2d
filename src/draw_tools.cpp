@@ -15,6 +15,9 @@ namespace DT {
 	ID2D1SolidColorBrush* white_brush = nullptr;
 	ID2D1SolidColorBrush* customizable_brush = nullptr;
 	ID2D1RadialGradientBrush* rad_brush = nullptr;
+
+	RectDrawable rect_drawable;
+	EllipseDrawable ellipse_drawable;
 	
 	constexpr int RAD_BRUSH_STOPS = 100;
 	constexpr float RAD_BRUSH_DIST = 1.0f / (RAD_BRUSH_STOPS - 1);

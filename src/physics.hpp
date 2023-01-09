@@ -67,6 +67,7 @@ public:
 	void addObject(Entity*);
 	void addExplosion(Entity*);
 	void simulateTick();
+	void explode(Vector2D position);
 	void drawAll();
 };
 
