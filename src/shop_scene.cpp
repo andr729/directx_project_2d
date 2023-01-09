@@ -106,6 +106,7 @@ void ShopScene::draw() {
 
 	DT::drawText(L"Money:", { 75, 75, 400, 75 + DT::TEXT_FONT_STROKE }, DT::black_brush);
 	DT::drawText((std::to_wstring(int64_t(global_state.game_state.money)) + L"$").c_str(), {75,  75 + DT::TEXT_FONT_STROKE, 400, 75 + 2 * DT::TEXT_FONT_STROKE}, DT::black_brush);
+	DT::drawText(L"SHOP", { 500, 0, 1100, DT::SHOP_FONT_STROKE}, DT::black_brush, DT::shop_text_format);
 }
 
 void ShopScene::onClick() {

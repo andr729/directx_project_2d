@@ -16,9 +16,11 @@ namespace DT {
 
 	extern IDWriteTextFormat* button_text_format;
 	extern IDWriteTextFormat* normal_text_format;
+	extern IDWriteTextFormat* shop_text_format;
 
 	constexpr float BUTTON_FONT_STROKE = 75.0f;
 	constexpr float TEXT_FONT_STROKE = 40.0f;
+	constexpr float SHOP_FONT_STROKE = 150.0f;
 
 	HRESULT initTools();
 

@@ -7,6 +7,7 @@ namespace DT {
 	IDWriteFactory* write_factory = nullptr;
 	IDWriteTextFormat* button_text_format = nullptr;
 	IDWriteTextFormat* normal_text_format = nullptr;
+	IDWriteTextFormat* shop_text_format = nullptr;
 
 	ID2D1SolidColorBrush* black_brush = nullptr;
 	ID2D1SolidColorBrush* dark_gray_brush = nullptr;
@@ -99,6 +100,18 @@ namespace DT {
 			L"en-us",
 			&normal_text_format
 		));
+
+		hr(write_factory->CreateTextFormat(
+			L"Arial",
+			nullptr,
+			DWRITE_FONT_WEIGHT_HEAVY,
+			DWRITE_FONT_STYLE_NORMAL,
+			DWRITE_FONT_STRETCH_NORMAL,
+			SHOP_FONT_STROKE,
+			L"en-us",
+			&shop_text_format
+		));
+		shop_text_format->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
 	}
 
 	HRESULT recreateTools() {
