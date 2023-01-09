@@ -10,7 +10,7 @@ namespace RD {
 	inline int64_t randRange(int64_t from, int64_t to) {
 		assert(from <= to);
 		int64_t value = static_cast<int64_t>(rand());
-		return (value % (to - from + 1)) + from;
+		return std::abs(value % (to - from + 1)) + from;
 	}
 
 	inline Vector2D randVector(Vector2D top_left, Vector2D bottom_right) {

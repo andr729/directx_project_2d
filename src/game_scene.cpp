@@ -1,6 +1,7 @@
 #include "game_scene.hpp"
 #include "global_state.hpp"
 #include "random.hpp"
+#include <numbers>
 
 DT::RectDrawable rect_drawable;
 DT::EllipseDrawable ellipse_drawable;
@@ -12,11 +13,18 @@ void add_wall_rect(Vector2D pos, Float dx, Float dy) {
 	global_state.handler.addWall(rect);
 }
 
-void add_circ_object(Vector2D pos, Vector2D v) {
-	auto circ = new CircleEntity(pos, v, 10);
+void add_circ_object(Vector2D pos, Vector2D v, Float size) {
+	auto circ = new CircleEntity(pos, v, size);
 	circ->drawable = &ellipse_drawable;
 	global_state.handler.addObject(circ);
 }
+
+void add_explode_object(Vector2D pos, Vector2D v) {
+	auto circ = new CircleEntity(pos, v, 10);
+	circ->drawable = &ellipse_drawable;
+	global_state.handler.addExplosion(circ);
+}
+
 
 void set_up_walls(Vector2D top_left, Vector2D bottom_right, Float width) {
 	width /= 2;
@@ -51,7 +59,8 @@ void GameScene::newLevel() {
 	for (int i = 0; i < 10; i++) {
 		add_circ_object(
 			RD::randVector(top_left_simulation, bottom_right_simulation),
-			{50, 50}
+			{50, 50},
+			20
 		);
 	}
 
@@ -60,3 +69,23 @@ void GameScene::newLevel() {
 void GameScene::draw() {
 	global_state.handler.drawAll();
 }
+
+
+void GameScene::explode(Vector2D position) {
+	for (int i = 0; i < explosion_object_count; i++) {
+		Float angle = 2*std::numbers::pi * i / explosion_object_count;
+		Vector2D norm_v = {std::sinf(angle), std::cosf(angle)};
+		add_explode_object(
+			position + norm_v * 10,
+			norm_v * 20
+		);
+	}
+}
+
+
+void GameScene::onClick() {
+	// @TODO: check if is in game
+	explode(global_state.mouse_position);
+}
+
+

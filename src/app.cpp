@@ -151,8 +151,15 @@ void onMouseMove(FLOAT x, FLOAT y) {
 }
 
 void onClick() {
-	if (global_state.scene == Scene::ShopScene) {
+	switch (global_state.scene) {
+	case Scene::ShopScene:
 		global_state.shop_scene.onClick();
+		break;
+	case Scene::GameScene:
+		global_state.game_scene.onClick();
+		break;
+	default:
+		break;
 	}
 }
 

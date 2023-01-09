@@ -1,9 +1,10 @@
 #pragma once
 
-#include <cmath>
-#include <vector>
 #include "base.hpp"
 #include "draw_tools.hpp"
+#include <cmath>
+#include <vector>
+#include <memory>
 
 // We have it to be able to quickly determine entity type
 enum class EntityType {
@@ -24,6 +25,7 @@ public:
 	Vector2D velocity = {0, 0};
 	Vector2D force = {0, 0};
 	Float mass = 1;
+	size_t life_time = 0;
 	
 	DT::Drawable* drawable = nullptr;
 	bool immoveable = false;
@@ -34,7 +36,8 @@ public:
 	void simulateTick() {
 		auto delta_v = force * TICK_TIME;
 		position += (velocity + delta_v/2) * TICK_TIME;
-		velocity += delta_v;	
+		velocity += delta_v;
+		life_time++;
 	}
 
 	virtual bool collides(const Entity& oth) const = 0;
@@ -49,16 +52,20 @@ public:
 
 class EntityHandler {
 private:
-	std::vector<Entity*> objects;
-	std::vector<Entity*> walls;
-	std::vector<Entity*> free_particles;
-	std::vector<Entity*> explosions;
+	constexpr static size_t explosion_lifetime = 10;
+
+	std::vector<std::unique_ptr<Entity> > objects;
+	std::vector<std::unique_ptr<Entity> > walls;
+	std::vector<std::unique_ptr<Entity> > free_particles;
+	std::vector<std::unique_ptr<Entity> > explosions;
 
 	void collideAll(Float elasticity);
+	void clearDead();
 public:
 	void clear();
 	void addWall(Entity*);
 	void addObject(Entity*);
+	void addExplosion(Entity*);
 	void simulateTick();
 	void drawAll();
 };

@@ -1,5 +1,6 @@
 #include "physics.hpp"
 #include <algorithm>
+#include <cassert>
 
 // XD
 #undef min
@@ -61,21 +62,51 @@ void EntityHandler::clear() {
 }
 
 void EntityHandler::addWall(Entity* ent) {
-	walls.push_back(ent);
+	walls.emplace_back(ent);
 }
 
 void EntityHandler::addObject(Entity* ent) {
-	objects.push_back(ent);
+	objects.emplace_back(ent);
+}
+
+void EntityHandler::addExplosion(Entity* ent) {
+	assert(ent != nullptr);
+	explosions.emplace_back(ent);
+}
+
+bool isEntDead(std::unique_ptr<Entity>& ent) {
+	return !ent->alive;
+}
+
+void clearDead(std::vector<std::unique_ptr<Entity> >& vec) {
+	auto it = std::remove_if(vec.begin(), vec.end(), isEntDead);
+	auto size = it - vec.begin();
+	vec.resize(size);
+}
+
+void EntityHandler::clearDead() {
+	::clearDead(explosions);
+	::clearDead(objects);
+	::clearDead(free_particles);
 }
 
 void EntityHandler::simulateTick() {
-	for (auto e: objects) {
+	for (auto& e: objects) {
 		e->simulateTick();
 	}
 
-	for (auto e: free_particles) {
+	for (auto& e: free_particles) {
 		e->simulateTick();
 	}
+
+	for (auto& e: explosions) {
+		e->simulateTick();
+		if (e->life_time > explosion_lifetime) {
+			e->alive = false;
+		}
+	}
+
+	clearDead();
 
 	this->collideAll(1);
 }
@@ -97,13 +128,16 @@ void EntityHandler::collideAll(Float elasticity) {
 }
 
 void EntityHandler::drawAll() {
-	for (auto e: walls) {
+	for (auto& e: walls) {
 		e->draw();
 	}
-	for (auto e: objects) {
+	for (auto& e: objects) {
 		e->draw();
 	}
-	for (auto e: free_particles) {
+	for (auto& e: free_particles) {
+		e->draw();
+	}
+	for (auto& e: explosions) {
 		e->draw();
 	}
 }
