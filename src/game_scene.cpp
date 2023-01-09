@@ -37,12 +37,21 @@ void set_up_walls(Vector2D top_left, Vector2D bottom_right, Float width) {
 void GameScene::newLevel() {
 	global_state.handler.clear();
 
+	explosion_was = false;
+
 	set_up_walls(top_left_simulation, bottom_right_simulation, 30);
+
+	// for (int i = 0; i < 10; i++) {
+	// 	add_circ_object(
+	// 		RD::randVector({500, 500}, {510, 510}),
+	// 		{120, 10}
+	// 	);
+	// }
 
 	for (int i = 0; i < 10; i++) {
 		add_circ_object(
-			RD::randVector({500, 500}, {510, 510}),
-			{120, 10}
+			RD::randVector(top_left_simulation, bottom_right_simulation),
+			{50, 50}
 		);
 	}
 
