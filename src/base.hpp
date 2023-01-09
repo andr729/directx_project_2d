@@ -110,6 +110,10 @@ struct Vector2D {
 	Vector2D normUnit() const {
 		return *this / abs();
 	}
+
+	D2D1_POINT_2F toD2D1point() {
+		return D2D1_POINT_2F{x, y};
+	}
 };
 
 inline Float dot(Vector2D v1, Vector2D v2) {

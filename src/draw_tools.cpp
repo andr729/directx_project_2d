@@ -1,6 +1,6 @@
 #include "draw_tools.hpp"
 #include "base.hpp"
-#include "rad_brush.hpp"
+#include "brush.hpp"
 #include "global_state.hpp"
 
 namespace DT {
