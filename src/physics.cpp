@@ -8,12 +8,8 @@ bool Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float e
 		if (ent1.immoveable and ent2.immoveable) {
 			return false;
 		}
+
 		// split velocities into component parallel and perpendicular components:
-
-		// // @todo:
-		// ent1.position -= v1_c * TICK_TIME; 
-		// ent2.position -= v2_c * TICK_TIME;
-
 		const Float org_v1 = projectionScalar(ent1.velocity, axis);
 		const Float org_v2 = projectionScalar(ent2.velocity, axis);
 		Float v1 = org_v1;
@@ -81,7 +77,7 @@ void EntityHandler::simulateTick() {
 		e->simulateTick();
 	}
 
-	collideAll(1);
+	this->collideAll(1);
 }
 void EntityHandler::collideAll(Float elasticity) {
 
@@ -216,14 +212,16 @@ bool RectangleEntity::collides(const Entity& oth) const {
 		return oth.collides(*this);
 	}
 	else if (oth.getType() == EntityType::Rectangle) {
-		// @TODO This might be wrong:
-		const RectangleEntity& rect = dynamic_cast<const RectangleEntity&>(oth);
 
-		if (position.x + dx < oth.position.x) return false;
-		if (oth.position.x + rect.dx < position.x) return false;
-		if (position.y + dy < oth.position.y) return false;
-		if (oth.position.y + rect.dy < position.y) return false;
-		return true;
+		throw "AA";
+		// @TODO This might be wrong:
+		// const RectangleEntity& rect = dynamic_cast<const RectangleEntity&>(oth);
+
+		// if (position.x + dx < oth.position.x) return false;
+		// if (oth.position.x + rect.dx < position.x) return false;
+		// if (position.y + dy < oth.position.y) return false;
+		// if (oth.position.y + rect.dy < position.y) return false;
+		// return true;
 	}
 };
 

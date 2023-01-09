@@ -12,9 +12,8 @@ void add_wall_rect(Vector2D pos, Float dx, Float dy) {
 	global_state.handler.addWall(rect);
 }
 
-void add_circ_object(Vector2D pos, Vector2D v, Float r, Float mass) {
-	auto circ = new CircleEntity(pos, v, r);
-	circ->mass = mass;
+void add_circ_object(Vector2D pos, Vector2D v) {
+	auto circ = new CircleEntity(pos, v, 10);
 	circ->drawable = &ellipse_drawable;
 	global_state.handler.addObject(circ);
 }
@@ -42,10 +41,8 @@ void GameScene::newLevel() {
 
 	for (int i = 0; i < 10; i++) {
 		add_circ_object(
-			RD::randVector({300, 300}, {500, 500}),
-			{120, 10},
-			10,
-			1
+			RD::randVector({500, 500}, {510, 510}),
+			{120, 10}
 		);
 	}
 

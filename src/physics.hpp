@@ -32,13 +32,9 @@ public:
 	constexpr EntityType getType() const { return type; }
 
 	void simulateTick() {
-		position += velocity * TICK_TIME;	
-	}
-
-	void simulateTick(Vector2D force) {
 		auto delta_v = force * TICK_TIME;
 		position += (velocity + delta_v/2) * TICK_TIME;
-		velocity += delta_v;
+		velocity += delta_v;	
 	}
 
 	virtual bool collides(const Entity& oth) const = 0;
