@@ -84,17 +84,18 @@ void EntityHandler::simulateTick() {
 	collideAll(1);
 }
 void EntityHandler::collideAll(Float elasticity) {
-	for (size_t i = 0; i < walls.size(); i++)
-	for (size_t j = 0; j < objects.size(); j++) {
-		if (walls[i]->collides(*objects[j])) {
-			walls[i]->collide(*objects[j], elasticity);
-		}
-	}
-	
+
 	for (size_t i = 0; i < objects.size(); i++)
 	for (size_t j = i + 1; j < objects.size(); j++) {
 		if (objects[i]->collides(*objects[j])) {
 			objects[i]->collide(*objects[j], elasticity);
+		}
+	}
+
+	for (size_t i = 0; i < walls.size(); i++)
+	for (size_t j = 0; j < objects.size(); j++) {
+		if (walls[i]->collides(*objects[j])) {
+			walls[i]->collide(*objects[j], elasticity);
 		}
 	}
 }

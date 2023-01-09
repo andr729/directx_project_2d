@@ -5,6 +5,9 @@
 #include "physics.hpp"
 
 struct GameScene {
+	Vector2D top_left_simulation = {100, 200};
+	Vector2D bottom_right_simulation = {1600 - 100, 900 - 100};
+
 	void newLevel();
 	void draw();
 };

@@ -36,7 +36,6 @@ namespace {
 
 void tick() {
 	global_state.tick++;
-
 	global_state.handler.simulateTick();
 }
 
