@@ -157,13 +157,25 @@ void ShopScene::onClick() {
 			DT::updateLinearBrush();
 
 			for (size_t i = 0; i < 5; i++) {
-				spawnRainbowParticle({mouse_position.x, mouse_position.y}, bar.color);
+				spawnRainbowParticle({ mouse_position.x, mouse_position.y }, bar.color);
+			}
+
+			bool win = true;
+			for (auto bar : bars) {
+				if (bar.level != bar.max_level) {
+					win = false;
+				}
+			}
+
+			if (win) {
+				global_state.win_scene.init();
+				global_state.scene = Scene::WinScene;
 			}
 			
 		}
 	}
 
-	if (continue_button.state == ButtonState::Hovered) {
+	if (continue_button.state == ButtonState::Hovered && global_state.scene != Scene::WinScene) {
 		// TODO: better handling of scene switching.
 		global_state.scene = Scene::GameScene;
 		global_state.game_scene.newLevel();

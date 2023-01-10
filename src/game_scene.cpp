@@ -95,6 +95,9 @@ void GameScene::draw() {
 	DT::drawBitmap(DT::title_bitmap, { 800 - bitmap_width / 2, 50, 800 + bitmap_width / 2, 50 + bitmap_height });
 
 	global_state.render_target->FillRectangle({ top_left_simulation.x,top_left_simulation.y,bottom_right_simulation.x,bottom_right_simulation.y}, DT::light_gray_brush);
+	if (explosions - 1 == obj_count) {
+		global_state.render_target->FillRectangle({ top_left_simulation.x,top_left_simulation.y,bottom_right_simulation.x,bottom_right_simulation.y }, DT::lin_brush);
+	}
 	global_state.handler.drawAll();
 }
 

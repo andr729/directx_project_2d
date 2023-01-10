@@ -4,7 +4,8 @@
 #include "entity_utils.hpp"
 
 void WinScene::init() {
-	continue_button = Button(L"Continue playing", { 600, 300, 1000, 450 });
+	global_state.game_state.won = true;
+	continue_button = Button(L"Continue playing", { 600, 600, 1000, 750 });
 }
 
 void WinScene::update() {
@@ -22,11 +23,8 @@ void WinScene::update() {
 void WinScene::draw() {
 	update();
 
-
-
 	constexpr int bitmap_width = 500;
 	constexpr int bitmap_height = 164;
-
 	continue_button.draw();
 	DT::drawBitmap(DT::title_bitmap, { 800 - bitmap_width / 2, 50, 800 + bitmap_width / 2, 50 + bitmap_height });
 	DT::drawText(L"Made by:\nPiotr \"Piols\" Kêpczyñski\nAndrzej \"andr729\" Radzimiñski", { 10, 700, 610, 850 }, DT::black_brush);
@@ -35,7 +33,6 @@ void WinScene::draw() {
 
 void WinScene::onClick() {
 	if (continue_button.state == ButtonState::Hovered) {
-		global_state.game_state.won = true;
 		global_state.scene = Scene::GameScene;
 		global_state.handler.clear();
 		global_state.game_scene.newLevel();

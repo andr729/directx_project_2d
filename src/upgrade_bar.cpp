@@ -48,7 +48,7 @@ void UpgradeBar::draw() {
 
 	std::wstring cost_text = std::to_wstring(int64_t(cost)) + L"$";
 	if (level == max_level) {
-		cost_text = L"max";
+		cost_text = L"MAX";
 	}
 	DT::drawText(cost_text.c_str(),
 		{

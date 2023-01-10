@@ -40,7 +40,7 @@ HRESULT init(HWND hwnd) {
 	global_state.game_state.upgrades[L"Square speed"] = 300.f;
 	global_state.game_state.upgrades[L"Number of bullets"] = 2.f;
 	global_state.game_state.upgrades[L"Bullet duration"] = 0.5f;
-	global_state.game_state.money = 0;
+	global_state.game_state.money = 1e9;
 
 	hr(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &factory));
 	if (factory == nullptr) {
@@ -131,6 +131,9 @@ HRESULT onPaint(HWND hwnd) {
 	case Scene::MenuScene:
 		global_state.menu_scene.draw();
 		break;
+	case Scene::WinScene:
+		global_state.win_scene.draw();
+		break;
 	}
 
 	if (global_state.render_target->EndDraw() == D2DERR_RECREATE_TARGET) {
@@ -151,11 +154,14 @@ void onClick() {
 		break;
 	case Scene::GameScene:
 		global_state.game_scene.onClick();
+		break;	
+	case Scene::MenuScene:
+		global_state.menu_scene.onClick();
+		break;
+	case Scene::WinScene:
+		global_state.win_scene.onClick();
 		break;
 	default:
 		break;
-	}
-	if (global_state.scene == Scene::MenuScene) {
-		global_state.menu_scene.onClick();
 	}
 }
