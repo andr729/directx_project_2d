@@ -19,6 +19,14 @@ inline void spawnRainbowParticle(Vector2D position, D2D1_COLOR_F color) {
 	global_state.handler.addGravityParticle(particle, 100);
 }
 
+inline void spawnTransitionParticle(Vector2D position) {
+	// @TODO: rainbow
+	Entity* particle = new CircleEntity(position, {0, 10}, 10);
+	particle->drawable = &DT::ellipse_drawable;
+	particle->base_color = DT::randomColor(0.78);
+	global_state.handler.addGravityParticle(particle, 400, 300);
+}
+
 inline void addWallRect(Vector2D pos, Float dx, Float dy, D2D1_COLOR_F color) {
 	auto rect = new RectangleEntity(pos, {0, 0}, dx, dy);
 	rect->drawable = &DT::rect_drawable;
