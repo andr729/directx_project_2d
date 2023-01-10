@@ -40,9 +40,7 @@ HRESULT init(HWND hwnd) {
 	global_state.game_state.upgrades[L"Square speed"] = 300.f;
 	global_state.game_state.upgrades[L"Number of bullets"] = 2.f;
 	global_state.game_state.upgrades[L"Bullet duration"] = 1.f;
-
-	//TODO: Remove.
-	global_state.game_state.money = 1e9;
+	global_state.game_state.money = 0;
 
 	hr(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &factory));
 	if (factory == nullptr) {
