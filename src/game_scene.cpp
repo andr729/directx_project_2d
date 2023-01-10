@@ -72,7 +72,7 @@ void GameScene::newLevel() {
 
 	for (int i = 0; i < circ_count; i++) {
 		addCircObject(
-			RD::randVector(top_left_simulation + Vector2D{90, 90}, bottom_right_simulation - Vector2D{90, 90}),
+			RD::randVector(top_left_simulation + Vector2D{80, 80}, bottom_right_simulation - Vector2D{90, 90}),
 			randomVelocity(circ_speed),
 			20
 		);
@@ -80,7 +80,7 @@ void GameScene::newLevel() {
 
 	for (int i = 0; i < rect_count; i++) {
 		addRectObject(
-			RD::randVector(top_left_simulation, bottom_right_simulation),
+			RD::randVector(top_left_simulation + Vector2D{80, 80}, bottom_right_simulation - Vector2D{80, 80}),
 			randomVelocity(rect_speed)
 		);
 	}
