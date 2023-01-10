@@ -5,7 +5,7 @@
 
 void WinScene::init() {
 	global_state.game_state.won = true;
-	continue_button = Button(L"Continue playing", { 600, 600, 1000, 750 });
+	continue_button = Button(L"Continue playing", { 450, 700, 1150, 850 });
 }
 
 void WinScene::update() {
@@ -23,11 +23,11 @@ void WinScene::update() {
 void WinScene::draw() {
 	update();
 
-	constexpr int bitmap_width = 500;
-	constexpr int bitmap_height = 164;
+	DT::drawText(L"CONGRATS,", { 0, -50, 1600, 150 }, DT::lin_brush, DT::shop_text_format);
+	DT::drawText(L"YOU WON!", { 0, -50 + DT::SHOP_FONT_STROKE, 1600, 150 + DT::SHOP_FONT_STROKE}, DT::lin_brush, DT::shop_text_format);
+	DT::drawText(L"Thank you for playing,\nHope you enjoyed your playthrough!\n\nPiols & andr729", {0, 50, 1600, 700}, DT::black_brush, DT::button_text_format);
 	continue_button.draw();
-	DT::drawBitmap(DT::title_bitmap, { 800 - bitmap_width / 2, 50, 800 + bitmap_width / 2, 50 + bitmap_height });
-	DT::drawText(L"Made by:\nPiotr \"Piols\" Kêpczyñski\nAndrzej \"andr729\" Radzimiñski", { 10, 700, 610, 850 }, DT::black_brush);
+	//DT::drawText(L"Made by:\nPiotr \"Piols\" K\x0119pczy\x0144ski\nAndrzej \"andr729\" Radzimi\x0144ski", { 10, 700, 610, 850 }, DT::black_brush);
 
 }
 
