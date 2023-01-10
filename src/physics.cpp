@@ -1,4 +1,5 @@
 #include "physics.hpp"
+#include "entity_utils.hpp"
 #include <algorithm>
 #include <cassert>
 #include <numbers>
@@ -111,7 +112,7 @@ void EntityHandler::simulateTick() {
 
 	for (auto& e: explosions) {
 		e->simulateTick();
-		if (e->life_time > explosion_lifetime) {
+		if (e->life_time > e->max_life_time) {
 			e->alive = false;
 		}
 	}
@@ -123,11 +124,11 @@ void EntityHandler::simulateTick() {
 
 void EntityHandler::explode(Vector2D position, D2D1_COLOR_F color) {
 	for (int i = 0; i < 8; i++) {
-		Float angle = 2*std::numbers::pi * i / 8;
-		Vector2D norm_v = {std::sinf(angle), std::cosf(angle)};
-		auto circ = new CircleEntity(position, norm_v * 20, 10);
+		Vector2D v = randomVelocity(global_state.game_scene.explosion_speed);
+		auto circ = new CircleEntity(position, v, 10);
 		circ->drawable = &DT::ellipse_drawable;
 		circ->base_color = color;
+		circ->max_life_time = global_state.game_scene.explosion_life_time;
 		addExplosion(circ);
 	}
 }
@@ -288,7 +289,8 @@ bool RectangleEntity::collides(const Entity& oth) const {
 	}
 	else if (oth.getType() == EntityType::Rectangle) {
 
-		throw "AA";
+		return false;
+		// throw "AA";
 		// @TODO This might be wrong:
 		// const RectangleEntity& rect = dynamic_cast<const RectangleEntity&>(oth);
 

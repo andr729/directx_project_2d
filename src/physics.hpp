@@ -54,7 +54,6 @@ public:
 
 class EntityHandler {
 private:
-	constexpr static size_t explosion_lifetime = 100;
 
 	std::vector<std::unique_ptr<Entity> > objects;
 	std::vector<std::unique_ptr<Entity> > walls;

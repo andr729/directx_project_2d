@@ -1,31 +1,39 @@
 #include "game_scene.hpp"
 #include "global_state.hpp"
+#include "entity_utils.hpp"
 #include "random.hpp"
 #include <numbers>
 
-void add_wall_rect(Vector2D pos, Float dx, Float dy) {
+void addWallRect(Vector2D pos, Float dx, Float dy) {
 	auto rect = new RectangleEntity(pos, {0, 0}, dx, dy);
 	rect->drawable = &DT::rect_drawable;
 	rect->immoveable = true;
 	global_state.handler.addWall(rect);
 }
 
-void add_circ_object(Vector2D pos, Vector2D v, Float size) {
+void addCircObject(Vector2D pos, Vector2D v, Float size) {
 	auto circ = new CircleEntity(pos, v, size);
 	circ->drawable = &DT::ellipse_drawable;
 	circ->base_color = DT::randomColor(0.78);
 	global_state.handler.addObject(circ);
 }
 
-void add_explode_object(Vector2D pos, Vector2D v, D2D1_COLOR_F color) {
+void addExplodeObject(Vector2D pos, Vector2D v, D2D1_COLOR_F color) {
 	auto circ = new CircleEntity(pos, v, 10);
 	circ->drawable = &DT::ellipse_drawable;
 	circ->base_color = color;
 	global_state.handler.addExplosion(circ);
 }
 
+void addRectObject(Vector2D pos, Vector2D v) {
+	auto rect = new RectangleEntity(pos, v, 20, 20);
+	rect->drawable = &DT::rect_drawable;
+	rect->base_color = DT::randomColor(0.78);
+	global_state.handler.addObject(rect);
+}
 
-void set_up_walls(Vector2D top_left, Vector2D bottom_right, Float width) {
+
+void setUpWalls(Vector2D top_left, Vector2D bottom_right, Float width) {
 	width /= 2;
 
 	Float center_x = (top_left.x + bottom_right.x) / 2;
@@ -33,11 +41,11 @@ void set_up_walls(Vector2D top_left, Vector2D bottom_right, Float width) {
 	Float dx = (bottom_right.x - top_left.x ) / 2;
 	Float dy = (bottom_right.y - top_left.y ) / 2;
 
-	add_wall_rect({top_left.x + width, center_y}, width, dy);
-	add_wall_rect({bottom_right.x - width, center_y}, width, dy);
+	addWallRect({top_left.x + width, center_y}, width, dy);
+	addWallRect({bottom_right.x - width, center_y}, width, dy);
 
-	add_wall_rect({center_x, top_left.y + width}, dx, width);
-	add_wall_rect({center_x, bottom_right.y  - width}, dx, width);
+	addWallRect({center_x, top_left.y + width}, dx, width);
+	addWallRect({center_x, bottom_right.y  - width}, dx, width);
 	
 }
 
@@ -46,20 +54,29 @@ void GameScene::newLevel() {
 
 	explosion_was = false;
 
-	set_up_walls(top_left_simulation, bottom_right_simulation, 30);
+	setUpWalls(top_left_simulation, bottom_right_simulation, 30);
 
-	// for (int i = 0; i < 10; i++) {
-	// 	add_circ_object(
-	// 		RD::randVector({500, 500}, {510, 510}),
-	// 		{120, 10}
-	// 	);
-	// }
+	auto circ_count = global_state.game_state.upgrades[L"Number of circles"];
+	auto rect_count = global_state.game_state.upgrades[L"Number of squares"];
+	
+	auto circ_speed = global_state.game_state.upgrades[L"Circle speed"];
+	auto rect_speed = global_state.game_state.upgrades[L"Square speed"];
+	
+	auto explosion_radius = global_state.game_state.upgrades[L"Explosion radius"];
+	this->explosion_life_time = explosion_radius / explosion_speed + 1;
 
-	for (int i = 0; i < 400; i++) {
-		add_circ_object(
+	for (int i = 0; i < circ_count; i++) {
+		addCircObject(
 			RD::randVector(top_left_simulation, bottom_right_simulation),
-			{50, 50},
+			randomVelocity(circ_speed),
 			20
+		);
+	}
+
+	for (int i = 0; i < rect_count; i++) {
+		addRectObject(
+			RD::randVector(top_left_simulation, bottom_right_simulation),
+			randomVelocity(rect_speed)
 		);
 	}
 
@@ -76,15 +93,7 @@ void GameScene::draw() {
 
 
 void GameScene::explode(Vector2D position, D2D1_COLOR_F color) {
-	for (int i = 0; i < explosion_object_count; i++) {
-		Float angle = 2*std::numbers::pi * i / explosion_object_count;
-		Vector2D norm_v = {std::sinf(angle), std::cosf(angle)};
-		add_explode_object(
-			position + norm_v * 10,
-			norm_v * 20,
-			color
-		);
-	}
+	global_state.handler.explode(position, color);
 }
 
 
