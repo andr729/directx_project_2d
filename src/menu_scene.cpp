@@ -40,12 +40,13 @@ void MenuScene::update() {
 void MenuScene::draw() {
 	update();
 
+	global_state.render_target->FillRectangle({ 0,0,1600,900}, DT::light_gray_brush);
+	global_state.handler.drawAll();
+
 	DT::drawTitleGeometry();
 	
 	const int bitmap_width = 500;
 	const int bitmap_height = 164;
-
-	global_state.handler.drawAll();
 
 	start_button.draw();
 	DT::drawBitmap(DT::title_bitmap, { 800 - bitmap_width / 2, 50, 800 + bitmap_width / 2, 50 + bitmap_height });
