@@ -75,6 +75,12 @@ void EntityHandler::addExplosion(Entity* ent) {
 	explosions.emplace_back(ent);
 }
 
+void EntityHandler::addGravityParticle(Entity* ent, size_t life_time) {
+	ent->max_life_time = life_time;
+	ent->force = {0, 10};
+	free_particles.emplace_back(ent);
+}
+
 bool isEntDead(std::unique_ptr<Entity>& ent) {
 	return !ent->alive;
 }
@@ -98,6 +104,9 @@ void EntityHandler::simulateTick() {
 
 	for (auto& e: free_particles) {
 		e->simulateTick();
+		if (e->life_time > e->max_life_time) {
+			e->alive = false;
+		}
 	}
 
 	for (auto& e: explosions) {

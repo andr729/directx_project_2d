@@ -386,7 +386,7 @@ namespace DT {
 	}
 
 	void EllipseDrawable::draw(Vector2D pos, Vector2D dimensions) {
-		global_state.render_target->DrawEllipse({{pos.x, pos.y}, dimensions.x, dimensions.y}, black_brush);
+		global_state.render_target->FillEllipse({{pos.x, pos.y}, dimensions.x, dimensions.y}, black_brush);
 	}
 
 	void RectDrawable::draw(Vector2D pos, Vector2D dimensions) {

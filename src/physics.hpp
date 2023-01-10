@@ -26,6 +26,7 @@ public:
 	Vector2D force = {0, 0};
 	Float mass = 1;
 	size_t life_time = 0;
+	size_t max_life_time = -1;
 	
 	DT::Drawable* drawable = nullptr;
 	bool immoveable = false;
@@ -66,6 +67,7 @@ public:
 	void addWall(Entity*);
 	void addObject(Entity*);
 	void addExplosion(Entity*);
+	void addGravityParticle(Entity*, size_t life_time);
 	void simulateTick();
 	void explode(Vector2D position);
 	void drawAll();

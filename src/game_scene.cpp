@@ -64,6 +64,11 @@ void GameScene::newLevel() {
 }
 
 void GameScene::draw() {
+	DT::drawText(L"+???", {10, 10, 100, 100}, DT::black_brush);
+	DT::drawText(
+		(std::to_wstring(int64_t(global_state.game_state.money)) + L"$").c_str(),
+		{75,  75 + DT::TEXT_FONT_STROKE, 400, 75 + 2 * DT::TEXT_FONT_STROKE},
+		DT::black_brush);
 	global_state.handler.drawAll();
 }
 
@@ -83,6 +88,8 @@ void GameScene::explode(Vector2D position) {
 void GameScene::onClick() {
 	// @TODO: check if is in game
 	explode(global_state.mouse_position);
+	global_state.handler.clear();
+	global_state.scene = Scene::ShopScene;
 }
 
 
