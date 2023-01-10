@@ -121,7 +121,13 @@ void ShopScene::draw() {
 	update();
 
 	ID2D1HwndRenderTarget* render_target = global_state.render_target;
-	render_target->FillRectangle({ 20,20,1580,880 }, DT::light_gray_brush);
+	if (!global_state.game_state.won) {
+		render_target->FillRectangle({ 20,20,1580,880 }, DT::light_gray_brush);
+	}
+	else {
+		DT::changeBrushColor(D2D1_COLOR_F({ 1.0f, 0.84f, 0.f, 1.0f }));
+		render_target->FillRectangle({ 20,20,1580,880 }, DT::customizable_brush);
+	}
 	render_target->DrawRectangle({ 20,20,1580,880 }, DT::black_brush, 5);
 
 	for (auto& bar : bars) {

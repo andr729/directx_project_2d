@@ -6,4 +6,5 @@
 struct GameState {
 	double money;
 	std::map<std::wstring, float> upgrades;
+	bool won = false;
 };
