@@ -47,8 +47,8 @@ void MenuScene::draw() {
 void MenuScene::onClick() {
 	if (start_button.state == ButtonState::Hovered) {
 		global_state.scene = Scene::GameScene;
+		global_state.handler.clear();
 		global_state.game_scene.newLevel();
 
-		global_state.handler.clear();
 	}
 }
