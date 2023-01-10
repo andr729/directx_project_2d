@@ -66,7 +66,20 @@ namespace DT {
 		virtual ~RectDrawable() = default;
 	};
 
+	struct OutlineEllipseDrawable: public Drawable {
+		void draw(Vector2D pos, Vector2D dimensions, D2D1_COLOR_F color) final;
+		virtual ~OutlineEllipseDrawable() = default;
+	};
+
+	struct OutlineRectDrawable: public Drawable {
+		void draw(Vector2D pos, Vector2D dimensions, D2D1_COLOR_F color) final;
+		virtual ~OutlineRectDrawable() = default;
+	};
+
 	extern RectDrawable rect_drawable;
 	extern EllipseDrawable ellipse_drawable;
+
+	extern OutlineRectDrawable outline_rect_drawable;
+	extern OutlineEllipseDrawable outline_ellipse_drawable;
 
 }

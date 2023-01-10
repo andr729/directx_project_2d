@@ -13,7 +13,7 @@ void addWallRect(Vector2D pos, Float dx, Float dy) {
 
 void addCircObject(Vector2D pos, Vector2D v, Float size) {
 	auto circ = new CircleEntity(pos, v, size);
-	circ->drawable = &DT::ellipse_drawable;
+	circ->drawable = &DT::outline_ellipse_drawable;
 	circ->base_color = DT::randomColor(0.78);
 	global_state.handler.addObject(circ);
 }
@@ -27,7 +27,7 @@ void addExplodeObject(Vector2D pos, Vector2D v, D2D1_COLOR_F color) {
 
 void addRectObject(Vector2D pos, Vector2D v) {
 	auto rect = new RectangleEntity(pos, v, 20, 20);
-	rect->drawable = &DT::rect_drawable;
+	rect->drawable = &DT::outline_rect_drawable;
 	rect->base_color = DT::randomColor(0.78);
 	global_state.handler.addObject(rect);
 }

@@ -19,6 +19,9 @@ namespace DT {
 
 	RectDrawable rect_drawable;
 	EllipseDrawable ellipse_drawable;
+	OutlineRectDrawable outline_rect_drawable;
+	OutlineEllipseDrawable outline_ellipse_drawable;
+
 	ID2D1LinearGradientBrush* lin_brush = nullptr;
 
 	IWICImagingFactory* img_factory = nullptr;
@@ -400,6 +403,24 @@ namespace DT {
 		global_state.render_target->FillRectangle(
 			{pos.x - dimensions.x, pos.y - dimensions.y, pos.x + dimensions.x, pos.y + dimensions.y},
 			customizable_brush
+		);
+	}
+
+	void OutlineEllipseDrawable::draw(Vector2D pos, Vector2D dimensions, D2D1_COLOR_F color) {
+		changeBrushColor(color);
+		global_state.render_target->FillEllipse({{pos.x, pos.y}, dimensions.x, dimensions.y}, customizable_brush);
+		global_state.render_target->DrawEllipse({{pos.x, pos.y}, dimensions.x, dimensions.y}, black_brush, 2);
+	}
+
+	void OutlineRectDrawable::draw(Vector2D pos, Vector2D dimensions, D2D1_COLOR_F color) {
+		changeBrushColor(color);
+		global_state.render_target->FillRectangle(
+			{pos.x - dimensions.x, pos.y - dimensions.y, pos.x + dimensions.x, pos.y + dimensions.y},
+			customizable_brush
+		);
+		global_state.render_target->DrawRectangle(
+			{pos.x - dimensions.x, pos.y - dimensions.y, pos.x + dimensions.x, pos.y + dimensions.y},
+			black_brush, 2
 		);
 	}
 }
