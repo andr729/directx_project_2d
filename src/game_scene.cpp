@@ -69,6 +69,9 @@ void GameScene::newLevel() {
 	
 	auto explosion_radius = global_state.game_state.upgrades.at(L"Explosion radius");
 	this->explosion_speed = explosion_radius / explosion_life_time + 1;
+	
+	this->number_of_bullets = global_state.game_state.upgrades.at(L"Number of bullets");
+	this->bullet_duration = global_state.game_state.upgrades.at(L"Bullet duration");
 
 	for (int i = 0; i < circ_count; i++) {
 		addCircObject(
@@ -114,7 +117,7 @@ void GameScene::draw() {
 
 
 void GameScene::explode(Vector2D position, D2D1_COLOR_F color) {
-	global_state.handler.explode(position, color);
+	global_state.handler.explodeCirc(position, color);
 }
 
 

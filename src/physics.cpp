@@ -123,7 +123,7 @@ void EntityHandler::simulateTick() {
 	this->collideAll(1);
 }
 
-void EntityHandler::explode(Vector2D position, D2D1_COLOR_F color) {
+void EntityHandler::explodeCirc(Vector2D position, D2D1_COLOR_F color) {
 	global_state.game_scene.explosionWas();
 	for (int i = 0; i < 8; i++) {
 		auto angle = (i / 8.f) * 2 * std::numbers::pi;
@@ -135,6 +135,23 @@ void EntityHandler::explode(Vector2D position, D2D1_COLOR_F color) {
 		circ->max_life_time = global_state.game_scene.explosion_life_time * FPS;
 		addExplosion(circ);
 	}
+}
+
+void EntityHandler::explodeRect(Vector2D position, D2D1_COLOR_F color) {
+	global_state.game_scene.explosionWas();
+	auto angle = RD::randFloat() * 2 * std::numbers::pi;
+	auto count = global_state.game_scene.number_of_bullets;
+	for (int i = 0; i < count; i++) {
+		angle += (1.f / count) * 2 * std::numbers::pi;
+		Vector2D v = Vector2D{std::sinf(angle), std::cosf(angle)} * 300;
+
+		auto rect = new RectangleEntity(position, v, 10, 10);
+		rect->drawable = &DT::rect_drawable;
+		rect->base_color = color;
+		rect->max_life_time = global_state.game_scene.bullet_duration * FPS;
+		addExplosion(rect);
+	}
+
 }
 
 void EntityHandler::collideAll(Float elasticity) {
@@ -155,7 +172,13 @@ void EntityHandler::collideAll(Float elasticity) {
 			color.r *= 0.7;
 			color.g *= 0.7;
 			color.b *= 0.7;
-			explode(objects[j]->position, color);
+
+			if (objects[j]->type == EntityType::Circle) {
+				explodeCirc(objects[j]->position, color);
+			}
+			else {
+				explodeRect(objects[j]->position, color);
+			}
 		}
 	}
 

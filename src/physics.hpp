@@ -19,6 +19,8 @@ protected:
 		velocity(velocity),
 		type(type) {}
 
+	friend class EntityHandler;
+
 public:
 	
 	Vector2D position = {0, 0};
@@ -70,7 +72,8 @@ public:
 	void addExplosion(Entity*);
 	void addGravityParticle(Entity*, size_t life_time);
 	void simulateTick();
-	void explode(Vector2D position, D2D1_COLOR_F color);
+	void explodeCirc(Vector2D position, D2D1_COLOR_F color);
+	void explodeRect(Vector2D position, D2D1_COLOR_F color);
 	void drawAll();
 
 	bool noExplosions() const;

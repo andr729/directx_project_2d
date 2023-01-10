@@ -30,6 +30,9 @@ public:
 	constexpr static double explosion_life_time = 0.75;
 	size_t explosion_speed;
 
+	size_t number_of_bullets;
+	double bullet_duration;
+
 	void newLevel();
 	void draw();
 	void onClick();
