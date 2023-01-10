@@ -117,6 +117,7 @@ void ShopScene::draw() {
 
 void ShopScene::onClick() {
 	update();
+	Vector2D mouse_position = global_state.mouse_position;
 
 	for (auto &bar : bars) {
 		Button& button = bar.button;
@@ -128,7 +129,7 @@ void ShopScene::onClick() {
 			DT::updateLinearBrush();
 
 			for (size_t i = 0; i < 5; i++) {
-				spawnRainbowParticle({button.position.left, button.position.top});
+				spawnRainbowParticle({mouse_position.x, mouse_position.y});
 			}
 			
 		}

@@ -2,6 +2,7 @@
 #include "base.hpp"
 #include "brush.hpp"
 #include "global_state.hpp"
+#include "random.hpp"
 
 namespace DT {
 	IDWriteFactory* write_factory = nullptr;
@@ -117,6 +118,10 @@ namespace DT {
 		float G = (g + m);
 		float B = (b + m);
 		return D2D1_COLOR_F({ R, G, B, 1.0f });
+	}
+
+	D2D1_COLOR_F randomColor() {
+		return HSVToRGB(rand() % 1001 / 1000.f, 1.f, 1.f);
 	}
 
 	HRESULT initTools(ID2D1Factory7* factory) {
