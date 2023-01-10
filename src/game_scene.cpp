@@ -52,7 +52,8 @@ void setUpWalls(Vector2D top_left, Vector2D bottom_right, Float width) {
 void GameScene::newLevel() {
 	global_state.handler.clear();
 
-	explosion_was = false;
+	state_switch_tick = global_state.tick;
+	state = GameSceneState::WaitToExplode;
 
 	setUpWalls(top_left_simulation, bottom_right_simulation, 30);
 
@@ -67,7 +68,7 @@ void GameScene::newLevel() {
 
 	for (int i = 0; i < circ_count; i++) {
 		addCircObject(
-			RD::randVector(top_left_simulation, bottom_right_simulation),
+			RD::randVector(top_left_simulation + Vector2D{90, 90}, bottom_right_simulation - Vector2D{90, 90}),
 			randomVelocity(circ_speed),
 			20
 		);
@@ -82,7 +83,20 @@ void GameScene::newLevel() {
 
 }
 
+void GameScene::update() {
+	if (state == GameSceneState::Exploding and global_state.handler.noExplosions()) {
+		state_switch_tick = global_state.tick;
+		state = GameSceneState::LastExplosionGone;
+	}
+	else if (state == GameSceneState::LastExplosionGone) {
+		if (global_state.tick > (state_switch_tick + FPS * 2))
+			switchToShop();
+	}
+};
+
 void GameScene::draw() {
+	update();
+
 	DT::drawText(L"+???", {10, 10, 100, 100}, DT::black_brush);
 	DT::drawText(
 		(std::to_wstring(int64_t(global_state.game_state.money)) + L"$").c_str(),
@@ -102,14 +116,17 @@ void GameScene::explode(Vector2D position, D2D1_COLOR_F color) {
 
 void GameScene::onClick() {
 	// @TODO: check if is in game
-	if (!explosion_was) {
-		explosion_was = true;
+	if (state == GameSceneState::WaitToExplode) {
+		state_switch_tick = global_state.tick;
+		state = GameSceneState::Exploding;
+		
 		explode(global_state.mouse_position, DT::randomColor(0.75f));
 	}
-	else {
-		global_state.handler.clear();
-		global_state.scene = Scene::ShopScene;
-	}
+}
+
+void GameScene::switchToShop() {
+	global_state.handler.clear();
+	global_state.scene = Scene::ShopScene;
 }
 
 

@@ -71,6 +71,8 @@ public:
 	void simulateTick();
 	void explode(Vector2D position, D2D1_COLOR_F color);
 	void drawAll();
+
+	bool noExplosions() const;
 };
 
 struct CircleEntity: public Entity {

@@ -181,6 +181,11 @@ void EntityHandler::drawAll() {
 	}
 }
 
+bool EntityHandler::noExplosions() const {
+	// TODO: add here more stuff if needed
+	return explosions.empty();
+}
+
 bool CircleEntity::collides(const Entity& oth) const {
 	if (!alive || !oth.alive) {
 		return false;
