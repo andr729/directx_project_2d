@@ -124,6 +124,7 @@ void EntityHandler::simulateTick() {
 }
 
 void EntityHandler::explode(Vector2D position, D2D1_COLOR_F color) {
+	global_state.game_scene.explosionWas();
 	for (int i = 0; i < 8; i++) {
 		auto angle = (i / 8.f) * 2 * std::numbers::pi;
 		Vector2D v = Vector2D{std::sinf(angle), std::cosf(angle)} * global_state.game_scene.explosion_speed;

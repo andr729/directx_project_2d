@@ -17,20 +17,24 @@ class GameScene {
 
 	GameSceneState state;
 	size_t state_switch_tick;
+	
+	double earned_money = 0;
+	double next_value = 1;
+	double multiplier;
 
 	void explode(Vector2D position, D2D1_COLOR_F color);
-
 	void switchToShop();
-
 	void update();
 
 public:
-	size_t explosion_speed;
 	constexpr static double explosion_life_time = 0.75;
+	size_t explosion_speed;
 
 	void newLevel();
 	void draw();
 	void onClick();
+
+	void explosionWas();
 };
 
 void addWallRect(Vector2D pos, Vector2D v, Float dx, Float dy, Float mass);

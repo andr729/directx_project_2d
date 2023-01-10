@@ -30,6 +30,7 @@ public:
 	D2D1_COLOR_F base_color = {0, 0, 0, 1};
 	
 	DT::Drawable* drawable = nullptr;
+
 	bool immoveable = false;
 	bool alive = true;
 
