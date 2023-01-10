@@ -104,7 +104,7 @@ void GameScene::update() {
 void GameScene::draw() {
 	update();
 
-	DT::drawText((std::wstring(L"+") + std::to_wstring(earned_money) + L"$").c_str(), {10, 10, 500, 100}, DT::black_brush);
+	DT::drawText((std::wstring(L"+") + std::to_wstring(size_t(earned_money)) + L"$").c_str(), {10, 10, 500, 100}, DT::black_brush);
 	DT::drawText(
 		(std::to_wstring(int64_t(global_state.game_state.money)) + L"$").c_str(),
 		{75,  75 + DT::TEXT_FONT_STROKE, 400, 75 + 2 * DT::TEXT_FONT_STROKE},
