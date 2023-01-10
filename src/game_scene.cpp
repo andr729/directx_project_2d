@@ -29,6 +29,10 @@ void GameScene::newLevel() {
 	this->number_of_bullets = global_state.game_state.upgrades.at(L"Number of bullets");
 	this->bullet_duration = global_state.game_state.upgrades.at(L"Bullet duration");
 
+	this->explosions = 0;
+
+	this->obj_count = circ_count + rect_count;
+
 	for (int i = 0; i < circ_count; i++) {
 		addCircObject(
 			RD::randVector(top_left_simulation + Vector2D{80, 80}, bottom_right_simulation - Vector2D{90, 90}),
@@ -69,9 +73,9 @@ void GameScene::draw() {
 		DT::black_brush);
 	
 	DT::drawText(
-		L"Click to start a chain reaction",
+		explosions == 0 ? L"Click to start a chain reaction" : (std::wstring(L"Shapes exploded:\n") + std::to_wstring(explosions - 1) + L" / " + std::to_wstring(obj_count)).c_str(),
 		{bottom_right_simulation.x - 400,  75 + DT::TEXT_FONT_STROKE, bottom_right_simulation.x, 75 + 2 * DT::TEXT_FONT_STROKE },
-		DT::black_brush);
+		DT::black_brush, DT::right_text_format);
 
 	constexpr int bitmap_width = 500;
 	constexpr int bitmap_height = 164;
@@ -111,4 +115,5 @@ void GameScene::switchToShop() {
 void GameScene::explosionWas() {
 	earned_money += next_value;
 	next_value *= multiplier;
+	explosions++;
 } 

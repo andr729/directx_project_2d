@@ -22,6 +22,9 @@ class GameScene {
 	double next_value = 1;
 	double multiplier;
 
+	size_t explosions;
+	size_t obj_count;
+
 	void explode(Vector2D position, D2D1_COLOR_F color);
 	void switchToShop();
 	void update();
