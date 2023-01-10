@@ -121,12 +121,13 @@ void EntityHandler::simulateTick() {
 	this->collideAll(1);
 }
 
-void EntityHandler::explode(Vector2D position) {
+void EntityHandler::explode(Vector2D position, D2D1_COLOR_F color) {
 	for (int i = 0; i < 8; i++) {
 		Float angle = 2*std::numbers::pi * i / 8;
 		Vector2D norm_v = {std::sinf(angle), std::cosf(angle)};
 		auto circ = new CircleEntity(position, norm_v * 20, 10);
 		circ->drawable = &DT::ellipse_drawable;
+		circ->base_color = color;
 		addExplosion(circ);
 	}
 }
@@ -145,7 +146,11 @@ void EntityHandler::collideAll(Float elasticity) {
 		if (explosions[i]->collides(*objects[j])) {
 			explosions[i]->alive = false;
 			objects[j]->alive = false;
-			explode(objects[j]->position);
+			auto color = objects[j]->base_color;
+			color.r *= 0.7;
+			color.g *= 0.7;
+			color.b *= 0.7;
+			explode(objects[j]->position, color);
 		}
 	}
 

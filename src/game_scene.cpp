@@ -13,13 +13,14 @@ void add_wall_rect(Vector2D pos, Float dx, Float dy) {
 void add_circ_object(Vector2D pos, Vector2D v, Float size) {
 	auto circ = new CircleEntity(pos, v, size);
 	circ->drawable = &DT::ellipse_drawable;
-	circ->base_color = DT::randomColor();
+	circ->base_color = DT::randomColor(0.78);
 	global_state.handler.addObject(circ);
 }
 
-void add_explode_object(Vector2D pos, Vector2D v) {
+void add_explode_object(Vector2D pos, Vector2D v, D2D1_COLOR_F color) {
 	auto circ = new CircleEntity(pos, v, 10);
 	circ->drawable = &DT::ellipse_drawable;
+	circ->base_color = color;
 	global_state.handler.addExplosion(circ);
 }
 
@@ -54,7 +55,7 @@ void GameScene::newLevel() {
 	// 	);
 	// }
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 400; i++) {
 		add_circ_object(
 			RD::randVector(top_left_simulation, bottom_right_simulation),
 			{50, 50},
@@ -74,13 +75,14 @@ void GameScene::draw() {
 }
 
 
-void GameScene::explode(Vector2D position) {
+void GameScene::explode(Vector2D position, D2D1_COLOR_F color) {
 	for (int i = 0; i < explosion_object_count; i++) {
 		Float angle = 2*std::numbers::pi * i / explosion_object_count;
 		Vector2D norm_v = {std::sinf(angle), std::cosf(angle)};
 		add_explode_object(
 			position + norm_v * 10,
-			norm_v * 20
+			norm_v * 20,
+			color
 		);
 	}
 }
@@ -88,9 +90,14 @@ void GameScene::explode(Vector2D position) {
 
 void GameScene::onClick() {
 	// @TODO: check if is in game
-	explode(global_state.mouse_position);
-	global_state.handler.clear();
-	global_state.scene = Scene::ShopScene;
+	if (!explosion_was) {
+		explosion_was = true;
+		explode(global_state.mouse_position, {0, 0, 0, 1});
+	}
+	else {
+		global_state.handler.clear();
+		global_state.scene = Scene::ShopScene;
+	}
 }
 
 

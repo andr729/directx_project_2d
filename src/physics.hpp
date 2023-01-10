@@ -54,7 +54,7 @@ public:
 
 class EntityHandler {
 private:
-	constexpr static size_t explosion_lifetime = 10;
+	constexpr static size_t explosion_lifetime = 100;
 
 	std::vector<std::unique_ptr<Entity> > objects;
 	std::vector<std::unique_ptr<Entity> > walls;
@@ -70,7 +70,7 @@ public:
 	void addExplosion(Entity*);
 	void addGravityParticle(Entity*, size_t life_time);
 	void simulateTick();
-	void explode(Vector2D position);
+	void explode(Vector2D position, D2D1_COLOR_F color);
 	void drawAll();
 };
 

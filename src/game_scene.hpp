@@ -11,7 +11,7 @@ class GameScene {
 
 	bool explosion_was;
 
-	void explode(Vector2D position);
+	void explode(Vector2D position, D2D1_COLOR_F color);
 
 public:
 	void newLevel();
