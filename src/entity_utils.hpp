@@ -19,10 +19,11 @@ inline void spawnRainbowParticle(Vector2D position, D2D1_COLOR_F color) {
 	global_state.handler.addGravityParticle(particle, 100);
 }
 
-inline void addWallRect(Vector2D pos, Float dx, Float dy) {
+inline void addWallRect(Vector2D pos, Float dx, Float dy, D2D1_COLOR_F color) {
 	auto rect = new RectangleEntity(pos, {0, 0}, dx, dy);
 	rect->drawable = &DT::rect_drawable;
 	rect->immoveable = true;
+	rect->base_color = color;
 	global_state.handler.addWall(rect);
 }
 
@@ -47,7 +48,7 @@ inline void addRectObject(Vector2D pos, Vector2D v) {
 	global_state.handler.addObject(rect);
 }
 
-inline void setUpWalls(Vector2D top_left, Vector2D bottom_right, Float width) {
+inline void setUpWalls(Vector2D top_left, Vector2D bottom_right, Float width, D2D1_COLOR_F color = {0, 0, 0, 1}) {
 	width /= 2;
 
 	Float center_x = (top_left.x + bottom_right.x) / 2;
@@ -55,10 +56,10 @@ inline void setUpWalls(Vector2D top_left, Vector2D bottom_right, Float width) {
 	Float dx = (bottom_right.x - top_left.x ) / 2;
 	Float dy = (bottom_right.y - top_left.y ) / 2;
 
-	addWallRect({top_left.x + width, center_y}, width, dy);
-	addWallRect({bottom_right.x - width, center_y}, width, dy);
+	addWallRect({top_left.x + width, center_y}, width, dy, color);
+	addWallRect({bottom_right.x - width, center_y}, width, dy, color);
 
-	addWallRect({center_x, top_left.y + width}, dx, width);
-	addWallRect({center_x, bottom_right.y  - width}, dx, width);
+	addWallRect({center_x, top_left.y + width}, dx, width, color);
+	addWallRect({center_x, bottom_right.y  - width}, dx, width, color);
 	
 }

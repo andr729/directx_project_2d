@@ -4,13 +4,23 @@
 #include "entity_utils.hpp"
 
 void MenuScene::init() {
+	constexpr static Vector2D top_left_simulation = {10, 10};
+	constexpr static Vector2D bottom_right_simulation = {1600 - 10, 900 - 10};
+
 	start_button = Button(L"Start", { 600, 300, 1000, 450 });
 
-	setUpWalls({10, 10}, {1600 - 10, 900 - 10}, 40);
+	setUpWalls(top_left_simulation, bottom_right_simulation, 30, {0, 0, 0, 0});
 
-	for (size_t i = 0; i < 10; i++) {
-		addCircObject({100.f + i, 250.f + i}, {10.f * i, 10.f * i + i});
-		addRectObject({200.f + i, 350.f + i}, {10.f * i, 10.f * i - i});
+	for (size_t i = 0; i < 25; i++) {
+		addCircObject(
+			RD::randVector(top_left_simulation + Vector2D{80, 80}, bottom_right_simulation - Vector2D{80, 80}),
+			RD::randVelocity(450)
+		);
+		addRectObject(
+			RD::randVector(top_left_simulation + Vector2D{80, 80}, bottom_right_simulation - Vector2D{80, 80}),
+			RD::randVelocity(450)
+		);
+
 	}
 	
 }
@@ -31,14 +41,13 @@ void MenuScene::draw() {
 	update();
 
 	DT::drawTitleGeometry();
-
-	start_button.draw();
 	
 	const int bitmap_width = 500;
 	const int bitmap_height = 164;
 
 	global_state.handler.drawAll();
 
+	start_button.draw();
 	DT::drawBitmap(DT::title_bitmap, { 800 - bitmap_width / 2, 50, 800 + bitmap_width / 2, 50 + bitmap_height });
 	DT::drawText(L"Made by:\nPiotr \"Piols\" Kępczyński\nAndrzej \"andr729\" Radzimiński", { 10, 700, 610, 850 }, DT::black_brush);
 

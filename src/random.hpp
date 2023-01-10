@@ -4,6 +4,8 @@
 #include <random>
 #include <cassert>
 #include <limits>
+#include <numbers>
+#include <cmath>
 
 // XD
 #undef max
@@ -25,6 +27,11 @@ namespace RD {
 
 	inline Float randFloat() {
 		return Float(rand()) / std::numeric_limits<uint64_t>::max();
+	}
+
+	inline Vector2D randVelocity(Float norm) {
+		Float angle = randFloat() * std::numbers::pi;
+		return Vector2D{std::sinf(angle), std::cosf(angle)} * norm;
 	}
 
 }
