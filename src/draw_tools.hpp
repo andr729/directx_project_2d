@@ -52,17 +52,17 @@ namespace DT {
 	void drawTitleGeometry();
 
 	struct Drawable {
-		virtual void draw(Vector2D pos, Vector2D dimensions) = 0;
+		virtual void draw(Vector2D pos, Vector2D dimensions, D2D1_COLOR_F color) = 0;
 		virtual ~Drawable() = default;
 	};
 	
 	struct EllipseDrawable: public Drawable {
-		void draw(Vector2D pos, Vector2D dimensions) final;
+		void draw(Vector2D pos, Vector2D dimensions, D2D1_COLOR_F color) final;
 		virtual ~EllipseDrawable() = default;
 	};
 
 	struct RectDrawable: public Drawable {
-		void draw(Vector2D pos, Vector2D dimensions) final;
+		void draw(Vector2D pos, Vector2D dimensions, D2D1_COLOR_F color) final;
 		virtual ~RectDrawable() = default;
 	};
 

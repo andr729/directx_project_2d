@@ -129,7 +129,7 @@ void ShopScene::onClick() {
 			DT::updateLinearBrush();
 
 			for (size_t i = 0; i < 5; i++) {
-				spawnRainbowParticle({mouse_position.x, mouse_position.y});
+				spawnRainbowParticle({mouse_position.x, mouse_position.y}, bar.color);
 			}
 			
 		}

@@ -117,7 +117,7 @@ namespace DT {
 		float R = (r + m);
 		float G = (g + m);
 		float B = (b + m);
-		return D2D1_COLOR_  F({ R, G, B, 1.0f });
+		return D2D1_COLOR_F({ R, G, B, 1.0f });
 	}
 
 	D2D1_COLOR_F randomColor() {
@@ -390,11 +390,16 @@ namespace DT {
 		render_target->FillGeometry(title_group, customizable_brush);
 	}
 
-	void EllipseDrawable::draw(Vector2D pos, Vector2D dimensions) {
-		global_state.render_target->FillEllipse({{pos.x, pos.y}, dimensions.x, dimensions.y}, black_brush);
+	void EllipseDrawable::draw(Vector2D pos, Vector2D dimensions, D2D1_COLOR_F color) {
+		changeBrushColor(color);
+		global_state.render_target->FillEllipse({{pos.x, pos.y}, dimensions.x, dimensions.y}, customizable_brush);
 	}
 
-	void RectDrawable::draw(Vector2D pos, Vector2D dimensions) {
-		global_state.render_target->DrawRectangle({pos.x - dimensions.x, pos.y - dimensions.y, pos.x + dimensions.x, pos.y + dimensions.y}, black_brush);
+	void RectDrawable::draw(Vector2D pos, Vector2D dimensions, D2D1_COLOR_F color) {
+		changeBrushColor(color);
+		global_state.render_target->FillRectangle(
+			{pos.x - dimensions.x, pos.y - dimensions.y, pos.x + dimensions.x, pos.y + dimensions.y},
+			customizable_brush
+		);
 	}
 }

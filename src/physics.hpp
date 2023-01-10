@@ -27,6 +27,7 @@ public:
 	Float mass = 1;
 	size_t life_time = 0;
 	size_t max_life_time = -1;
+	D2D1_COLOR_F base_color = {0, 0, 0, 1};
 	
 	DT::Drawable* drawable = nullptr;
 	bool immoveable = false;
@@ -84,7 +85,7 @@ struct CircleEntity: public Entity {
 
 	void draw() override {
 		if (drawable)
-			drawable->draw(position, {radius, radius});
+			drawable->draw(position, {radius, radius}, base_color);
 	}
 };
 
@@ -100,6 +101,6 @@ struct RectangleEntity: public Entity {
 
 	void draw() override {
 		if (drawable)
-			drawable->draw(position, {dx, dy});
+			drawable->draw(position, {dx, dy}, base_color);
 	}
 };

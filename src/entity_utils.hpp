@@ -12,10 +12,11 @@ inline Vector2D randomVelocity(Float norm) {
 }
 
 
-inline void spawnRainbowParticle(Vector2D position) {
+inline void spawnRainbowParticle(Vector2D position, D2D1_COLOR_F color) {
 	// @TODO: rainbow
-	Entity* particle = new CircleEntity(position, randomVelocity(100), 10);
-	particle->drawable = &DT::ellipse_drawable;
+	Entity* particle = new RectangleEntity(position, randomVelocity(100), 5, 5);
+	particle->drawable = &DT::rect_drawable;
+	particle->base_color = color;
 	global_state.handler.addGravityParticle(particle, 100);
 }
 
