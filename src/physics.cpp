@@ -77,9 +77,9 @@ void EntityHandler::addExplosion(Entity* ent) {
 	explosions.emplace_back(ent);
 }
 
-void EntityHandler::addGravityParticle(Entity* ent, size_t life_time) {
+void EntityHandler::addGravityParticle(Entity* ent, size_t life_time, Float gravity) {
 	ent->max_life_time = life_time;
-	ent->force = {0, 1500};
+	ent->force = {0, gravity};
 	free_particles.emplace_back(ent);
 }
 

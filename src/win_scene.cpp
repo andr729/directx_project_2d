@@ -18,6 +18,9 @@ void WinScene::update() {
 		state = ButtonState::Hovered;
 	}
 	button.state = state;
+
+
+	spawnTransitionParticle({Float(RD::randRange(0, 1600)), 0});
 }
 
 void WinScene::draw() {
@@ -29,6 +32,7 @@ void WinScene::draw() {
 	continue_button.draw();
 	//DT::drawText(L"Made by:\nPiotr \"Piols\" K\x0119pczy\x0144ski\nAndrzej \"andr729\" Radzimi\x0144ski", { 10, 700, 610, 850 }, DT::black_brush);
 
+	global_state.handler.drawAll();
 }
 
 void WinScene::onClick() {

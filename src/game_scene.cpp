@@ -55,9 +55,10 @@ void GameScene::update() {
 		state = GameSceneState::LastExplosionGone;
 	}
 	else if (state == GameSceneState::LastExplosionGone) {
-		if (global_state.tick > (state_switch_tick + FPS * 2))
+		if (global_state.tick > (state_switch_tick + FPS * 5))
 			switchToShop();
 	}
+	
 };
 
 void GameScene::draw() {

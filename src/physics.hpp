@@ -70,7 +70,7 @@ public:
 	void addWall(Entity*);
 	void addObject(Entity*);
 	void addExplosion(Entity*);
-	void addGravityParticle(Entity*, size_t life_time);
+	void addGravityParticle(Entity*, size_t life_time, Float gravity = 1500);
 	void simulateTick();
 	void explodeCirc(Vector2D position, D2D1_COLOR_F color);
 	void explodeRect(Vector2D position, D2D1_COLOR_F color);
