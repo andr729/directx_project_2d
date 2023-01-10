@@ -64,18 +64,30 @@ void GameScene::draw() {
 	update();
 
 	DT::drawText(
-		(std::to_wstring(int64_t(global_state.game_state.money)) + L"$").c_str(),
+		(std::wstring(L"Money:")).c_str(),
 		{top_left_simulation.x,  75 + DT::TEXT_FONT_STROKE, top_left_simulation.x + 400, 75 + 2 * DT::TEXT_FONT_STROKE},
 		DT::black_brush);
+
+	DT::drawText(
+		(std::to_wstring(int64_t(global_state.game_state.money)) + L"$").c_str(),
+		{top_left_simulation.x,  75 + 2 * DT::TEXT_FONT_STROKE, top_left_simulation.x + 400, 75 + 3 * DT::TEXT_FONT_STROKE},
+		DT::black_brush);
+
 	DT::drawText(
 		(std::wstring(L"+") + std::to_wstring(size_t(earned_money)) + L"$").c_str(),
-		{top_left_simulation.x - 23,  75 + DT::TEXT_FONT_STROKE * 2 + 7, top_left_simulation.x + 400, -23+ 75 + 3 * DT::TEXT_FONT_STROKE + 7},
+		{top_left_simulation.x - 23,  75 + 2*DT::TEXT_FONT_STROKE * 2 + 12, top_left_simulation.x + 400, -23+ 75 + 3 * DT::TEXT_FONT_STROKE + 12},
 		DT::black_brush);
 	
 	DT::drawText(
 		explosions == 0 ? L"Click to start a chain reaction" : (std::wstring(L"Shapes exploded:\n") + std::to_wstring(explosions - 1) + L" / " + std::to_wstring(obj_count)).c_str(),
 		{bottom_right_simulation.x - 400,  75 + DT::TEXT_FONT_STROKE, bottom_right_simulation.x, 75 + 2 * DT::TEXT_FONT_STROKE },
 		DT::black_brush, DT::right_text_format);
+
+	DT::drawText(
+		explosions - 1 == obj_count ? L":)" : L"",
+		{bottom_right_simulation.x - 400,  75 + 2*DT::TEXT_FONT_STROKE * 2 + 12, bottom_right_simulation.x, -23+ 75 + 3 * DT::TEXT_FONT_STROKE + 12},
+		DT::black_brush, DT::right_text_format);
+	
 
 	constexpr int bitmap_width = 500;
 	constexpr int bitmap_height = 164;
