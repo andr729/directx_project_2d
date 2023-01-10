@@ -4,13 +4,14 @@
 #include "game_state.hpp"
 #include "shop_scene.hpp"
 #include "game_scene.hpp"
+#include "menu_scene.hpp"
 #include "physics.hpp"
 #include <d2d1_3.h>
 
 enum class Scene {
 	ShopScene,
 	GameScene,
-	Menu,
+	MenuScene,
 };
 
 struct GlobalState {
@@ -23,6 +24,7 @@ struct GlobalState {
 	GameState game_state;
 	ShopScene shop_scene;
 	GameScene game_scene;
+	MenuScene menu_scene;
 	// d2d1 stuff, and our stuff
 
 	Vector2D mouse_position;

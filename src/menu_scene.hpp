@@ -1,5 +1,7 @@
 #pragma once
 
+#include "button.hpp"
+
 struct MenuScene {
 	Button start_button;
 

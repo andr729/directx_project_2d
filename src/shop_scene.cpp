@@ -66,6 +66,8 @@ void ShopScene::init() {
 	}
 
 	continue_button = Button(L"Continue", { 1125, 75, 1525, 200}, { 1.0f, 1.0f, 1.0f, 1.0f });
+
+	DT::initLinearBrush();
 }
 
 void ShopScene::update() {
@@ -107,6 +109,7 @@ void ShopScene::draw() {
 	DT::drawText(L"Money:", { 75, 75, 400, 75 + DT::TEXT_FONT_STROKE }, DT::black_brush);
 	DT::drawText((std::to_wstring(int64_t(global_state.game_state.money)) + L"$").c_str(), {75,  75 + DT::TEXT_FONT_STROKE, 400, 75 + 2 * DT::TEXT_FONT_STROKE}, DT::black_brush);
 	DT::drawText(L"SHOP", { 500, 0, 1100, DT::SHOP_FONT_STROKE}, DT::black_brush, DT::shop_text_format);
+	DT::drawText(L"SHOP", { 500, 0, 1100, DT::SHOP_FONT_STROKE}, DT::lin_brush, DT::shop_text_format);
 }
 
 void ShopScene::onClick() {
@@ -119,6 +122,7 @@ void ShopScene::onClick() {
 			global_state.game_state.upgrades[bar.name] += bar.levelup_value;
 			global_state.game_state.money -= bar.cost;
 			bar.cost *= bar.cost_multiplier;
+			DT::updateLinearBrush();
 		}
 	}
 
