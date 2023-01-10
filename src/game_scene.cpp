@@ -88,6 +88,9 @@ void GameScene::draw() {
 		(std::to_wstring(int64_t(global_state.game_state.money)) + L"$").c_str(),
 		{75,  75 + DT::TEXT_FONT_STROKE, 400, 75 + 2 * DT::TEXT_FONT_STROKE},
 		DT::black_brush);
+
+
+	global_state.render_target->FillRectangle({ top_left_simulation.x,top_left_simulation.y,bottom_right_simulation.x,bottom_right_simulation.y}, DT::light_gray_brush);
 	global_state.handler.drawAll();
 }
 
@@ -101,7 +104,7 @@ void GameScene::onClick() {
 	// @TODO: check if is in game
 	if (!explosion_was) {
 		explosion_was = true;
-		explode(global_state.mouse_position, {0, 0, 0, 1});
+		explode(global_state.mouse_position, DT::randomColor(0.75f));
 	}
 	else {
 		global_state.handler.clear();

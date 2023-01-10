@@ -48,11 +48,13 @@ void ShopScene::init() {
 	addDefaultBar(L"Number of circles", D2D1_COLOR_F(0.98f, 0.58f, 0.04f, 1.0f));
 
 	addDefaultBar(L"Circle speed", D2D1_COLOR_F(1.f, 1.f, 0.f, 1.0f));
-
+	bars[bars.size() - 1].levelup_value = 15.f;
+		;
 	addDefaultBar(L"Explosion radius", D2D1_COLOR_F(0.f, 0.8f, 0.f, 1.0f));
-	bars[bars.size() - 1].levelup_value = 5.f;
+	bars[bars.size() - 1].levelup_value = 2.5f;
 	addDefaultBar(L"Number of squares", D2D1_COLOR_F(0.01f, 0.75f, 0.78f, 1.0f));
 	addDefaultBar(L"Square speed", D2D1_COLOR_F(0.0f, 0.0f, 1.f, 1.0f));
+	bars[bars.size() - 1].levelup_value = 15.f;
 
 	UpgradeBar bar;
 	bar.name = L"Number of bullets";
