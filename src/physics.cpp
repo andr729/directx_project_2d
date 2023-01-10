@@ -316,50 +316,64 @@ void RectangleEntity::collide(Entity& oth, Float elasticity) {
 		// todo
 		//   when my_border oth_border
 		Float when_right_left = -((position.x + dx) - (oth.position.x - rect.dx)) / (relative_x_v);
-		Float when_left_right = ((oth.position.x + rect.dx) - (position.x - dx)) / (relative_x_v);
+		Float when_left_right = -((position.x - dx) - (oth.position.x + rect.dx)) / (relative_x_v);
 
 		Float when_bottom_top = -((position.y + dy) - (oth.position.y - rect.dy)) / (relative_y_v);
-		Float when_top_bottom = ((oth.position.y + rect.dy) - (position.y - dy)) / (relative_y_v);
+		Float when_top_bottom = -((position.y - dy) - (oth.position.y + rect.dy)) / (relative_y_v);
 
-		Float max_lr = -std::numeric_limits<Float>::infinity();
-		Float max_tb = -std::numeric_limits<Float>::infinity();
+		// Float max_lr = -std::numeric_limits<Float>::infinity();
+		// Float max_tb = -std::numeric_limits<Float>::infinity();
 
 		Float eps = 1e-2;
-		if (std::abs(relative_x_v) > eps) {
-			if (relative_x_v > 0) {
-				max_lr = when_right_left;
-			}
-			else {
-				max_lr = when_left_right;
-			}
-		}
+		// if (std::abs(relative_x_v) > eps) {
+		// 	if (relative_x_v > 0) {
+		// 		max_lr = when_left_right;
+		// 	}
+		// 	else {
+		// 		max_lr = when_right_left;
+		// 	}
+		// }
 		
-		if (std::abs(relative_y_v) > eps) {
-			if (relative_y_v > 0) {
-				max_tb = when_bottom_top;
-			}
-			else {
-				max_tb = when_top_bottom;
-			}
-		}
+		// if (std::abs(relative_y_v) > eps) {
+		// 	if (relative_y_v > 0) {
+		// 		max_tb = when_top_bottom;
+		// 	}
+		// 	else {
+		// 		max_tb = when_bottom_top;
+		// 	}
+		// }
 
-		if (max_lr == -std::numeric_limits<Float>::infinity())
-		if (max_tb == -std::numeric_limits<Float>::infinity()) {
-			return;
-		}
+		// if (max_lr == -std::numeric_limits<Float>::infinity())
+		// if (max_tb == -std::numeric_limits<Float>::infinity()) {
+		// 	return;
+		// }
 
-		Float maximum = std::max(max_lr, max_tb);
+		// Float maximum = std::max(max_lr, max_tb);
 
-		if (maximum == max_tb and relative_y_v > 0 and when_top_bottom > 0) {
+		// if (maximum == max_tb and relative_y_v > 0 and when_top_bottom > 0 and when_top_bottom < TICK_TIME * 1.5) {
+		// 	collideAlongAxis(*this, oth, {0, -1}, elasticity);
+		// }
+		// else if (maximum == max_tb and relative_y_v < 0 and when_bottom_top > 0 and when_bottom_top < TICK_TIME * 1.5) {
+		// 	collideAlongAxis(*this, oth, {0, 1}, elasticity);
+		// }
+		// else if (maximum == max_lr and relative_x_v > 0 and when_left_right > 0 and when_left_right < TICK_TIME * 1.5) {
+		// 	collideAlongAxis(*this, oth, {-1, 0}, elasticity);
+		// }
+		// else if (maximum == max_lr and relative_x_v < 0 and when_right_left > 0 and when_right_left < TICK_TIME * 1.5) {
+		// 	// throw 1;
+		// 	collideAlongAxis(*this, oth, {1, 0}, elasticity);
+		// }
+
+		if (relative_y_v > eps and when_top_bottom > 0 and when_top_bottom < TICK_TIME * 1.5) {
 			collideAlongAxis(*this, oth, {0, -1}, elasticity);
 		}
-		else if (maximum == max_tb and relative_y_v < 0 and when_bottom_top > 0) {
+		else if (relative_y_v < eps and when_bottom_top > 0 and when_bottom_top < TICK_TIME * 1.5) {
 			collideAlongAxis(*this, oth, {0, 1}, elasticity);
 		}
-		else if (maximum == max_lr and relative_x_v > 0 and when_left_right > 0) {
+		else if (relative_x_v > eps and when_left_right > 0 and when_left_right < TICK_TIME * 1.5) {
 			collideAlongAxis(*this, oth, {-1, 0}, elasticity);
 		}
-		else if (maximum == max_lr and relative_x_v < 0 and when_right_left > 0) {
+		else if (relative_x_v < eps and when_right_left > 0 and when_right_left < TICK_TIME * 1.5) {
 			// throw 1;
 			collideAlongAxis(*this, oth, {1, 0}, elasticity);
 		}
