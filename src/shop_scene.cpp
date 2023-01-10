@@ -1,6 +1,7 @@
 #include "shop_scene.hpp"
 #include "draw_tools.hpp"
 #include "global_state.hpp"
+#include "entity_utils.hpp"
 
 // TODO: hr here
 
@@ -126,9 +127,10 @@ void ShopScene::onClick() {
 			bar.cost *= bar.cost_multiplier;
 			DT::updateLinearBrush();
 
-			Entity* particle = new CircleEntity({button.position.left, button.position.top}, {40, -40}, 10);
-			particle->drawable = &DT::ellipse_drawable;
-			global_state.handler.addGravityParticle(particle, 100);
+			for (size_t i = 0; i < 5; i++) {
+				spawnRainbowParticle({button.position.left, button.position.top});
+			}
+			
 		}
 	}
 

@@ -3,6 +3,10 @@
 #include "base.hpp"
 #include <random>
 #include <cassert>
+#include <limits>
+
+// XD
+#undef max
 
 namespace RD {
     extern std::mt19937_64 rand;
@@ -17,6 +21,10 @@ namespace RD {
 		auto x = randRange(top_left.x, bottom_right.x);
 		auto y = randRange(top_left.y, bottom_right.y);
 		return {Float(x), Float(y)};
+	}
+
+	inline Float randFloat() {
+		return Float(rand()) / std::numeric_limits<uint64_t>::max();
 	}
 
 }
