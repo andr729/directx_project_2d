@@ -128,6 +128,8 @@ void GameScene::onClick() {
 		state = GameSceneState::Exploding;
 		
 		explode(global_state.mouse_position, DT::randomColor(0.75f));
+		earned_money = 0;
+		next_value = 1;
 	}
 }
 
