@@ -45,8 +45,8 @@ void MenuScene::draw() {
 
 	DT::drawTitleGeometry();
 	
-	const int bitmap_width = 500;
-	const int bitmap_height = 164;
+	constexpr int bitmap_width = 500;
+	constexpr int bitmap_height = 164;
 
 	start_button.draw();
 	DT::drawBitmap(DT::title_bitmap, { 800 - bitmap_width / 2, 50, 800 + bitmap_width / 2, 50 + bitmap_height });

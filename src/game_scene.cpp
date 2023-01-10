@@ -59,12 +59,24 @@ void GameScene::update() {
 void GameScene::draw() {
 	update();
 
-	DT::drawText((std::wstring(L"+") + std::to_wstring(size_t(earned_money)) + L"$").c_str(), {10, 10, 500, 100}, DT::black_brush);
 	DT::drawText(
 		(std::to_wstring(int64_t(global_state.game_state.money)) + L"$").c_str(),
-		{75,  75 + DT::TEXT_FONT_STROKE, 400, 75 + 2 * DT::TEXT_FONT_STROKE},
+		{top_left_simulation.x,  75 + DT::TEXT_FONT_STROKE, top_left_simulation.x + 400, 75 + 2 * DT::TEXT_FONT_STROKE},
+		DT::black_brush);
+	DT::drawText(
+		(std::wstring(L"+") + std::to_wstring(size_t(earned_money)) + L"$").c_str(),
+		{top_left_simulation.x - 23,  75 + DT::TEXT_FONT_STROKE * 2 + 7, top_left_simulation.x + 400, -23+ 75 + 3 * DT::TEXT_FONT_STROKE + 7},
+		DT::black_brush);
+	
+	DT::drawText(
+		L"Click to start a chain reaction",
+		{bottom_right_simulation.x - 400,  75 + DT::TEXT_FONT_STROKE, bottom_right_simulation.x, 75 + 2 * DT::TEXT_FONT_STROKE },
 		DT::black_brush);
 
+	constexpr int bitmap_width = 500;
+	constexpr int bitmap_height = 164;
+
+	DT::drawBitmap(DT::title_bitmap, { 800 - bitmap_width / 2, 50, 800 + bitmap_width / 2, 50 + bitmap_height });
 
 	global_state.render_target->FillRectangle({ top_left_simulation.x,top_left_simulation.y,bottom_right_simulation.x,bottom_right_simulation.y}, DT::light_gray_brush);
 	global_state.handler.drawAll();
