@@ -13,6 +13,7 @@ void add_wall_rect(Vector2D pos, Float dx, Float dy) {
 void add_circ_object(Vector2D pos, Vector2D v, Float size) {
 	auto circ = new CircleEntity(pos, v, size);
 	circ->drawable = &DT::ellipse_drawable;
+	circ->base_color = DT::randomColor();
 	global_state.handler.addObject(circ);
 }
 
