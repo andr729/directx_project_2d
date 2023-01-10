@@ -321,50 +321,47 @@ void RectangleEntity::collide(Entity& oth, Float elasticity) {
 		Float when_bottom_top = -((position.y + dy) - (oth.position.y - rect.dy)) / (relative_y_v);
 		Float when_top_bottom = ((oth.position.y + rect.dy) - (position.y - dy)) / (relative_y_v);
 
-		Float minimum_lr = -std::numeric_limits<Float>::infinity();
-		Float minimum_tb = -std::numeric_limits<Float>::infinity();
+		Float max_lr = -std::numeric_limits<Float>::infinity();
+		Float max_tb = -std::numeric_limits<Float>::infinity();
 
 		Float eps = 1e-2;
 		if (std::abs(relative_x_v) > eps) {
 			if (relative_x_v > 0) {
-				minimum_lr = when_right_left;
+				max_lr = when_right_left;
 			}
 			else {
-				minimum_lr = when_left_right;
+				max_lr = when_left_right;
 			}
 		}
 		
 		if (std::abs(relative_y_v) > eps) {
 			if (relative_y_v > 0) {
-				minimum_tb = when_bottom_top;
+				max_tb = when_bottom_top;
 			}
 			else {
-				minimum_tb = when_top_bottom;
+				max_tb = when_top_bottom;
 			}
 		}
 
-		if (minimum_lr == -std::numeric_limits<Float>::infinity())
-		if (minimum_tb == -std::numeric_limits<Float>::infinity()) {
+		if (max_lr == -std::numeric_limits<Float>::infinity())
+		if (max_tb == -std::numeric_limits<Float>::infinity()) {
 			return;
 		}
 
-		Float minimum = std::max(minimum_lr, minimum_tb);
+		Float maximum = std::max(max_lr, max_tb);
 
-		if (minimum == minimum_tb and relative_y_v > 0) {
+		if (maximum == max_tb and relative_y_v > 0 and when_top_bottom > 0) {
 			collideAlongAxis(*this, oth, {0, -1}, elasticity);
 		}
-		else if (minimum == minimum_tb and relative_y_v < 0) {
+		else if (maximum == max_tb and relative_y_v < 0 and when_bottom_top > 0) {
 			collideAlongAxis(*this, oth, {0, 1}, elasticity);
 		}
-		else if (minimum == minimum_lr and relative_x_v > 0) {
+		else if (maximum == max_lr and relative_x_v > 0 and when_left_right > 0) {
 			collideAlongAxis(*this, oth, {-1, 0}, elasticity);
 		}
-		else if (minimum == minimum_lr and relative_x_v < 0) {
+		else if (maximum == max_lr and relative_x_v < 0 and when_right_left > 0) {
 			// throw 1;
 			collideAlongAxis(*this, oth, {1, 0}, elasticity);
-		}
-		else {
-			throw "aa";
 		}
 	}
 }
