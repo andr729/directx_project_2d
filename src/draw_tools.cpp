@@ -9,6 +9,7 @@ namespace DT {
 	IDWriteTextFormat* button_text_format = nullptr;
 	IDWriteTextFormat* normal_text_format = nullptr;
 	IDWriteTextFormat* shop_text_format = nullptr;
+	IDWriteTextFormat* right_text_format = nullptr;
 
 	ID2D1SolidColorBrush* black_brush = nullptr;
 	ID2D1SolidColorBrush* dark_gray_brush = nullptr;
@@ -156,6 +157,18 @@ namespace DT {
 			L"en-us",
 			&normal_text_format
 		));
+
+		hr(write_factory->CreateTextFormat(
+			L"Trebuchet MS",
+			nullptr,
+			DWRITE_FONT_WEIGHT_BOLD,
+			DWRITE_FONT_STYLE_NORMAL,
+			DWRITE_FONT_STRETCH_NORMAL,
+			TEXT_FONT_STROKE,
+			L"en-us",
+			&right_text_format
+		));
+		right_text_format->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_TRAILING);
 
 		hr(write_factory->CreateTextFormat(
 			L"Arial",
