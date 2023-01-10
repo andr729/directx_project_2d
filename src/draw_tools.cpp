@@ -117,7 +117,7 @@ namespace DT {
 		float R = (r + m);
 		float G = (g + m);
 		float B = (b + m);
-		return D2D1_COLOR_F({ R, G, B, 1.0f });
+		return D2D1_COLOR_  F({ R, G, B, 1.0f });
 	}
 
 	D2D1_COLOR_F randomColor() {

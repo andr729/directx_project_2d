@@ -30,6 +30,8 @@ namespace DT {
 
 	HRESULT initTools(ID2D1Factory7* factory);
 
+	D2D1_COLOR_F randomColor();
+
 	void destroyTools();
 
 	HRESULT recreateTools();
