@@ -1,15 +1,13 @@
-#include "menu_scene.hpp"
+#include "win_scene.hpp"
 #include "global_state.hpp"
 #include "draw_tools.hpp"
 #include "entity_utils.hpp"
 
-void MenuScene::init() {
-
-	start_button = Button(L"Continue playing", { 600, 300, 1000, 450 });
-
+void WinScene::init() {
+	continue_button = Button(L"Continue playing", { 600, 300, 1000, 450 });
 }
 
-void MenuScene::update() {
+void WinScene::update() {
 	DT::updateRadialBrush();
 	Vector2D mouse_position = global_state.mouse_position;
 	Button& button = continue_button;
@@ -21,7 +19,7 @@ void MenuScene::update() {
 	button.state = state;
 }
 
-void MenuScene::draw() {
+void WinScene::draw() {
 	update();
 
 
@@ -29,13 +27,13 @@ void MenuScene::draw() {
 	constexpr int bitmap_width = 500;
 	constexpr int bitmap_height = 164;
 
-	start_button.draw();
+	continue_button.draw();
 	DT::drawBitmap(DT::title_bitmap, { 800 - bitmap_width / 2, 50, 800 + bitmap_width / 2, 50 + bitmap_height });
 	DT::drawText(L"Made by:\nPiotr \"Piols\" Kêpczyñski\nAndrzej \"andr729\" Radzimiñski", { 10, 700, 610, 850 }, DT::black_brush);
 
 }
 
-void MenuScene::onClick() {
+void WinScene::onClick() {
 	if (continue_button.state == ButtonState::Hovered) {
 		global_state.game_state.won = true;
 		global_state.scene = Scene::GameScene;
