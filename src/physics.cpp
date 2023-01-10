@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cassert>
 #include <numbers>
+#include <limits>
 
 // XD
 #undef min
@@ -291,16 +292,13 @@ bool RectangleEntity::collides(const Entity& oth) const {
 	}
 	else if (oth.getType() == EntityType::Rectangle) {
 
-		return false;
-		// throw "AA";
-		// @TODO This might be wrong:
-		// const RectangleEntity& rect = dynamic_cast<const RectangleEntity&>(oth);
+		const RectangleEntity& rect = dynamic_cast<const RectangleEntity&>(oth);
 
-		// if (position.x + dx < oth.position.x) return false;
-		// if (oth.position.x + rect.dx < position.x) return false;
-		// if (position.y + dy < oth.position.y) return false;
-		// if (oth.position.y + rect.dy < position.y) return false;
-		// return true;
+		if (position.x + dx < oth.position.x - rect.dx) return false;
+		if (position.x - dx > oth.position.x + rect.dx) return false;
+		if (position.y + dy < oth.position.y - rect.dy) return false;
+		if (position.y - dy > oth.position.y + rect.dy) return false;
+		return true;
 	}
 };
 
@@ -309,7 +307,65 @@ void RectangleEntity::collide(Entity& oth, Float elasticity) {
 		oth.collide(*this, elasticity);
 	}
 	else {
-		throw "Rect Rect collision not yet implemented";
+		
+		const RectangleEntity& rect = dynamic_cast<const RectangleEntity&>(oth);
+
+		Float relative_x_v = oth.velocity.x - velocity.x;
+		Float relative_y_v = oth.velocity.y - velocity.y;
+
+		// todo
+		//   when my_border oth_border
+		Float when_right_left = -((position.x + dx) - (oth.position.x - rect.dx)) / (relative_x_v);
+		Float when_left_right = ((oth.position.x + rect.dx) - (position.x - dx)) / (relative_x_v);
+
+		Float when_bottom_top = -((position.y + dy) - (oth.position.y - rect.dy)) / (relative_y_v);
+		Float when_top_bottom = ((oth.position.y + rect.dy) - (position.y - dy)) / (relative_y_v);
+
+		Float minimum_lr = -std::numeric_limits<Float>::infinity();
+		Float minimum_tb = -std::numeric_limits<Float>::infinity();
+
+		Float eps = 1e-2;
+		if (std::abs(relative_x_v) > eps) {
+			if (relative_x_v > 0) {
+				minimum_lr = when_right_left;
+			}
+			else {
+				minimum_lr = when_left_right;
+			}
+		}
+		
+		if (std::abs(relative_y_v) > eps) {
+			if (relative_y_v > 0) {
+				minimum_tb = when_bottom_top;
+			}
+			else {
+				minimum_tb = when_top_bottom;
+			}
+		}
+
+		if (minimum_lr == -std::numeric_limits<Float>::infinity())
+		if (minimum_tb == -std::numeric_limits<Float>::infinity()) {
+			return;
+		}
+
+		Float minimum = std::max(minimum_lr, minimum_tb);
+
+		if (minimum == minimum_tb and relative_y_v > 0) {
+			collideAlongAxis(*this, oth, {0, -1}, elasticity);
+		}
+		else if (minimum == minimum_tb and relative_y_v < 0) {
+			collideAlongAxis(*this, oth, {0, 1}, elasticity);
+		}
+		else if (minimum == minimum_lr and relative_x_v > 0) {
+			collideAlongAxis(*this, oth, {-1, 0}, elasticity);
+		}
+		else if (minimum == minimum_lr and relative_x_v < 0) {
+			// throw 1;
+			collideAlongAxis(*this, oth, {1, 0}, elasticity);
+		}
+		else {
+			throw "aa";
+		}
 	}
 }
 
