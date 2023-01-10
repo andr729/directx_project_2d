@@ -63,7 +63,7 @@ void GameScene::newLevel() {
 	auto rect_speed = global_state.game_state.upgrades[L"Square speed"];
 	
 	auto explosion_radius = global_state.game_state.upgrades[L"Explosion radius"];
-	this->explosion_life_time = explosion_radius / explosion_speed + 1;
+	this->explosion_speed = explosion_radius / explosion_life_time + 1;
 
 	for (int i = 0; i < circ_count; i++) {
 		addCircObject(

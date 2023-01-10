@@ -124,11 +124,13 @@ void EntityHandler::simulateTick() {
 
 void EntityHandler::explode(Vector2D position, D2D1_COLOR_F color) {
 	for (int i = 0; i < 8; i++) {
-		Vector2D v = randomVelocity(global_state.game_scene.explosion_speed);
+		auto angle = (i / 8.f) * 2 * std::numbers::pi;
+		Vector2D v = Vector2D{std::sinf(angle), std::cosf(angle)} * global_state.game_scene.explosion_speed;
+
 		auto circ = new CircleEntity(position, v, 10);
 		circ->drawable = &DT::ellipse_drawable;
 		circ->base_color = color;
-		circ->max_life_time = global_state.game_scene.explosion_life_time;
+		circ->max_life_time = global_state.game_scene.explosion_life_time * FPS;
 		addExplosion(circ);
 	}
 }

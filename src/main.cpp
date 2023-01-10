@@ -1,5 +1,6 @@
 #include "main.hpp"
 #include "app.hpp"
+#include "base.hpp"
 
 constexpr UINT frame_timer_id = 1;
 
@@ -85,7 +86,7 @@ INT WINAPI wWinMain(_In_ [[maybe_unused]] HINSTANCE instance,
 		return 1;
 	}
 
-	auto timer_result = SetTimer(hwnd, frame_timer_id, 20, nullptr);
+	auto timer_result = SetTimer(hwnd, frame_timer_id, 1000 / FPS, nullptr);
 	if (timer_result == 0) {
 		return 1;
 	}

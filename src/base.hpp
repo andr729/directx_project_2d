@@ -6,7 +6,8 @@
 #define hr(code) {HRESULT hresult = (code); if(FAILED(hresult)) return hresult;}
 
 typedef float Float;
-constexpr Float TICK_TIME = 0.1;
+constexpr size_t FPS = 50;
+constexpr Float TICK_TIME = 1.f / FPS;
 
 class TransformationMatrix {
 	D2D1::Matrix3x2F inner;

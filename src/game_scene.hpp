@@ -14,8 +14,8 @@ class GameScene {
 	void explode(Vector2D position, D2D1_COLOR_F color);
 
 public:
-	constexpr static size_t explosion_speed = 10;
-	size_t explosion_life_time;
+	size_t explosion_speed = 10;
+	constexpr static size_t explosion_life_time = 2;
 
 	void newLevel();
 	void draw();
