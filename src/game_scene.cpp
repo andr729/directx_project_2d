@@ -83,6 +83,12 @@ void GameScene::draw() {
 		{bottom_right_simulation.x - 400,  75 + DT::TEXT_FONT_STROKE, bottom_right_simulation.x, 75 + 2 * DT::TEXT_FONT_STROKE },
 		DT::black_brush, DT::right_text_format);
 
+	DT::drawText(
+		explosions - 1 == obj_count ? L":)" : L"",
+		{bottom_right_simulation.x - 400,  75 + 2*DT::TEXT_FONT_STROKE * 2 + 12, bottom_right_simulation.x, -23+ 75 + 3 * DT::TEXT_FONT_STROKE + 12},
+		DT::black_brush, DT::right_text_format);
+	
+
 	constexpr int bitmap_width = 500;
 	constexpr int bitmap_height = 164;
 
