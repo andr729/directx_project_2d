@@ -32,6 +32,15 @@ void tick() {
 HRESULT init(HWND hwnd) {
 	global_state.scene = Scene::MenuScene;
 
+	global_state.game_state.upgrades[L"Multiplier"] = 1.2f;
+	global_state.game_state.upgrades[L"Number of circles"] = 15.f;
+	global_state.game_state.upgrades[L"Circle speed"] = 20.f;
+	global_state.game_state.upgrades[L"Explosion radius"] = 100.f;
+	global_state.game_state.upgrades[L"Number of squares"] = 15.f;
+	global_state.game_state.upgrades[L"Square speed"] = 20.f;
+	global_state.game_state.upgrades[L"Number of bullets"] = 2.f;
+	global_state.game_state.upgrades[L"Bullet duration"] = 1.f;
+
 	//TODO: Remove.
 	global_state.game_state.money = 1e9;
 
