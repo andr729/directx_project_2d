@@ -44,16 +44,23 @@ void ShopScene::init() {
 	
 	addDefaultBar(L"Multiplier", D2D1_COLOR_F(0.8f, 0.0f, 0.0f, 1.0f));
 	bars[bars.size() - 1].levelup_value = 0.01;
+	bars[bars.size() - 1].cost = 54;
 
 	addDefaultBar(L"Number of circles", D2D1_COLOR_F(0.98f, 0.58f, 0.04f, 1.0f));
+	bars[bars.size() - 1].cost = 8;
 
 	addDefaultBar(L"Circle speed", D2D1_COLOR_F(1.f, 1.f, 0.f, 1.0f));
+	bars[bars.size() - 1].cost = 14;
+
 	bars[bars.size() - 1].levelup_value = 15.f;
 		;
 	addDefaultBar(L"Explosion radius", D2D1_COLOR_F(0.f, 0.8f, 0.f, 1.0f));
+	bars[bars.size() - 1].cost = 18;
 	bars[bars.size() - 1].levelup_value = 2.5f;
 	addDefaultBar(L"Number of squares", D2D1_COLOR_F(0.01f, 0.75f, 0.78f, 1.0f));
+	bars[bars.size() - 1].cost = 9;
 	addDefaultBar(L"Square speed", D2D1_COLOR_F(0.0f, 0.0f, 1.f, 1.0f));
+	bars[bars.size() - 1].cost = 13;
 	bars[bars.size() - 1].levelup_value = 15.f;
 
 	UpgradeBar bar;
@@ -62,13 +69,15 @@ void ShopScene::init() {
 	bar.max_level = 5;
 	bar.levelup_value = 1;
 	bar.cost = 100;
-	bar.cost_multiplier = 2;
+	bar.cost_multiplier = 4;
 	bar.color = D2D1_COLOR_F(0.48f, 0.17f, 0.65f, 1.0f);
 	bars.push_back(bar);
 	top_left.y += bar_height + horizontal_gap;
+	bars[bars.size() - 1].cost = 42;
 	
 	addDefaultBar(L"Bullet duration", D2D1_COLOR_F(1.f, 0.59f, 0.75f, 1.0f));
-	bars[bars.size() - 1].levelup_value = 0.1f;
+	bars[bars.size() - 1].cost = 21;
+	bars[bars.size() - 1].levelup_value = 0.05f;
 	
 	for (auto& bar : bars) {
 		bar.init();
