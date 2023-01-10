@@ -105,14 +105,16 @@ void GameScene::explode(Vector2D position, D2D1_COLOR_F color) {
 
 
 void GameScene::onClick() {
-	// @TODO: check if is in game
 	if (state == GameSceneState::WaitToExplode) {
-		state_switch_tick = global_state.tick;
-		state = GameSceneState::Exploding;
-		
-		explode(global_state.mouse_position, DT::randomColor(0.75f));
-		earned_money = 0;
-		next_value = 1;
+		if (top_left_simulation.x < global_state.mouse_position.x and bottom_right_simulation.x > global_state.mouse_position.x)
+		if (top_left_simulation.y < global_state.mouse_position.y and bottom_right_simulation.y > global_state.mouse_position.y) {
+			state_switch_tick = global_state.tick;
+			state = GameSceneState::Exploding;
+			
+			explode(global_state.mouse_position, DT::randomColor(0.75f));
+			earned_money = 0;
+			next_value = 1;
+		}
 	}
 }
 
