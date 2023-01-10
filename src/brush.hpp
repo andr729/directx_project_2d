@@ -34,7 +34,7 @@ namespace detail {
 	HRESULT auxMakeLinBrush(ID2D1LinearGradientBrush** brush,
 		ID2D1HwndRenderTarget* drt, D2D1_GRADIENT_STOP* stop_data,
 		int num_rad_stops, ID2D1GradientStopCollection** stops,
-		D2D1_POINT_2F center, D2D1_POINT_2F offset, FLOAT rx, FLOAT ry);
+		Vector2D from, Vector2D to);
 }
 
 template<UINT NUM_STOPS>

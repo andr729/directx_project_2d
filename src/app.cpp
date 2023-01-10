@@ -9,6 +9,7 @@
 #include "base.hpp"
 #include "physics.hpp"
 #include "global_state.hpp"
+#include "draw_tools.hpp"
 
 // using D2D1::BitmapProperties;
 // using D2D1::PixelFormat;
@@ -19,19 +20,8 @@ using D2D1::Matrix3x2F;
 // using std::array;
 
 
-HRESULT LoadBitmapFromFile(
-	ID2D1RenderTarget* pRenderTarget,
-	IWICImagingFactory* pIWICFactory,
-	PCWSTR uri,
-	UINT destinationWidth,
-	UINT destinationHeight,
-	ID2D1Bitmap** ppBitmap);
-
 namespace {
 	ID2D1Factory7* factory = nullptr;
-	IWICImagingFactory* img_factory;
-	
-	D2D1_COLOR_F color(0.5f, 0.5f, 0.5f, 1.f);
 }
 
 void tick() {
@@ -40,31 +30,25 @@ void tick() {
 }
 
 HRESULT init(HWND hwnd) {
-	global_state.shop_scene.init();
-	global_state.scene = Scene::ShopScene;
+	global_state.scene = Scene::MenuScene;
 
 	//TODO: Remove.
-	global_state.game_state.money = 1e4;
+	global_state.game_state.money = 1e9;
 
 	hr(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &factory));
 	if (factory == nullptr) {
 		return E_FAIL;
 	}
 
+	//TODO: co to jest, czy to na pewno potrzebne?
 	hr(CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED));
-
-	// Create WIC factory
-	hr(CoCreateInstance(
-		CLSID_WICImagingFactory,
-		nullptr,
-		CLSCTX_INPROC_SERVER,
-		IID_PPV_ARGS(&img_factory)
-	));
 	
 	//TODO: handle HRESULT.
-	hr(DT::initTools());
-
+	hr(DT::initTools(factory))
+	global_state.shop_scene.init();
+	global_state.menu_scene.init();
 	hr(recreateRenderTarget(hwnd));
+
 	return S_OK;
 }
 
@@ -128,7 +112,7 @@ HRESULT onPaint(HWND hwnd) {
 	if (!global_state.render_target) recreateRenderTarget(hwnd);
 	
 	global_state.render_target->BeginDraw();
-	global_state.render_target->Clear(color);
+	global_state.render_target->Clear(DT::color_clear);
 
 	switch (global_state.scene) {
 	case Scene::GameScene:
@@ -136,6 +120,9 @@ HRESULT onPaint(HWND hwnd) {
 		break;
 	case Scene::ShopScene:
 		global_state.shop_scene.draw();
+		break;
+	case Scene::MenuScene:
+		global_state.menu_scene.draw();
 		break;
 	}
 
@@ -161,67 +148,7 @@ void onClick() {
 	default:
 		break;
 	}
-}
-
-// @TODO: move to draw tools
-HRESULT LoadBitmapFromFile(
-		ID2D1RenderTarget* pRenderTarget,
-		IWICImagingFactory* pIWICFactory,
-		PCWSTR uri,
-		UINT destinationWidth,
-		UINT destinationHeight,
-		ID2D1Bitmap** ppBitmap) {
-
-	IWICBitmapDecoder* pDecoder = nullptr;
-	IWICBitmapFrameDecode* pSource = nullptr;
-	IWICStream* pStream = nullptr;
-	IWICFormatConverter* pConverter = nullptr;
-	IWICBitmapScaler* pScaler = nullptr;
-
-	HRESULT hr = pIWICFactory->CreateDecoderFromFilename(
-		uri,
-		nullptr,
-		GENERIC_READ,
-		WICDecodeMetadataCacheOnLoad,
-		&pDecoder
-	);
-	if (SUCCEEDED(hr)) {
-		// Create the initial frame.
-		hr = pDecoder->GetFrame(0, &pSource);
+	if (global_state.scene == Scene::MenuScene) {
+		global_state.menu_scene.onClick();
 	}
-	if (SUCCEEDED(hr)) {
-		// Convert the image format to 32bppPBGRA
-		// (DXGI_FORMAT_B8G8R8A8_UNORM + D2D1_ALPHA_MODE_PREMULTIPLIED).
-		hr = pIWICFactory->CreateFormatConverter(&pConverter);
-
-	}
-
-	if (SUCCEEDED(hr)) {
-		hr = pConverter->Initialize(
-			pSource,
-			GUID_WICPixelFormat32bppPBGRA,
-			WICBitmapDitherTypeNone,
-			nullptr,
-			0.f,
-			WICBitmapPaletteTypeMedianCut
-		);
-	}
-
-	if (SUCCEEDED(hr)) {
-
-		// Create a Direct2D bitmap from the WIC bitmap.
-		hr = pRenderTarget->CreateBitmapFromWicBitmap(
-			pConverter,
-			nullptr,
-			ppBitmap
-		);
-	}
-
-	SafeRelease(&pDecoder);
-	SafeRelease(&pSource);
-	SafeRelease(&pStream);
-	SafeRelease(&pConverter);
-	SafeRelease(&pScaler);
-
-	return hr;
 }
