@@ -120,8 +120,8 @@ namespace DT {
 		return D2D1_COLOR_F({ R, G, B, 1.0f });
 	}
 
-	D2D1_COLOR_F randomColor() {
-		return HSVToRGB(rand() % 1001 / 1000.f, 1.f, 1.f);
+	D2D1_COLOR_F randomColor(float v, float s) {
+		return HSVToRGB(rand() % 1001 / 1000.f, s, v);
 	}
 
 	HRESULT initTools(ID2D1Factory7* factory) {
