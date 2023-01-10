@@ -21,6 +21,7 @@ namespace DT {
 	extern IDWriteTextFormat* button_text_format;
 	extern IDWriteTextFormat* normal_text_format;
 	extern IDWriteTextFormat* shop_text_format;
+	extern IDWriteTextFormat* right_text_format;
 
 	extern ID2D1Bitmap* title_bitmap;
 
