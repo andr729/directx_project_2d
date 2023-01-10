@@ -40,15 +40,15 @@ void MenuScene::draw() {
 	global_state.handler.drawAll();
 
 	DT::drawBitmap(DT::title_bitmap, { 800 - bitmap_width / 2, 50, 800 + bitmap_width / 2, 50 + bitmap_height });
-	DT::drawText(L"Made by:\nPiotr \"Piols\" K�pczy�ski\nAndrzej \"andr729\" Radzimi�ski", { 10, 700, 610, 850 }, DT::black_brush);
+	DT::drawText(L"Made by:\nPiotr \"Piols\" Kępczyński\nAndrzej \"andr729\" Radzimiński", { 10, 700, 610, 850 }, DT::black_brush);
 
 }
 
 void MenuScene::onClick() {
 	if (start_button.state == ButtonState::Hovered) {
 		global_state.scene = Scene::GameScene;
+		global_state.handler.clear();
 		global_state.game_scene.newLevel();
 
-		global_state.handler.clear();
 	}
 }
