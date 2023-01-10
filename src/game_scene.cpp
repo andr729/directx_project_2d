@@ -64,12 +64,18 @@ void GameScene::draw() {
 	update();
 
 	DT::drawText(
-		(std::to_wstring(int64_t(global_state.game_state.money)) + L"$").c_str(),
+		(std::wstring(L"Money:")).c_str(),
 		{top_left_simulation.x,  75 + DT::TEXT_FONT_STROKE, top_left_simulation.x + 400, 75 + 2 * DT::TEXT_FONT_STROKE},
 		DT::black_brush);
+
+	DT::drawText(
+		(std::to_wstring(int64_t(global_state.game_state.money)) + L"$").c_str(),
+		{top_left_simulation.x,  75 + 2 * DT::TEXT_FONT_STROKE, top_left_simulation.x + 400, 75 + 3 * DT::TEXT_FONT_STROKE},
+		DT::black_brush);
+
 	DT::drawText(
 		(std::wstring(L"+") + std::to_wstring(size_t(earned_money)) + L"$").c_str(),
-		{top_left_simulation.x - 23,  75 + DT::TEXT_FONT_STROKE * 2 + 7, top_left_simulation.x + 400, -23+ 75 + 3 * DT::TEXT_FONT_STROKE + 7},
+		{top_left_simulation.x - 23,  75 + 2*DT::TEXT_FONT_STROKE * 2 + 12, top_left_simulation.x + 400, -23+ 75 + 3 * DT::TEXT_FONT_STROKE + 12},
 		DT::black_brush);
 	
 	DT::drawText(
