@@ -40,5 +40,3 @@ public:
 	void explosionWas();
 };
 
-void addWallRect(Vector2D pos, Vector2D v, Float dx, Float dy, Float mass);
-void addCircObject(Vector2D pos, Vector2D v, Float r, Float mass);

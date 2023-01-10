@@ -4,50 +4,6 @@
 #include "random.hpp"
 #include <numbers>
 
-void addWallRect(Vector2D pos, Float dx, Float dy) {
-	auto rect = new RectangleEntity(pos, {0, 0}, dx, dy);
-	rect->drawable = &DT::rect_drawable;
-	rect->immoveable = true;
-	global_state.handler.addWall(rect);
-}
-
-void addCircObject(Vector2D pos, Vector2D v, Float size) {
-	auto circ = new CircleEntity(pos, v, size);
-	circ->drawable = &DT::outline_ellipse_drawable;
-	circ->base_color = DT::randomColor(0.78);
-	global_state.handler.addObject(circ);
-}
-
-void addExplodeObject(Vector2D pos, Vector2D v, D2D1_COLOR_F color) {
-	auto circ = new CircleEntity(pos, v, 10);
-	circ->drawable = &DT::ellipse_drawable;
-	circ->base_color = color;
-	global_state.handler.addExplosion(circ);
-}
-
-void addRectObject(Vector2D pos, Vector2D v) {
-	auto rect = new RectangleEntity(pos, v, 20, 20);
-	rect->drawable = &DT::outline_rect_drawable;
-	rect->base_color = DT::randomColor(0.78);
-	global_state.handler.addObject(rect);
-}
-
-
-void setUpWalls(Vector2D top_left, Vector2D bottom_right, Float width) {
-	width /= 2;
-
-	Float center_x = (top_left.x + bottom_right.x) / 2;
-	Float center_y = (top_left.y + bottom_right.y) / 2;
-	Float dx = (bottom_right.x - top_left.x ) / 2;
-	Float dy = (bottom_right.y - top_left.y ) / 2;
-
-	addWallRect({top_left.x + width, center_y}, width, dy);
-	addWallRect({bottom_right.x - width, center_y}, width, dy);
-
-	addWallRect({center_x, top_left.y + width}, dx, width);
-	addWallRect({center_x, bottom_right.y  - width}, dx, width);
-	
-}
 
 void GameScene::newLevel() {
 	global_state.handler.clear();
@@ -76,8 +32,7 @@ void GameScene::newLevel() {
 	for (int i = 0; i < circ_count; i++) {
 		addCircObject(
 			RD::randVector(top_left_simulation + Vector2D{80, 80}, bottom_right_simulation - Vector2D{90, 90}),
-			randomVelocity(circ_speed),
-			20
+			randomVelocity(circ_speed)
 		);
 	}
 
