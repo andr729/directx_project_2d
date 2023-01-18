@@ -46,11 +46,11 @@ public:
 	}
 
 	virtual bool collides(const Entity& oth) const = 0;
-	virtual void collide(Entity& oth, Float elasticity) = 0;
+	virtual void collide(Entity& oth) = 0;
 	virtual bool isInside(const Vector2D& pos) const = 0;
 
 	// axis is from ent1 to ent2
-	static bool collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float elasticity);
+	static bool collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis);
 
 	virtual void draw() = 0;
 };
@@ -63,7 +63,7 @@ private:
 	std::vector<std::unique_ptr<Entity> > free_particles;
 	std::vector<std::unique_ptr<Entity> > explosions;
 
-	void collideAll(Float elasticity);
+	void collideAll();
 	void clearDead();
 public:
 	void clear();
@@ -85,7 +85,7 @@ struct CircleEntity: public Entity {
 		Entity(position, velocity, EntityType::Circle), radius(radius) {}
 	
 	bool collides(const Entity& oth) const final;
-	void collide(Entity& oth, Float elasticity) final;
+	void collide(Entity& oth) final;
 	bool isInside(const Vector2D& pos) const final;
 
 	void draw() override {
@@ -101,7 +101,7 @@ struct RectangleEntity: public Entity {
 		Entity(position, velocity, EntityType::Rectangle), dx(dx), dy(dy) {}
 
 	bool collides(const Entity& oth) const final;
-	void collide(Entity& oth, Float elasticity) final;
+	void collide(Entity& oth) final;
 	bool isInside(const Vector2D& pos) const final;
 
 	void draw() override {

@@ -8,7 +8,7 @@
 // XD
 #undef min
 
-bool Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float elasticity) {
+bool Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis) {
 		if (ent1.immoveable and ent2.immoveable) {
 			return false;
 		}
@@ -39,8 +39,8 @@ bool Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis, Float e
 		v2 -= v_cm;
 
 		// collide:
-		v1 = -v1 * elasticity;
-		v2 = -v2 * elasticity;
+		v1 = -v1;
+		v2 = -v2;
 
 		// return to original reference frame:
 		v1 += v_cm;
@@ -120,7 +120,7 @@ void EntityHandler::simulateTick() {
 
 	clearDead();
 
-	this->collideAll(1);
+	this->collideAll();
 }
 
 void EntityHandler::explodeCirc(Vector2D position, D2D1_COLOR_F color) {
@@ -154,12 +154,12 @@ void EntityHandler::explodeRect(Vector2D position, D2D1_COLOR_F color) {
 
 }
 
-void EntityHandler::collideAll(Float elasticity) {
+void EntityHandler::collideAll() {
 
 	for (size_t i = 0; i < objects.size(); i++)
 	for (size_t j = i + 1; j < objects.size(); j++) {
 		if (objects[i]->collides(*objects[j])) {
-			objects[i]->collide(*objects[j], elasticity);
+			objects[i]->collide(*objects[j]);
 		}
 	}
 
@@ -185,7 +185,7 @@ void EntityHandler::collideAll(Float elasticity) {
 	for (size_t i = 0; i < walls.size(); i++)
 	for (size_t j = 0; j < objects.size(); j++) {
 		if (walls[i]->collides(*objects[j])) {
-			walls[i]->collide(*objects[j], elasticity);
+			walls[i]->collide(*objects[j]);
 		}
 	}
 }
@@ -242,9 +242,9 @@ bool CircleEntity::collides(const Entity& oth) const {
 	}
 };
 
-void CircleEntity::collide(Entity& oth, Float elasticity) {
+void CircleEntity::collide(Entity& oth) {
 	if (oth.getType() == EntityType::Circle) {
-		collideAlongAxis(*this, oth, oth.position - position, elasticity);
+		collideAlongAxis(*this, oth, oth.position - position);
 	}
 	else {
 		const RectangleEntity& rect = dynamic_cast<const RectangleEntity&>(oth);
@@ -256,14 +256,14 @@ void CircleEntity::collide(Entity& oth, Float elasticity) {
 		if (position.x >= rect.position.x - rect.dx and position.x <= rect.position.x + rect.dx) {
 			if (position.y < rect.position.y) {
 				// top collision
-				auto aux = collideAlongAxis(*this, oth, {0, 1}, elasticity);
+				auto aux = collideAlongAxis(*this, oth, {0, 1});
 				if (aux and oth.immoveable) {
 					position.y = oth.position.y - rect.dy - radius;
 				}
 			}
 			else {
 				// bottom collision
-				auto aux = collideAlongAxis(*this, oth, {0, -1}, elasticity);
+				auto aux = collideAlongAxis(*this, oth, {0, -1});
 				if (aux and oth.immoveable) {
 					position.y = oth.position.y + rect.dy + radius;
 				}
@@ -272,14 +272,14 @@ void CircleEntity::collide(Entity& oth, Float elasticity) {
 		else if (position.y >= rect.position.y - rect.dy and position.y <= rect.position.y + rect.dy) {
 			if (position.x < rect.position.x) {
 				// left collision
-				auto aux = collideAlongAxis(*this, oth, {1, 0}, elasticity);
+				auto aux = collideAlongAxis(*this, oth, {1, 0});
 				if (aux and oth.immoveable) {
 					position.x = oth.position.x - rect.dx - radius;
 				}
 			}
 			else {
 				// right collision
-				auto aux = collideAlongAxis(*this, oth, {-1, 0}, elasticity);
+				auto aux = collideAlongAxis(*this, oth, {-1, 0});
 				if (aux and oth.immoveable) {
 					position.x = oth.position.x + rect.dx + radius;
 				}
@@ -288,21 +288,21 @@ void CircleEntity::collide(Entity& oth, Float elasticity) {
 		else if (position.x < rect.position.x) {
 			if (position.y < rect.position.y) {
 				// top left collision
-				collideAlongAxis(*this, oth, top_left_corner - position, elasticity);
+				collideAlongAxis(*this, oth, top_left_corner - position);
 			}
 			else {
 				// bottom left collision
-				collideAlongAxis(*this, oth, bottom_left_corner - position, elasticity);
+				collideAlongAxis(*this, oth, bottom_left_corner - position);
 			}
 		}
 		else {
 			if (position.y < rect.position.y) {
 				// top right collision
-				collideAlongAxis(*this, oth, top_right_corner - position, elasticity);
+				collideAlongAxis(*this, oth, top_right_corner - position);
 			}
 			else {
 				// bottom right collision
-				collideAlongAxis(*this, oth, bottom_right_corner - position, elasticity);
+				collideAlongAxis(*this, oth, bottom_right_corner - position);
 			}
 		}
 	}
@@ -331,9 +331,9 @@ bool RectangleEntity::collides(const Entity& oth) const {
 	}
 };
 
-void RectangleEntity::collide(Entity& oth, Float elasticity) {
+void RectangleEntity::collide(Entity& oth) {
 	if (oth.getType() == EntityType::Circle) {
-		oth.collide(*this, elasticity);
+		oth.collide(*this);
 	}
 	else {
 		
@@ -351,16 +351,16 @@ void RectangleEntity::collide(Entity& oth, Float elasticity) {
 		Float eps = 1e-2;
 
 		if (relative_y_v > eps and when_top_bottom > 0 and when_top_bottom < TICK_TIME * 1.5) {
-			collideAlongAxis(*this, oth, {0, -1}, elasticity);
+			collideAlongAxis(*this, oth, {0, -1});
 		}
 		else if (relative_y_v < eps and when_bottom_top > 0 and when_bottom_top < TICK_TIME * 1.5) {
-			collideAlongAxis(*this, oth, {0, 1}, elasticity);
+			collideAlongAxis(*this, oth, {0, 1});
 		}
 		else if (relative_x_v > eps and when_left_right > 0 and when_left_right < TICK_TIME * 1.5) {
-			collideAlongAxis(*this, oth, {-1, 0}, elasticity);
+			collideAlongAxis(*this, oth, {-1, 0});
 		}
 		else if (relative_x_v < eps and when_right_left > 0 and when_right_left < TICK_TIME * 1.5) {
-			collideAlongAxis(*this, oth, {1, 0}, elasticity);
+			collideAlongAxis(*this, oth, {1, 0});
 		}
 	}
 }
