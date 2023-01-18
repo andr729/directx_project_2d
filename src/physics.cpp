@@ -9,52 +9,39 @@
 #undef min
 
 bool Entity::collideAlongAxis(Entity& ent1, Entity& ent2, Vector2D axis) {
-		if (ent1.immoveable and ent2.immoveable) {
-			return false;
-		}
+	// This functions uses simplified logic and equations with may
+	// by hard to understand.
+	// See: https://en.wikipedia.org/wiki/Elastic_collision for details
 
-		// split velocities into component parallel and perpendicular components:
-		const Float org_v1 = projectionScalar(ent1.velocity, axis);
-		const Float org_v2 = projectionScalar(ent2.velocity, axis);
-		Float v1 = org_v1;
-		Float v2 = org_v2;
-		
-		if (v1 - v2 < 0) {
-			return false;
-		}
+	// split velocities into component parallel and perpendicular components:
+	const Float v1 = projectionScalar(ent1.velocity, axis);
+	const Float v2 = projectionScalar(ent2.velocity, axis);
+	
+	if (v1 - v2 < 0) {
+		return false;
+	}
 
-		// change reference frame to center of momentum
-		Float v_cm;
-		if (ent1.immoveable) {
-			v_cm = v1;
-		}
-		else if (ent2.immoveable) {
-			v_cm = v2;
-		}
-		else {
-			v_cm = (v1 * ent1.mass + v2 * ent2.mass) / (ent1.mass + ent2.mass);
-		}
+	// calculate velocity of center of momentum
+	Float v_cm;
+	if (ent1.immoveable) {
+		v_cm = v1;
+	}
+	else if (ent2.immoveable) {
+		v_cm = v2;
+	}
+	else {
+		v_cm = (v1 * ent1.mass + v2 * ent2.mass) / (ent1.mass + ent2.mass);
+	}
 
-		v1 -= v_cm;
-		v2 -= v_cm;
+	// update velocities:
+	if (!ent1.immoveable) {
+		ent1.velocity += axis.normUnit() * (v_cm + v_cm - v1 - v1);
+	}
+	if (!ent2.immoveable) {
+		ent2.velocity += axis.normUnit() * (v_cm + v_cm - v2 - v2);;
+	}
 
-		// collide:
-		v1 = -v1;
-		v2 = -v2;
-
-		// return to original reference frame:
-		v1 += v_cm;
-		v2 += v_cm;
-
-		// update velocities:
-		if (!ent1.immoveable) {
-			ent1.velocity += axis.normUnit() * (v1 - org_v1);
-		}
-		if (!ent2.immoveable) {
-			ent2.velocity += axis.normUnit() * (v2 - org_v2);;
-		}
-
-		return true;
+	return true;
 }
 
 void EntityHandler::clear() {
@@ -206,16 +193,19 @@ void EntityHandler::drawAll() {
 }
 
 bool EntityHandler::noExplosions() const {
-	// TODO: add here more stuff if needed
 	return explosions.empty();
 }
 
 bool CircleEntity::collides(const Entity& oth) const {
+	if (immoveable and oth.immoveable) {
+		return false;
+	}
 	if (!alive || !oth.alive) {
 		return false;
 	}
 	if (oth.getType() == EntityType::Circle) {
-		auto radius_sum = (radius + dynamic_cast<const CircleEntity&>(oth).radius);
+		// Static cast here should be changed to dynamic_cast for debug purposes
+		auto radius_sum = (radius + static_cast<const CircleEntity&>(oth).radius);
 		return (position - oth.position).abs2() < radius_sum * radius_sum;
 	}
 	else if (oth.getType() == EntityType::Rectangle) {
@@ -313,6 +303,9 @@ bool CircleEntity::isInside(const Vector2D& pos) const {
 }
 
 bool RectangleEntity::collides(const Entity& oth) const {
+	if (immoveable and oth.immoveable) {
+		return false;
+	}
 	if (!alive || !oth.alive) {
 		return false;
 	}
@@ -321,7 +314,8 @@ bool RectangleEntity::collides(const Entity& oth) const {
 	}
 	else if (oth.getType() == EntityType::Rectangle) {
 
-		const RectangleEntity& rect = dynamic_cast<const RectangleEntity&>(oth);
+		// Static cast here should be changed to dynamic_cast for debug purposes
+		const RectangleEntity& rect = static_cast<const RectangleEntity&>(oth);
 
 		if (position.x + dx < oth.position.x - rect.dx) return false;
 		if (position.x - dx > oth.position.x + rect.dx) return false;
