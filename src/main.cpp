@@ -4,17 +4,19 @@
 
 constexpr UINT frame_timer_id = 1;
 
+#define QUIT_IF_FAILED(code) if(FAILED(code)) { destroy();PostQuitMessage(0); }
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
 	switch (Msg) {
 	case WM_CREATE:
-		init(hwnd);
+		QUIT_IF_FAILED(init(hwnd));
 		return 0;
 	case WM_DESTROY:
 		destroy();
 		PostQuitMessage(0);
 		return 0;
 	case WM_PAINT:
-		onPaint(hwnd);
+		QUIT_IF_FAILED(onPaint(hwnd));
 		ValidateRect(hwnd, nullptr);
 		return 0;
 	case WM_MOUSEMOVE:
@@ -107,4 +109,3 @@ INT WINAPI wWinMain(_In_ [[maybe_unused]] HINSTANCE instance,
 	DestroyWindow(hwnd);
 	return 0;
 }
-

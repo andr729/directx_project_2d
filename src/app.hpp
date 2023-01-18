@@ -6,8 +6,8 @@
 HRESULT init(HWND hwnd);
 void tick();
 HRESULT recreateRenderTarget(HWND hwnd);
-HRESULT destroyRenderTarget();
-HRESULT destroy();
+void destroyRenderTarget();
+void destroy();
 HRESULT onPaint(HWND hwnd);
 void onMouseMove(FLOAT x, FLOAT y);
 void onClick();

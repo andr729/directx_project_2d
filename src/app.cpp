@@ -47,10 +47,8 @@ HRESULT init(HWND hwnd) {
 		return E_FAIL;
 	}
 
-	//TODO: co to jest, czy to na pewno potrzebne?
 	hr(CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED));
 	
-	//TODO: handle HRESULT.
 	hr(DT::initTools(factory))
 	global_state.shop_scene.init();
 	global_state.menu_scene.init();
@@ -62,12 +60,14 @@ HRESULT init(HWND hwnd) {
 HRESULT recreateRenderTarget(HWND hwnd) {
 	HRESULT hr;
 	RECT rc;
-	GetClientRect(hwnd, &rc);
+	if (GetClientRect(hwnd, &rc) == 0) {
+		return E_FAIL;
+	}
+
 	FLOAT window_size_x = static_cast<FLOAT>(rc.right - rc.left);
 	FLOAT window_size_y = static_cast<FLOAT>(rc.bottom - rc.top);
 
-
-	hr = factory->CreateHwndRenderTarget(
+	hr(factory->CreateHwndRenderTarget(
 		D2D1::RenderTargetProperties(),
 		D2D1::HwndRenderTargetProperties(hwnd,
 			D2D1::SizeU(
@@ -75,12 +75,10 @@ HRESULT recreateRenderTarget(HWND hwnd) {
 				static_cast<UINT32>(rc.left),
 				static_cast<UINT32>(rc.bottom) -
 				static_cast<UINT32>(rc.top))),
-		&global_state.render_target);
-
-	// THROW_IF_FAILED(hr, "CreateHwndRenderTarget failed");
+		&global_state.render_target));
 
 	if (global_state.render_target == nullptr) {
-		throw "TODO";
+		return E_FAIL;
 	}
 
 	if ((window_size_x / window_size_y) > (16.0f / 9.0f)) {
@@ -96,27 +94,24 @@ HRESULT recreateRenderTarget(HWND hwnd) {
 			Matrix3x2F::Scale(ratio, ratio, { 0, 0 }) * Matrix3x2F::Translation(0, offset)).getInner());
 	}
 
-	DT::recreateTools();
+	hr(DT::recreateTools());
 
-	return 0;
+	return S_OK;
 }
 
-HRESULT destroyRenderTarget() {
-	if (global_state.render_target) {
-		global_state.render_target->Release();
-		global_state.render_target = nullptr;
-	}
-	return 0;
+void destroyRenderTarget() {
+	SafeRelease(&global_state.render_target);
 }
 
-HRESULT destroy() {
-	if (global_state.render_target) global_state.render_target->Release();
-	if (factory) factory->Release();
-	return 0;
+void destroy() {
+	destroyRenderTarget();
+	SafeRelease(&factory);
 }
 
 HRESULT onPaint(HWND hwnd) {
-	if (!global_state.render_target) recreateRenderTarget(hwnd);
+	if (!global_state.render_target) {
+		hr(recreateRenderTarget(hwnd));
+	}	
 	
 	global_state.render_target->BeginDraw();
 	global_state.render_target->Clear(DT::color_clear);
@@ -126,21 +121,21 @@ HRESULT onPaint(HWND hwnd) {
 		global_state.game_scene.draw();
 		break;
 	case Scene::ShopScene:
-		global_state.shop_scene.draw();
+		hr(global_state.shop_scene.draw());
 		break;
 	case Scene::MenuScene:
-		global_state.menu_scene.draw();
+		hr(global_state.menu_scene.draw());
 		break;
 	case Scene::WinScene:
-		global_state.win_scene.draw();
+		hr(global_state.win_scene.draw());
 		break;
 	}
 
 	if (global_state.render_target->EndDraw() == D2DERR_RECREATE_TARGET) {
 		destroyRenderTarget();
-		onPaint(hwnd);
+		return onPaint(hwnd);
 	}
-	return 0;
+	return  S_OK;
 }
 
 void onMouseMove(FLOAT x, FLOAT y) {

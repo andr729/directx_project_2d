@@ -26,4 +26,3 @@ set (SOURCE_FILES main.cpp physics.cpp button.cpp draw_tools.cpp brush.cpp app.c
 add_executable (app ${SOURCE_FILES})
 target_link_libraries(app ${DIRECT2D} ${DWRITE})
 
-

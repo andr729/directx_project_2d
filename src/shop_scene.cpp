@@ -93,8 +93,9 @@ void ShopScene::init() {
 	DT::initLinearBrush();
 }
 
-void ShopScene::update() {
-	DT::updateRadialBrush();
+HRESULT ShopScene::update() {
+	hr(DT::updateRadialBrush());
+
 	Vector2D mouse_position = global_state.mouse_position;
 	for (int i = 0; i < bars.size(); i++) {
 		Button& button = bars[i].button;
@@ -115,10 +116,12 @@ void ShopScene::update() {
 		state = ButtonState::Hovered;
 	}
 	button.state = state;
+
+	return S_OK;
 }
 
-void ShopScene::draw() {
-	update();
+HRESULT ShopScene::draw() {
+	hr(update());
 
 	ID2D1HwndRenderTarget* render_target = global_state.render_target;
 	if (!global_state.game_state.won) {
@@ -141,6 +144,8 @@ void ShopScene::draw() {
 	DT::drawText(L"SHOP", { 500, 0, 1100, DT::SHOP_FONT_STROKE}, DT::lin_brush, DT::shop_text_format);
 
 	global_state.handler.drawAll();
+
+	return S_OK;
 }
 
 void ShopScene::onClick() {

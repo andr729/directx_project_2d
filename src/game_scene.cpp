@@ -139,4 +139,4 @@ void GameScene::explosionWas() {
 	earned_money += next_value;
 	next_value *= multiplier;
 	explosions++;
-} 
+}

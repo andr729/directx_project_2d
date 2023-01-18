@@ -28,15 +28,12 @@ struct GlobalState {
 	GameScene game_scene;
 	MenuScene menu_scene;
 	WinScene win_scene;
-	// d2d1 stuff, and our stuff
 
 	Vector2D mouse_position;
-	// std::queue<Event> ??
 
 	EntityHandler handler;
 
 	void onMouseMove(FLOAT x, FLOAT y);
-	// ...
 };
 
 extern GlobalState global_state;

@@ -132,4 +132,3 @@ void SafeRelease(T **ppT) {
 		*ppT = nullptr;
 	}
 }
-

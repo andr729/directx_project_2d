@@ -3,16 +3,12 @@
 #include <vector>
 #include "upgrade_bar.hpp"
 
-struct ShopScene {
+class ShopScene {
 	std::vector<UpgradeBar> bars;
 	Button continue_button;
-
+	HRESULT update();
+public:
 	void init();
-
-	// draw() calls update() so no need to manually call this one.
-	void update();
-
-	void draw();
-
+	HRESULT draw();
 	void onClick();
 };

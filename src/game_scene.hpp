@@ -42,5 +42,3 @@ public:
 
 	void explosionWas();
 };
-
-

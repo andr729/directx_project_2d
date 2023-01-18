@@ -2,15 +2,11 @@
 
 #include "button.hpp"
 
-struct MenuScene {
+class MenuScene {
 	Button start_button;
-
+	HRESULT update();
+public:
 	void init();
-
-	// draw() calls update() so no need to manually call this one.
-	void update();
-
-	void draw();
-
+	HRESULT draw();
 	void onClick();
 };

@@ -324,6 +324,8 @@ namespace DT {
 		));
 
 		rad_brush = rad_brush_data.brush;
+
+		return S_OK;
 	}
 	
 	void initLinearBrush() {
@@ -354,6 +356,8 @@ namespace DT {
 			));
 
 		lin_brush = lin_brush_data.brush;
+
+		return S_OK;
 	}
 
 	std::wstring floatToWstring(float x) {

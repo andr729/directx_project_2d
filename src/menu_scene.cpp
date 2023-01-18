@@ -25,8 +25,8 @@ void MenuScene::init() {
 	
 }
 
-void MenuScene::update() {
-	DT::updateRadialBrush();
+HRESULT MenuScene::update() {
+	hr(DT::updateRadialBrush());
 	Vector2D mouse_position = global_state.mouse_position;
 	Button& button = start_button;
 	ButtonState state = ButtonState::Clickable;
@@ -35,10 +35,11 @@ void MenuScene::update() {
 		state = ButtonState::Hovered;
 	}
 	button.state = state;
+	return S_OK;
 }
 
-void MenuScene::draw() {
-	update();
+HRESULT MenuScene::draw() {
+	hr(update());
 
 	global_state.render_target->FillRectangle({ 0,0,1600,900}, DT::light_gray_brush);
 	global_state.handler.drawAll();
@@ -51,7 +52,8 @@ void MenuScene::draw() {
 	start_button.draw();
 	DT::drawBitmap(DT::title_bitmap, { 800 - bitmap_width / 2, 50, 800 + bitmap_width / 2, 50 + bitmap_height });
 	DT::drawText(L"Made by:\nPiotr \"Piols\" K\x0119pczy\x0144ski\nAndrzej \"andr729\" Radzimi\x0144ski", { 10, 700, 610, 850 }, DT::black_brush);
-
+	
+	return S_OK;
 }
 
 void MenuScene::onClick() {
