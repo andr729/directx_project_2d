@@ -58,7 +58,7 @@ void ShopScene::init() {
 		;
 	addDefaultBar(L"Explosion radius", D2D1_COLOR_F(0.f, 0.8f, 0.f, 1.0f));
 	bars[bars.size() - 1].cost = 18;
-	bars[bars.size() - 1].cost_multiplier = 3.4f;
+	bars[bars.size() - 1].cost_multiplier = 3.3f;
 	bars[bars.size() - 1].levelup_value = 2.5f;
 	addDefaultBar(L"Number of squares", D2D1_COLOR_F(0.01f, 0.75f, 0.78f, 1.0f));
 	bars[bars.size() - 1].cost = 10;
@@ -74,7 +74,7 @@ void ShopScene::init() {
 	bar.max_level = 5;
 	bar.levelup_value = 1;
 	bar.cost = 121;
-	bar.cost_multiplier = 8.32;
+	bar.cost_multiplier = 8.32 * (1 / 0.9f);
 	bar.color = D2D1_COLOR_F(0.48f, 0.17f, 0.65f, 1.0f);
 	bars.push_back(bar);
 	top_left.y += bar_height + horizontal_gap;
@@ -158,7 +158,7 @@ void ShopScene::onClick() {
 			bar.level++;
 			global_state.game_state.upgrades[bar.name] += bar.levelup_value;
 			global_state.game_state.money -= bar.cost;
-			bar.cost *= bar.cost_multiplier;
+			bar.cost *= bar.cost_multiplier * (bar.level <= 5 ? 0.9 : 1.14);
 			DT::updateLinearBrush();
 
 			for (size_t i = 0; i < 5; i++) {
