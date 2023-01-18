@@ -3,8 +3,6 @@
 #include "global_state.hpp"
 #include "entity_utils.hpp"
 
-// TODO: hr here
-
 D2D1_RECT_F rect(Vector2D top_left, Float dx, Float dy) {
 	return D2D1_RECT_F { 
 		.left = top_left.x,
@@ -181,7 +179,6 @@ void ShopScene::onClick() {
 	}
 
 	if (continue_button.state == ButtonState::Hovered && global_state.scene != Scene::WinScene) {
-		// TODO: better handling of scene switching.
 		global_state.scene = Scene::GameScene;
 		global_state.game_scene.newLevel();
 	}

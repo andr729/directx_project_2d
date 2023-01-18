@@ -12,7 +12,6 @@ inline Vector2D randomVelocity(Float norm) {
 }
 
 inline void spawnRainbowParticle(Vector2D position, D2D1_COLOR_F color) {
-	// @TODO: rainbow
 	Entity* particle = new RectangleEntity(position, randomVelocity(300), 5, 5);
 	particle->drawable = &DT::rect_drawable;
 	particle->base_color = color;
@@ -20,7 +19,6 @@ inline void spawnRainbowParticle(Vector2D position, D2D1_COLOR_F color) {
 }
 
 inline void spawnTransitionParticle(Vector2D position) {
-	// @TODO: rainbow
 	Entity* particle = new CircleEntity(position, {0, 10}, 10);
 	particle->drawable = &DT::ellipse_drawable;
 	particle->base_color = DT::randomColor(0.78);
